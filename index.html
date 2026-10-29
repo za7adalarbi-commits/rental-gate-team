@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       1. المتغيرات والأساسيات (Design System)
+       1. المتغيرات والأساسيات (Design System & Theme)
        ========================================================================== */
     :root {
       --primary: #D7192D;
@@ -18,7 +18,7 @@
       --primary-border: #fca5a5;
       --dark: #292929;
       --dark-light: #3d3d3d;
-      --bg: #F5F7FA;
+      --bg: #F4F6F9;
       --surface: #FFFFFF;
       --border: #E2E8F0;
       --text: #1E293B;
@@ -27,6 +27,7 @@
       --off-text: #475569;
       --off-border: #CBD5E1;
       --success: #10B981;
+      --danger: #EF4444;
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
@@ -50,7 +51,7 @@
     }
 
     /* ==========================================================================
-       2. شريط التنقل العلوي البسيط (Header)
+       2. شريط التنقل العلوي (Header)
        ========================================================================== */
     .header {
       background-color: var(--dark);
@@ -60,11 +61,11 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
     .header-container {
-      max-width: 1480px;
+      max-width: 1560px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -83,9 +84,9 @@
       background: var(--primary);
       color: white;
       font-weight: 900;
-      padding: 0.35rem 0.75rem;
+      padding: 0.35rem 0.8rem;
       border-radius: var(--radius-sm);
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       letter-spacing: 0.5px;
     }
 
@@ -99,6 +100,12 @@
       color: #cbd5e1;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
     .sync-badge {
       display: flex;
       align-items: center;
@@ -107,7 +114,7 @@
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.12);
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #f8fafc;
     }
 
@@ -119,20 +126,20 @@
       box-shadow: 0 0 8px var(--success);
     }
     .sync-dot.saving { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
-    .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .sync-dot.offline { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
 
     /* ==========================================================================
-       3. أدوات التحكم والتنقل الأسبوعي (Actions & Navigation)
+       3. لوحة أدوات التحكم والعمليات السريعة (Toolbar)
        ========================================================================== */
     .container {
-      max-width: 1480px;
+      max-width: 1560px;
       width: 100%;
       margin: 1.2rem auto;
       padding: 0 1rem;
       flex: 1;
     }
 
-    .top-panel {
+    .top-toolbar {
       background: var(--surface);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
@@ -163,7 +170,7 @@
       color: var(--dark);
     }
 
-    .btn-group {
+    .actions-cluster {
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -177,7 +184,7 @@
       gap: 0.45rem;
       font-size: 0.875rem;
       font-weight: 700;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.95rem;
       border-radius: var(--radius-sm);
       border: 1px solid transparent;
       cursor: pointer;
@@ -196,19 +203,22 @@
     .btn-outline { background: white; border-color: var(--border); color: var(--dark); }
     .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
 
-    .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.775rem; }
+    .btn-danger-outline { background: white; border-color: #fecaca; color: #dc2626; }
+    .btn-danger-outline:hover { background: #fee2e2; border-color: #f87171; }
+
+    .btn-sm { padding: 0.25rem 0.55rem; font-size: 0.75rem; }
 
     /* البحث والفلترة السريعة */
-    .filter-row {
+    .search-bar {
       display: flex;
+      align-items: center;
       gap: 0.75rem;
       margin-bottom: 1rem;
-      align-items: center;
     }
 
     .search-input {
       flex: 1;
-      max-width: 380px;
+      max-width: 360px;
       padding: 0.5rem 0.85rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -217,8 +227,17 @@
     }
     .search-input:focus { outline: none; border-color: var(--primary); }
 
+    .drag-instruction-tip {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
     /* ==========================================================================
-       4. جدول الشفتات الرئيسي (Schedule Matrix Table)
+       4. جدول الشفتات الرئيسي مع دعم السحب والإفلات (Drag & Drop)
        ========================================================================== */
     .schedule-card {
       background: var(--surface);
@@ -228,7 +247,7 @@
       overflow: hidden;
     }
 
-    .table-responsive {
+    .table-wrapper {
       width: 100%;
       overflow-x: auto;
     }
@@ -237,13 +256,13 @@
       width: 100%;
       border-collapse: collapse;
       text-align: right;
-      min-width: 1100px;
+      min-width: 1150px;
     }
 
     .schedule-table th, 
     .schedule-table td {
       border: 1px solid var(--border);
-      padding: 0.75rem 0.65rem;
+      padding: 0.65rem 0.55rem;
       vertical-align: top;
     }
 
@@ -256,14 +275,14 @@
     }
 
     .schedule-table th.emp-header {
-      width: 220px;
+      width: 230px;
       text-align: right;
-      padding-right: 1.25rem;
+      padding-right: 1rem;
       background-color: #1a1a1a;
     }
 
     .schedule-table th.total-header {
-      width: 130px;
+      width: 125px;
       background-color: #1a1a1a;
     }
 
@@ -271,49 +290,74 @@
     .schedule-table th .day-date { font-size: 0.75rem; color: #cbd5e1; font-weight: 600; }
     .schedule-table th.is-today { background-color: var(--primary); }
 
-    /* خلايا الموظف */
-    .emp-name-box {
+    /* خلية الموظف وأزرار الحذف السريع */
+    .emp-cell-content {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.35rem;
     }
+
+    .emp-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.35rem;
+    }
+
     .emp-title {
       font-weight: 800;
       color: var(--dark);
       font-size: 0.95rem;
     }
+
+    .emp-actions-quick {
+      display: flex;
+      gap: 0.2rem;
+    }
+
     .emp-badge {
       display: inline-block;
       width: fit-content;
-      padding: 0.15rem 0.5rem;
+      padding: 0.1rem 0.45rem;
       border-radius: 4px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       background: #e2e8f0;
       color: #334155;
     }
     .emp-badge.super { background: var(--dark); color: white; }
 
-    /* خلايا الأيام */
+    /* خلايا الأيام ومنطقة السحب والإفلات */
     .day-cell {
-      min-height: 95px;
+      min-height: 105px;
       height: 100%;
       background: white;
       position: relative;
+      transition: background-color 0.15s, border-color 0.15s;
     }
 
-    /* كارت الشفت العادي */
+    /* تأثير عند سحب عنصر فوق الخلية */
+    .day-cell.drag-over {
+      background-color: #fff1f2 !important;
+      border: 2px dashed var(--primary) !important;
+    }
+
+    /* كارت الشفت القابل للسحب */
     .shift-card {
       background: #fff;
       border: 1.5px solid var(--primary-border);
       border-right: 4px solid var(--primary);
       border-radius: var(--radius-sm);
       padding: 0.45rem 0.55rem;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      cursor: grab;
+      user-select: none;
     }
+    .shift-card:active { cursor: grabbing; }
+    .shift-card.is-dragging { opacity: 0.4; }
 
     .time-egypt {
       font-size: 0.85rem;
@@ -327,7 +371,7 @@
       background: #fee2e2;
       color: #991b1b;
       font-size: 0.65rem;
-      padding: 0.1rem 0.35rem;
+      padding: 0.05rem 0.3rem;
       border-radius: 3px;
     }
 
@@ -336,7 +380,7 @@
       color: #475569;
       font-weight: 600;
       background: #f1f5f9;
-      padding: 0.15rem 0.35rem;
+      padding: 0.12rem 0.35rem;
       border-radius: 4px;
     }
 
@@ -344,10 +388,9 @@
       font-size: 0.75rem;
       font-weight: 800;
       color: var(--primary);
-      margin-top: 0.1rem;
     }
 
-    /* كارت الأوف / الراحة */
+    /* كارت الأوف القابل للسحب أيضاً */
     .off-card {
       background: var(--off-bg);
       border: 1.5px dashed var(--off-border);
@@ -359,7 +402,11 @@
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
+      cursor: grab;
+      user-select: none;
     }
+    .off-card:active { cursor: grabbing; }
+    .off-card.is-dragging { opacity: 0.4; }
 
     .off-tag {
       font-size: 0.85rem;
@@ -370,18 +417,18 @@
       gap: 0.35rem;
     }
 
-    /* أزرار العمليات السريعة داخل الخلية */
+    /* أزرار العمليات المصغرة داخل الخلية */
     .cell-actions {
       display: flex;
-      gap: 0.35rem;
-      margin-top: 0.35rem;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
       justify-content: flex-end;
       border-top: 1px dashed #e2e8f0;
       padding-top: 0.3rem;
     }
 
     .action-btn {
-      background: none;
+      background: white;
       border: 1px solid var(--border);
       padding: 0.15rem 0.45rem;
       border-radius: 4px;
@@ -394,7 +441,7 @@
     .action-btn.off-btn { color: #dc2626; border-color: #fecaca; }
     .action-btn.off-btn:hover { background: #fee2e2; }
 
-    /* خلية فارغة بالكامل */
+    /* خلية اليوم الفارغة */
     .empty-actions {
       display: flex;
       flex-direction: column;
@@ -428,7 +475,6 @@
     }
     .quick-off-btn:hover { background: #e2e8f0; }
 
-    /* إجمالي ساعات الموظف */
     .total-hours-cell {
       text-align: center;
       vertical-align: middle !important;
@@ -446,12 +492,12 @@
     }
 
     /* ==========================================================================
-       5. النوافذ المنبثقة البسيطة (Simple Modals)
+       5. النوافذ المنبثقة (Modals)
        ========================================================================== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(2px);
       z-index: 100;
       display: flex;
@@ -468,10 +514,10 @@
     .modal {
       background: white;
       width: 100%;
-      max-width: 520px;
+      max-width: 580px;
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.25);
     }
 
     .modal-header {
@@ -481,7 +527,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 3px solid var(--primary);
+      border-bottom: 3.5px solid var(--primary);
     }
 
     .modal-header h3 { font-size: 1.05rem; font-weight: 800; }
@@ -502,7 +548,6 @@
     .form-control { width: 100%; padding: 0.55rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.875rem; }
     .form-control:focus { outline: none; border-color: var(--primary); }
 
-    /* محدد وقت 12 ساعة الصارم */
     .time-picker-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -554,7 +599,21 @@
     }
     .day-check-item input { margin-bottom: 0.25rem; }
 
-    /* التنبيهات (Toast) */
+    /* جدول قائمة الموظفين في نافذة الإدارة */
+    .emp-mgmt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+    .emp-mgmt-table th, .emp-mgmt-table td {
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.65rem;
+      text-align: right;
+    }
+    .emp-mgmt-table th { background: #f8fafc; font-weight: 800; }
+
+    /* التنبيهات (Toasts) */
     .toast-container {
       position: fixed;
       bottom: 1.5rem;
@@ -569,14 +628,14 @@
       color: white;
       padding: 0.75rem 1.25rem;
       border-radius: var(--radius-sm);
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       font-weight: 700;
       border-right: 4px solid var(--primary);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     /* ==========================================================================
-       6. تنسيقات الطباعة وتصدير PDF بخطوط كبيرة وواضحة جداً
+       6. تنسيقات الطباعة و PDF بخطوط واضحة وكبيرة
        ========================================================================== */
     @media print {
       @page {
@@ -590,8 +649,8 @@
         font-size: 11pt !important;
       }
 
-      .header, .top-panel, .filter-row, .modal-backdrop, 
-      .cell-actions, .empty-actions, .no-print {
+      .header, .top-toolbar, .search-bar, .modal-backdrop, 
+      .cell-actions, .empty-actions, .emp-actions-quick, .no-print {
         display: none !important;
       }
 
@@ -692,13 +751,15 @@
         <span class="brand-logo">RG</span>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات بنظام 12 ساعة وتحديد الأوف السريع بنقرة واحدة</p>
+          <p>إدارة الشفتات بنظام 12 ساعة • دعم السحب والإفلات • إدارة الموظفين</p>
         </div>
       </div>
 
-      <div class="sync-badge">
-        <span class="sync-dot" id="syncDot"></span>
-        <span id="syncStatusText">متزامن مع Google Sheets</span>
+      <div class="header-right">
+        <div class="sync-badge">
+          <span class="sync-dot" id="syncDot"></span>
+          <span id="syncStatusText">متزامن مع Google Sheets</span>
+        </div>
       </div>
     </div>
   </header>
@@ -706,7 +767,7 @@
   <!-- الصفحة الرئيسية -->
   <main class="container">
 
-    <!-- ترويسة خاصة بالطباعة (PDF) -->
+    <!-- ترويسة الطباعة الرسمية للـ PDF -->
     <div class="print-header-bar">
       <div>
         <h2>Rental Gate — جدول الشفتات الأسبوعي</h2>
@@ -718,8 +779,8 @@
       </div>
     </div>
 
-    <!-- لوحة التحكم والتنقل الأسبوعي -->
-    <div class="top-panel no-print">
+    <!-- لوحة التحكم والتنقل الأسبوعي والعمليات السريعة -->
+    <div class="top-toolbar no-print">
       <div class="week-nav">
         <button class="btn btn-outline btn-sm" id="btnPrevWeek">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
@@ -733,19 +794,32 @@
         <span class="week-display" id="weekDateDisplay">جاري التحميل...</span>
       </div>
 
-      <div class="btn-group">
+      <div class="actions-cluster">
         <button class="btn btn-primary" id="btnOpenShiftModal">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-          + إضافة شفت عمل
+          + إضافة شفت
         </button>
-        <button class="btn btn-dark" id="btnOpenEmployeeModal">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
-          + إضافة موظف
+        
+        <button class="btn btn-dark" id="btnOpenEmployeeManager">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+          إدارة الموظفين (<span id="empCountBadge">0</span>)
         </button>
-        <button class="btn btn-outline" id="btnExportExcel" title="تصدير شيت إكسيل أسبوعي بنفس شكل ومصفوفة الجدول">
+
+        <button class="btn btn-outline" id="btnOpenSwapModal" title="تبديل شفتات موظف مع موظف آخر للأسبوع بالكامل">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+          تبديل شفتات موظفين
+        </button>
+
+        <button class="btn btn-danger-outline" id="btnClearWeekSchedule" title="مسح شفتات وأيام الأوف لهذا الأسبوع المعروض فقط">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+          مسح جدول الأسبوع
+        </button>
+
+        <button class="btn btn-outline" id="btnExportExcel" title="تصدير شيت إكسيل أسبوعي بنفس مصفوفة الجدول">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-          تصدير Excel أسبوعي
+          Excel
         </button>
+
         <button class="btn btn-outline" id="btnPrintSchedule" title="طباعة الجدول بحجم خط كبير وأفقي">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
           طباعة / PDF
@@ -753,14 +827,17 @@
       </div>
     </div>
 
-    <!-- شريط تصفية وبحث سريع -->
-    <div class="filter-row no-print">
+    <!-- شريط تصفية وتلميح السحب والإفلات -->
+    <div class="search-bar no-print">
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث سريع باسم الموظف أو الوظيفة...">
+      <div class="drag-instruction-tip">
+        <span>💡 <strong>ميزة السحب والإفلات:</strong> يمكنك سحب أي شفت أو كارت أوف وإفلاته في أي يوم أو لموظف آخر لنقله مباشرة.</span>
+      </div>
     </div>
 
-    <!-- جدول الشفتات الأسبوعي -->
+    <!-- جدول الشفتات الأسبوعي الرئيسي -->
     <div class="schedule-card">
-      <div class="table-responsive">
+      <div class="table-wrapper">
         <table class="schedule-table" id="scheduleTable">
           <thead>
             <tr id="scheduleHeaderRow">
@@ -779,41 +856,100 @@
   </main>
 
   <!-- ==========================================================================
-       مودال 1: إضافة موظف مبسطة (فقط الاسم والوظيفة دون إجبار على يوم الأوف)
+       مودال 1: إدارة الموظفين المتكاملة (إضافة، تعديل، حذف، مسح من الجدول)
        ========================================================================== -->
-  <div class="modal-backdrop" id="employeeModalBackdrop">
+  <div class="modal-backdrop" id="empManagerModalBackdrop">
+    <div class="modal" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3>إدارة موظفي Rental Gate</h3>
+        <button class="modal-close" onclick="closeModal('empManagerModalBackdrop')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- نموذج الإضافة والتعديل -->
+        <form id="empManagerForm" onsubmit="handleSaveEmployee(event)" style="background: #f8fafc; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.25rem;">
+          <input type="hidden" id="mgmtEmpId" value="">
+          <h4 id="mgmtFormHeading" style="font-size:0.95rem; margin-bottom:0.75rem; color:var(--dark);">إضافة موظف جديد</h4>
+
+          <div style="display:grid; grid-template-columns: 1.5fr 1fr auto; gap:0.6rem; align-items:end;">
+            <div>
+              <label class="form-label">اسم الموظف:</label>
+              <input type="text" id="mgmtEmpName" class="form-control" required placeholder="مثال: أحمد عبد الله">
+            </div>
+
+            <div>
+              <label class="form-label">الوظيفة:</label>
+              <select id="mgmtEmpRole" class="form-control" required>
+                <option value="خدمة عملاء">خدمة عملاء</option>
+                <option value="مشرف">مشرف</option>
+              </select>
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-outline btn-sm" id="btnCancelEditEmp" style="display:none;" onclick="cancelEditEmp()">إلغاء</button>
+              <button type="submit" class="btn btn-primary" id="btnSaveEmpMgmt">إضافة</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- قائمة الموظفين الحاليين -->
+        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem;">قائمة الموظفين في الجدول</h4>
+        <div style="max-height: 260px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+          <table class="emp-mgmt-table">
+            <thead>
+              <tr>
+                <th>اسم الموظف</th>
+                <th>الوظيفة</th>
+                <th style="text-align:center;">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="empMgmtTableBody">
+              <!-- تحميل قائمة الموظفين ديناميكياً -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       مودال 2: تبديل الشفتات بين موظفين (Swap Shifts)
+       ========================================================================== */ -->
+  <div class="modal-backdrop" id="swapModalBackdrop">
     <div class="modal">
       <div class="modal-header">
-        <h3>إضافة موظف جديد للتيم</h3>
-        <button class="modal-close" onclick="closeModal('employeeModalBackdrop')">&times;</button>
+        <h3>تبديل شفتات بين موظفين</h3>
+        <button class="modal-close" onclick="closeModal('swapModalBackdrop')">&times;</button>
       </div>
-      <form id="employeeForm" onsubmit="handleSaveEmployee(event)">
+      <form id="swapShiftsForm" onsubmit="handleSwapShifts(event)">
         <div class="modal-body">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            سيتم استبدال كامل شفتات وأيام الأوف لهذا الأسبوع الحالي بين الموظفين المحددين تلقائياً وبكل دقة.
+          </p>
+
           <div class="form-group">
-            <label class="form-label">اسم الموظف الثلاثي:</label>
-            <input type="text" id="empNameInput" class="form-control" required placeholder="مثال: أحمد عبد الله">
-          </div>
-          <div class="form-group">
-            <label class="form-label">الوظيفة:</label>
-            <select id="empRoleInput" class="form-control" required>
-              <option value="خدمة عملاء">خدمة عملاء</option>
-              <option value="مشرف">مشرف</option>
+            <label class="form-label">الموظف الأول (أ):</label>
+            <select id="swapEmpA" class="form-control" required>
+              <option value="">-- اختر الموظف الأول --</option>
             </select>
           </div>
-          <small style="color:var(--text-muted); font-size:0.8rem;">
-            * ملاحظة: يمكنك تحديد يوم الأوف لأي موظف بضغطة واحدة من داخل الجدول في أي وقت.
-          </small>
+
+          <div class="form-group">
+            <label class="form-label">الموظف الثاني (ب):</label>
+            <select id="swapEmpB" class="form-control" required>
+              <option value="">-- اختر الموظف الثاني --</option>
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline" onclick="closeModal('employeeModalBackdrop')">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ الموظف</button>
+          <button type="button" class="btn btn-outline" onclick="closeModal('swapModalBackdrop')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">تبديل الشفتات الآن</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ==========================================================================
-       مودال 2: إضافة أو تعديل شفت بنظام 12 ساعة الحصري
+       مودال 3: إضافة أو تعديل شفت بنظام 12 ساعة الحصري
        ========================================================================== -->
   <div class="modal-backdrop" id="shiftModalBackdrop">
     <div class="modal">
@@ -833,12 +969,9 @@
             </select>
           </div>
 
-          <!-- اختيار الأيام في حالة الإضافة المتعددة -->
           <div class="form-group" id="daysSelectWrapper">
             <label class="form-label">الأيام المراد إضافة الشفت لها في هذا الأسبوع:</label>
-            <div class="day-checkboxes" id="shiftDaysCheckboxes">
-              <!-- خانات الأيام -->
-            </div>
+            <div class="day-checkboxes" id="shiftDaysCheckboxes"></div>
           </div>
 
           <!-- وقت البداية 12 ساعة -->
@@ -877,7 +1010,7 @@
             </div>
           </div>
 
-          <!-- صندوق معاينة التوقيت وساعات العمل الحقيقية -->
+          <!-- صندوق معاينة التوقيت وساعات العمل -->
           <div class="preview-box">
             <div>⏰ <strong>مصر:</strong> <span id="prevEgTime">09:00 ص - 05:00 م</span></div>
             <div>🇸🇦 <strong>السعودية (للعلم فقط):</strong> <span id="prevSaTime">10:00 ص - 06:00 م</span></div>
@@ -899,7 +1032,7 @@
        الشيفرة البرمجية (JavaScript Engine)
        ========================================================================== */ -->
   <script>
-    // 1. رابط الـ API المركزي المعتمد
+    // رابط الـ API المركزي المعتمد
     const API_URL = "https://script.google.com/macros/s/AKfycbxyaskGoLR5oxajelpGGKhz7Q1vNPLeTl8IGg0YfItF2RBglca-OeRYPgxvmulOCzJ-_A/exec";
 
     const DAYS_ARABIC = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
@@ -911,6 +1044,9 @@
       currentWeekStart: getStartOfWeek(new Date()),
       searchQuery: ""
     };
+
+    // متغير لتخزين بيانات العنصر المسحوب (Drag & Drop)
+    let draggedShiftData = null;
 
     /* ==========================================================================
        دوال الوقت ونظام 12 ساعة الصارم وحساب مدة العمل
@@ -951,7 +1087,6 @@
       return `${year}-${month}-${day}`;
     }
 
-    // التحقق من تطبيق مصر للتوقيت الصيفي ديناميكياً
     function isEgyptDST(dateObj) {
       const year = dateObj.getFullYear();
       const apr30 = new Date(year, 3, 30);
@@ -965,12 +1100,11 @@
       return dateObj >= dstStart && dateObj <= dstEnd;
     }
 
-    // تحويل توقيت مصر إلى السعودية (للعلم فقط)
     function convertToSaudiTime(dateStr, time24) {
       if (!time24) return "";
       const dateObj = new Date(dateStr + "T00:00:00");
       const isDst = isEgyptDST(dateObj);
-      const diffHours = isDst ? 0 : 1; // 0 في الصيف، +1 في الشتاء
+      const diffHours = isDst ? 0 : 1;
 
       let [h, m] = time24.split(":").map(Number);
       h += diffHours;
@@ -980,7 +1114,6 @@
       return formatTime12h(saudi24);
     }
 
-    // احتساب ساعات العمل الفعلية بين البداية والنهاية
     function getWorkDuration(start24, end24) {
       if (!start24 || !end24) return { hours: 0, text: "" };
       const [sh, sm] = start24.split(":").map(Number);
@@ -988,7 +1121,7 @@
 
       let startM = sh * 60 + sm;
       let endM = eh * 60 + em;
-      if (endM < startM) endM += 24 * 60; // تخطي منتصف الليل
+      if (endM < startM) endM += 24 * 60;
 
       const diffM = endM - startM;
       const hours = diffM / 60;
@@ -1081,46 +1214,210 @@
     }
 
     /* ==========================================================================
-       إدارة الموظفين المبسطة
+       إدارة الموظفين الشاملة (Employee Management)
        ========================================================================== */
 
     function handleSaveEmployee(e) {
       e.preventDefault();
-      const name = document.getElementById("empNameInput").value.trim();
-      const role = document.getElementById("empRoleInput").value;
+      const id = document.getElementById("mgmtEmpId").value;
+      const name = document.getElementById("mgmtEmpName").value.trim();
+      const role = document.getElementById("mgmtEmpRole").value;
 
       if (!name) return;
 
-      const newEmp = {
-        id: "emp_" + Date.now(),
-        name,
-        role
-      };
+      if (id) {
+        // تعديل موظف حالي
+        const emp = state.employees.find(x => x.id === id);
+        if (emp) {
+          emp.name = name;
+          emp.role = role;
+          syncSaveCloud("employees", emp);
+          showToast(`تم تعديل بيانات الموظف (${name})`);
+        }
+      } else {
+        // إضافة موظف جديد
+        const newEmp = {
+          id: "emp_" + Date.now(),
+          name,
+          role
+        };
+        state.employees.push(newEmp);
+        syncSaveCloud("employees", newEmp);
+        showToast(`تمت إضافة الموظف (${name}) بنجاح`);
+      }
 
-      state.employees.push(newEmp);
       saveLocal();
+      cancelEditEmp();
       renderSchedule();
-      closeModal("employeeModalBackdrop");
-      document.getElementById("employeeForm").reset();
-      showToast(`تمت إضافة الموظف (${name}) بنجاح`);
+      renderEmpMgmtTable();
+    }
 
-      syncSaveCloud("employees", newEmp);
+    function editEmployeeInMgmt(id) {
+      const emp = state.employees.find(e => e.id === id);
+      if (!emp) return;
+      document.getElementById("mgmtEmpId").value = emp.id;
+      document.getElementById("mgmtEmpName").value = emp.name;
+      document.getElementById("mgmtEmpRole").value = emp.role;
+      document.getElementById("mgmtFormHeading").textContent = `تعديل الموظف: ${emp.name}`;
+      document.getElementById("btnSaveEmpMgmt").textContent = "حفظ التعديل";
+      document.getElementById("btnCancelEditEmp").style.display = "inline-flex";
+    }
+
+    function cancelEditEmp() {
+      document.getElementById("mgmtEmpId").value = "";
+      document.getElementById("mgmtEmpName").value = "";
+      document.getElementById("mgmtFormHeading").textContent = "إضافة موظف جديد";
+      document.getElementById("btnSaveEmpMgmt").textContent = "إضافة";
+      document.getElementById("btnCancelEditEmp").style.display = "none";
+    }
+
+    function deleteEmployee(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      if (confirm(`هل أنت متأكد من حذف الموظف (${emp.name}) نهائياً من الجدول ومسح شفتاته؟`)) {
+        // حذف شفتات الموظف
+        const empShifts = state.shifts.filter(s => s.employeeId === empId);
+        empShifts.forEach(s => syncDeleteCloud("shifts", s.id));
+        state.shifts = state.shifts.filter(s => s.employeeId !== empId);
+
+        // حذف الموظف
+        state.employees = state.employees.filter(e => e.id !== empId);
+        syncDeleteCloud("employees", empId);
+
+        saveLocal();
+        renderSchedule();
+        renderEmpMgmtTable();
+        showToast(`تم حذف الموظف (${emp.name}) من الجدول بنجاح`, "error");
+      }
+    }
+
+    function renderEmpMgmtTable() {
+      const tbody = document.getElementById("empMgmtTableBody");
+      tbody.innerHTML = "";
+
+      document.getElementById("empCountBadge").textContent = state.employees.length;
+
+      if (state.employees.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:1rem; color:#888;">لا يوجد موظفين حالياً</td></tr>`;
+        return;
+      }
+
+      state.employees.forEach(emp => {
+        tbody.innerHTML += `
+          <tr>
+            <td style="font-weight:700;">${emp.name}</td>
+            <td><span class="emp-badge ${emp.role === 'مشرف' ? 'super' : ''}">${emp.role}</span></td>
+            <td style="text-align:center;">
+              <button class="btn btn-outline btn-sm" onclick="editEmployeeInMgmt('${emp.id}')">تعديل</button>
+              <button class="btn btn-danger-outline btn-sm" onclick="deleteEmployee('${emp.id}')" style="margin-right:4px;">حذف من الجدول</button>
+            </td>
+          </tr>
+        `;
+      });
     }
 
     /* ==========================================================================
-       التحكم بالأوف والشفتات (One-Click Off / Shifts)
+       مسح جدول الأسبوع بالكامل (Clear Week Schedule)
        ========================================================================== */
 
-    // تحويل اليوم إلى أوف بضغطة واحدة مباشرة
+    function clearCurrentWeekSchedule() {
+      const dates = getWeekDates(state.currentWeekStart);
+      const datesISO = dates.map(d => formatDateISO(d));
+
+      const shiftsInWeek = state.shifts.filter(s => datesISO.includes(s.date));
+
+      if (shiftsInWeek.length === 0) {
+        showToast("الجدول فارغ بالفعل لهذا الأسبوع!", "info");
+        return;
+      }
+
+      if (confirm(`تحذير هام: هل تريد مسح جميع الشفتات وأيام الأوف الخاصة بجميع الموظفين لهذا الأسبوع فقط؟ (${shiftsInWeek.length} سجل)`)) {
+        shiftsInWeek.forEach(s => syncDeleteCloud("shifts", s.id));
+        state.shifts = state.shifts.filter(s => !datesISO.includes(s.date));
+
+        saveLocal();
+        renderSchedule();
+        showToast("تم مسح جدول الأسبوع الحالي بالكامل بنجاح", "error");
+      }
+    }
+
+    /* ==========================================================================
+       تبديل الشفتات بين موظفين (Swap Shifts)
+       ========================================================================== */
+
+    function openSwapModal() {
+      const empA = document.getElementById("swapEmpA");
+      const empB = document.getElementById("swapEmpB");
+      empA.innerHTML = '<option value="">-- اختر الموظف الأول --</option>';
+      empB.innerHTML = '<option value="">-- اختر الموظف الثاني --</option>';
+
+      state.employees.forEach(e => {
+        empA.innerHTML += `<option value="${e.id}">${e.name} (${e.role})</option>`;
+        empB.innerHTML += `<option value="${e.id}">${e.name} (${e.role})</option>`;
+      });
+
+      openModal("swapModalBackdrop");
+    }
+
+    function handleSwapShifts(e) {
+      e.preventDefault();
+      const idA = document.getElementById("swapEmpA").value;
+      const idB = document.getElementById("swapEmpB").value;
+
+      if (!idA || !idB) {
+        showToast("يرجى اختيار الموظفين المراد التبديل بينهما", "error");
+        return;
+      }
+
+      if (idA === idB) {
+        showToast("لا يمكن اختيار نفس الموظف في الخانتين!", "error");
+        return;
+      }
+
+      const empA = state.employees.find(x => x.id === idA);
+      const empB = state.employees.find(x => x.id === idB);
+
+      const dates = getWeekDates(state.currentWeekStart);
+      const datesISO = dates.map(d => formatDateISO(d));
+
+      // نقوم بتبديل الموظف في كل شفت تابع لهذا الأسبوع
+      datesISO.forEach(dateStr => {
+        const shiftA = state.shifts.find(s => s.employeeId === idA && s.date === dateStr);
+        const shiftB = state.shifts.find(s => s.employeeId === idB && s.date === dateStr);
+
+        if (shiftA && shiftB) {
+          shiftA.employeeId = idB;
+          shiftB.employeeId = idA;
+          syncSaveCloud("shifts", shiftA);
+          syncSaveCloud("shifts", shiftB);
+        } else if (shiftA && !shiftB) {
+          shiftA.employeeId = idB;
+          syncSaveCloud("shifts", shiftA);
+        } else if (!shiftA && shiftB) {
+          shiftB.employeeId = idA;
+          syncSaveCloud("shifts", shiftB);
+        }
+      });
+
+      saveLocal();
+      renderSchedule();
+      closeModal("swapModalBackdrop");
+      showToast(`تم تبديل شفتات (${empA.name}) مع (${empB.name}) بنجاح`);
+    }
+
+    /* ==========================================================================
+       التحكم بالأوف والشفتات وميزة السحب والإفلات (Drag & Drop Engine)
+       ========================================================================== */
+
     function toggleOffDay(empId, dateStr) {
       let shift = state.shifts.find(s => s.employeeId === empId && s.date === dateStr);
 
       if (shift && shift.isOff) {
-        // إذا كان أوف بالفعل وضغط عليه، نحذفه ليعود اليوم فارغاً لإضافة شفت
         state.shifts = state.shifts.filter(s => s.id !== shift.id);
         saveLocal();
         renderSchedule();
-        showToast("تم إلغاء الأوف، يمكنك الآن إضافة شفت", "info");
+        showToast("تم إلغاء الأوف، اليوم جاهز لإضافة شفت", "info");
         syncDeleteCloud("shifts", shift.id);
         return;
       }
@@ -1286,6 +1583,74 @@
       syncDeleteCloud("shifts", shiftId);
     }
 
+    /* دوال السحب والإفلات (HTML5 Drag & Drop) */
+    function handleDragStart(e, shiftId, sourceEmpId, sourceDate) {
+      draggedShiftData = { shiftId, sourceEmpId, sourceDate };
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", shiftId);
+      setTimeout(() => {
+        e.target.classList.add("is-dragging");
+      }, 0);
+    }
+
+    function handleDragEnd(e) {
+      e.target.classList.remove("is-dragging");
+      document.querySelectorAll(".day-cell").forEach(cell => cell.classList.remove("drag-over"));
+      draggedShiftData = null;
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      e.currentTarget.classList.add("drag-over");
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove("drag-over");
+    }
+
+    function handleDrop(e, targetEmpId, targetDate) {
+      e.preventDefault();
+      e.currentTarget.classList.remove("drag-over");
+
+      if (!draggedShiftData) return;
+
+      const { shiftId, sourceEmpId, sourceDate } = draggedShiftData;
+
+      // إذا تم الإفلات في نفس الخلية بالضبط، نتجاهل العملية
+      if (sourceEmpId === targetEmpId && sourceDate === targetDate) return;
+
+      const shiftToMove = state.shifts.find(s => s.id === shiftId);
+      if (!shiftToMove) return;
+
+      // هل يوجد شفت في الخلية الهدف؟
+      const targetExistingShift = state.shifts.find(s => s.employeeId === targetEmpId && s.date === targetDate);
+
+      const targetEmp = state.employees.find(x => x.id === targetEmpId);
+
+      if (targetExistingShift) {
+        // نقوم بتبادل الشفتين بين الخليتين (Swap between the two cells)
+        shiftToMove.employeeId = targetEmpId;
+        shiftToMove.date = targetDate;
+
+        targetExistingShift.employeeId = sourceEmpId;
+        targetExistingShift.date = sourceDate;
+
+        syncSaveCloud("shifts", shiftToMove);
+        syncSaveCloud("shifts", targetExistingShift);
+        showToast(`تم تبديل الشفت مع (${targetEmp ? targetEmp.name : ''}) بنجاح`);
+      } else {
+        // الخلية الهدف فارغة -> نقل مباشر
+        shiftToMove.employeeId = targetEmpId;
+        shiftToMove.date = targetDate;
+        syncSaveCloud("shifts", shiftToMove);
+        showToast(`تم نقل الشفت إلى (${targetEmp ? targetEmp.name : ''}) بنجاح`);
+      }
+
+      saveLocal();
+      renderSchedule();
+    }
+
     /* ==========================================================================
        رسم الجدول وتحديث الحسابات
        ========================================================================== */
@@ -1302,6 +1667,8 @@
 
     function renderSchedule() {
       const dates = getWeekDates(state.currentWeekStart);
+
+      document.getElementById("empCountBadge").textContent = state.employees.length;
 
       // ترويسة الأسبوع
       const title = `من ${DAYS_ARABIC[0]} ${dates[0].getDate()}/${dates[0].getMonth()+1} إلى ${DAYS_ARABIC[6]} ${dates[6].getDate()}/${dates[6].getMonth()+1}/${dates[6].getFullYear()}`;
@@ -1336,7 +1703,7 @@
       );
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:#888;">لا يوجد موظفين مسجلين حالياً</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2.5rem; color:#888;">لا يوجد موظفين مسجلين حالياً</td></tr>`;
         return;
       }
 
@@ -1347,8 +1714,13 @@
 
         let rowHtml = `
           <td>
-            <div class="emp-name-box">
-              <span class="emp-title">${emp.name}</span>
+            <div class="emp-cell-content">
+              <div class="emp-row-top">
+                <span class="emp-title">${emp.name}</span>
+                <div class="emp-actions-quick no-print">
+                  <button class="action-btn" onclick="deleteEmployee('${emp.id}')" title="حذف الموظف من الجدول">🗑️</button>
+                </div>
+              </div>
               <span class="emp-badge ${emp.role === 'مشرف' ? 'super' : ''}">${emp.role}</span>
             </div>
           </td>
@@ -1361,25 +1733,29 @@
           let cellContent = "";
 
           if (shift && shift.isOff) {
-            // يوم أوف
+            // كارت أوف قابل للسحب
             cellContent = `
-              <div class="off-card">
+              <div class="off-card" draggable="true"
+                   ondragstart="handleDragStart(event, '${shift.id}', '${emp.id}', '${dateStr}')"
+                   ondragend="handleDragEnd(event)">
                 <span class="off-tag">🏖️ أوف / راحة</span>
                 <div class="cell-actions no-print">
-                  <button class="action-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="إلغاء الأوف">إلغاء الأوف</button>
+                  <button class="action-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="إلغاء الأوف">إلغاء</button>
                   <button class="action-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')" title="تحديد شفت بديل">شفت</button>
                 </div>
               </div>
             `;
           } else if (shift && shift.startTime) {
-            // شفت عمل
+            // كارت شفت قابل للسحب
             const egTime = `${formatTime12h(shift.startTime)} — ${formatTime12h(shift.endTime)}`;
             const saTime = `${convertToSaudiTime(dateStr, shift.startTime)} — ${convertToSaudiTime(dateStr, shift.endTime)}`;
             const dur = getWorkDuration(shift.startTime, shift.endTime);
             empTotalHours += dur.hours;
 
             cellContent = `
-              <div class="shift-card">
+              <div class="shift-card" draggable="true"
+                   ondragstart="handleDragStart(event, '${shift.id}', '${emp.id}', '${dateStr}')"
+                   ondragend="handleDragEnd(event)">
                 <div class="time-egypt">
                   <span class="flag">مصر</span>
                   <span>${egTime}</span>
@@ -1397,7 +1773,7 @@
               </div>
             `;
           } else {
-            // يوم فارغ
+            // خلية فارغة جاهزة لاستقبال الإفلات أو الإضافة
             cellContent = `
               <div class="empty-actions no-print">
                 <button class="add-shift-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')">+ شفت</button>
@@ -1406,7 +1782,15 @@
             `;
           }
 
-          rowHtml += `<td class="day-cell">${cellContent}</td>`;
+          // نربط مستمعات الإفلات بكل خلية يوم
+          rowHtml += `
+            <td class="day-cell" 
+                ondragover="handleDragOver(event)" 
+                ondragleave="handleDragLeave(event)" 
+                ondrop="handleDrop(event, '${emp.id}', '${dateStr}')">
+              ${cellContent}
+            </td>
+          `;
         });
 
         // عمود إجمالي ساعات الأسبوع
@@ -1423,13 +1807,12 @@
     }
 
     /* ==========================================================================
-       تصدير Excel مرتب بنفس مصفوفة الـ PDF والطباعة
+       تصدير Excel مرتب بنفس مصفوفة الـ PDF
        ========================================================================== */
 
     function exportWeeklyMatrixExcel() {
       const dates = getWeekDates(state.currentWeekStart);
 
-      // عناوين الأعمدة
       const headers = [
         "اسم الموظف",
         "الوظيفة",
@@ -1454,7 +1837,6 @@
             const sa = `${convertToSaudiTime(dateStr, shift.startTime)} - ${convertToSaudiTime(dateStr, shift.endTime)}`;
             const dur = getWorkDuration(shift.startTime, shift.endTime);
             totalHours += dur.hours;
-            // صياغة واضحة داخل الخلية الواحدة
             rowCells.push(`"مصر: ${eg} | السعودية: ${sa} (${dur.hours} س)"`);
           } else {
             rowCells.push(`"-"`);
@@ -1465,7 +1847,6 @@
         rows.push(rowCells.join(","));
       });
 
-      // ترميز UTF-8 مع BOM لضمان فتح اللغة العربية بسلاسة في Excel
       const csvData = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
       const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
       const a = document.createElement("a");
@@ -1485,17 +1866,18 @@
     function openModal(id) { document.getElementById(id).classList.add("active"); }
     function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
-    function showToast(msg) {
+    function showToast(msg, type = "success") {
       const container = document.getElementById("toastContainer");
       const toast = document.createElement("div");
       toast.className = "toast";
+      if (type === "error") toast.style.borderRightColor = "#EF4444";
       toast.textContent = msg;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 3500);
     }
 
     /* ==========================================================================
-       بدء التشغيل والأحداث
+       بدء التشغيل والمستمعات
        ========================================================================== */
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1503,7 +1885,7 @@
       renderSchedule();
       syncFetchCloud();
 
-      // التنقل بالأسبوع
+      // أزرار التنقل بالأسبوع
       document.getElementById("btnPrevWeek").addEventListener("click", () => {
         state.currentWeekStart.setDate(state.currentWeekStart.getDate() - 7);
         renderSchedule();
@@ -1518,14 +1900,21 @@
       });
 
       // فتح النوافذ
-      document.getElementById("btnOpenEmployeeModal").addEventListener("click", () => openModal("employeeModalBackdrop"));
       document.getElementById("btnOpenShiftModal").addEventListener("click", () => openShiftModalFor(null));
+      document.getElementById("btnOpenEmployeeManager").addEventListener("click", () => {
+        renderEmpMgmtTable();
+        openModal("empManagerModalBackdrop");
+      });
+      document.getElementById("btnOpenSwapModal").addEventListener("click", openSwapModal);
+
+      // مسح جدول الأسبوع
+      document.getElementById("btnClearWeekSchedule").addEventListener("click", clearCurrentWeekSchedule);
 
       // التصدير والطباعة
       document.getElementById("btnExportExcel").addEventListener("click", exportWeeklyMatrixExcel);
       document.getElementById("btnPrintSchedule").addEventListener("click", () => window.print());
 
-      // البحث
+      // البحث السريع
       document.getElementById("searchInput").addEventListener("input", (e) => {
         state.searchQuery = e.target.value;
         renderSchedule();
