@@ -6,35 +6,30 @@
   <title>منظّم جداول التيم — Rental Gate</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       1. المتغيرات والأساسيات (Design System & Theme)
+       1. المتغيرات والأساسيات (Design System)
        ========================================================================== */
     :root {
       --primary: #D7192D;
       --primary-hover: #b81425;
-      --primary-light: #fdedef;
-      --primary-border: #f8b4bc;
+      --primary-light: #fef2f2;
+      --primary-border: #fca5a5;
       --dark: #292929;
       --dark-light: #3d3d3d;
-      --bg-gray: #F4F6F8;
+      --bg: #F5F7FA;
       --surface: #FFFFFF;
-      --border: #E5E7EB;
-      --text: #1F2937;
-      --text-muted: #6B7280;
-      --warning: #D97706;
-      --warning-bg: #FEF3C7;
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --off-bg: #F1F5F9;
+      --off-text: #475569;
+      --off-border: #CBD5E1;
       --success: #10B981;
-      --success-bg: #D1FAE5;
-      --info: #2563EB;
-      --info-bg: #DBEAFE;
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.08);
       --font: 'Cairo', system-ui, -apple-system, sans-serif;
     }
 
@@ -46,16 +41,16 @@
     }
 
     body {
-      background-color: var(--bg-gray);
+      background-color: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.4;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
     /* ==========================================================================
-       2. شريط التنقل العلوي (Navbar & Sync Bar)
+       2. شريط التنقل العلوي البسيط (Header)
        ========================================================================== */
     .header {
       background-color: var(--dark);
@@ -65,11 +60,11 @@
       position: sticky;
       top: 0;
       z-index: 40;
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
     }
 
     .header-container {
-      max-width: 1440px;
+      max-width: 1480px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -87,40 +82,33 @@
     .brand-logo {
       background: var(--primary);
       color: white;
-      font-weight: 800;
-      padding: 0.4rem 0.8rem;
-      border-radius: var(--radius-sm);
-      letter-spacing: 0.5px;
-      font-size: 1.15rem;
-      box-shadow: 0 2px 4px rgba(215, 25, 45, 0.4);
-    }
-
-    .brand-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .brand-subtitle {
-      font-size: 0.75rem;
-      color: #bbb;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .sync-status {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
+      font-weight: 900;
       padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: #cbd5e1;
+    }
+
+    .sync-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       font-size: 0.8rem;
-      color: #eee;
+      font-weight: 600;
+      color: #f8fafc;
     }
 
     .sync-dot {
@@ -128,122 +116,34 @@
       height: 9px;
       border-radius: 50%;
       background: var(--success);
-      display: inline-block;
-      box-shadow: 0 0 6px var(--success);
+      box-shadow: 0 0 8px var(--success);
     }
-
-    .sync-dot.saving {
-      background: var(--warning);
-      box-shadow: 0 0 6px var(--warning);
-      animation: pulse 1s infinite alternate;
-    }
-
-    .sync-dot.offline {
-      background: #EF4444;
-      box-shadow: 0 0 6px #EF4444;
-    }
-
-    @keyframes pulse {
-      from { opacity: 0.4; }
-      to { opacity: 1; }
-    }
+    .sync-dot.saving { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
     /* ==========================================================================
-       3. بطاقات الإحصائيات (Stats Cards)
+       3. أدوات التحكم والتنقل الأسبوعي (Actions & Navigation)
        ========================================================================== */
     .container {
-      max-width: 1440px;
+      max-width: 1480px;
       width: 100%;
-      margin: 1.25rem auto;
+      margin: 1.2rem auto;
       padding: 0 1rem;
       flex: 1;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      padding: 1.15rem;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--primary-light);
-      color: var(--primary);
-      flex-shrink: 0;
-    }
-
-    .stat-icon.dark {
-      background: #eee;
-      color: var(--dark);
-    }
-
-    .stat-icon.warning {
-      background: var(--warning-bg);
-      color: var(--warning);
-    }
-
-    .stat-icon svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2.2;
-    }
-
-    .stat-info h4 {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .stat-info .stat-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--dark);
-    }
-
-    /* ==========================================================================
-       4. شريط أدوات التحكم والتنقل (Action Toolbar & Week Navigation)
-       ========================================================================== */
-    .card {
+    .top-panel {
       background: var(--surface);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-    }
-
-    .toolbar {
       padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 1rem;
-      background: #fafafa;
-      border-bottom: 1px solid var(--border);
     }
 
     .week-nav {
@@ -253,141 +153,84 @@
       flex-wrap: wrap;
     }
 
-    .current-week-display {
-      font-weight: 700;
-      font-size: 0.95rem;
-      background: white;
-      padding: 0.45rem 0.9rem;
+    .week-display {
+      font-weight: 800;
+      font-size: 1rem;
+      background: #f8fafc;
+      padding: 0.45rem 1rem;
       border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--dark);
     }
 
-    .action-group {
+    .btn-group {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
     }
 
-    /* أزرار مخصصة */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.45rem;
       font-size: 0.875rem;
-      font-weight: 600;
+      font-weight: 700;
       padding: 0.5rem 1rem;
       border-radius: var(--radius-sm);
       border: 1px solid transparent;
       cursor: pointer;
       transition: all 0.2s;
       white-space: nowrap;
-      text-decoration: none;
     }
 
-    .btn svg {
-      width: 17px;
-      height: 17px;
-    }
+    .btn svg { width: 17px; height: 17px; }
 
-    .btn-primary {
-      background-color: var(--primary);
-      color: white;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
 
-    .btn-dark {
-      background-color: var(--dark);
-      color: white;
-    }
-    .btn-dark:hover {
-      background-color: var(--dark-light);
-    }
+    .btn-dark { background: var(--dark); color: white; }
+    .btn-dark:hover { background: var(--dark-light); }
 
-    .btn-outline {
-      background-color: white;
-      border-color: var(--border);
-      color: var(--dark);
-    }
-    .btn-outline:hover {
-      background-color: #f3f4f6;
-      border-color: #d1d5db;
-    }
+    .btn-outline { background: white; border-color: var(--border); color: var(--dark); }
+    .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
 
-    .btn-danger {
-      background-color: #EF4444;
-      color: white;
-    }
-    .btn-danger:hover {
-      background-color: #DC2626;
-    }
+    .btn-sm { padding: 0.3rem 0.65rem; font-size: 0.775rem; }
 
-    .btn-sm {
-      padding: 0.3rem 0.65rem;
-      font-size: 0.775rem;
-    }
-
-    /* فلتر وبحث */
-    .filter-bar {
-      padding: 0.85rem 1.25rem;
+    /* البحث والفلترة السريعة */
+    .filter-row {
       display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
       align-items: center;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      background: white;
     }
 
-    .search-box {
+    .search-input {
       flex: 1;
-      min-width: 240px;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 0.45rem 2.2rem 0.45rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.875rem;
-    }
-
-    .search-box input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px var(--primary-light);
-    }
-
-    .search-box svg {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: var(--text-muted);
-    }
-
-    .role-select {
-      padding: 0.45rem 0.85rem;
+      max-width: 380px;
+      padding: 0.5rem 0.85rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       font-size: 0.875rem;
       background: white;
-      cursor: pointer;
     }
+    .search-input:focus { outline: none; border-color: var(--primary); }
 
     /* ==========================================================================
-       5. الجدول الأسبوعي (Weekly Schedule Table)
+       4. جدول الشفتات الرئيسي (Schedule Matrix Table)
        ========================================================================== */
-    .table-container {
+    .schedule-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    .table-responsive {
       width: 100%;
       overflow-x: auto;
-      background: white;
     }
 
     .schedule-table {
@@ -407,266 +250,203 @@
     .schedule-table th {
       background-color: var(--dark);
       color: white;
-      font-weight: 700;
-      font-size: 0.85rem;
+      font-weight: 800;
+      font-size: 0.9rem;
       text-align: center;
     }
 
-    .schedule-table th.emp-col {
+    .schedule-table th.emp-header {
       width: 220px;
       text-align: right;
-      padding-right: 1rem;
+      padding-right: 1.25rem;
       background-color: #1a1a1a;
     }
 
-    .schedule-table th .day-name {
-      display: block;
-      font-size: 0.95rem;
-      margin-bottom: 0.15rem;
+    .schedule-table th.total-header {
+      width: 130px;
+      background-color: #1a1a1a;
     }
 
-    .schedule-table th .day-date {
-      font-size: 0.72rem;
-      color: #d1d5db;
-      font-weight: 500;
-    }
+    .schedule-table th .day-name { display: block; font-size: 1rem; font-weight: 800; }
+    .schedule-table th .day-date { font-size: 0.75rem; color: #cbd5e1; font-weight: 600; }
+    .schedule-table th.is-today { background-color: var(--primary); }
 
-    .schedule-table th.today-header {
-      background-color: var(--primary);
-    }
-
-    /* بيانات الموظف */
-    .emp-info-cell {
-      background: #fafafa;
-    }
-
-    .emp-name-row {
+    /* خلايا الموظف */
+    .emp-name-box {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
+      flex-direction: column;
+      gap: 0.25rem;
     }
-
-    .emp-name {
-      font-weight: 700;
+    .emp-title {
+      font-weight: 800;
       color: var(--dark);
-      font-size: 0.925rem;
-      cursor: pointer;
+      font-size: 0.95rem;
     }
-    .emp-name:hover {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-
-    .badge {
+    .emp-badge {
       display: inline-block;
-      padding: 0.15rem 0.45rem;
+      width: fit-content;
+      padding: 0.15rem 0.5rem;
       border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: #334155;
     }
+    .emp-badge.super { background: var(--dark); color: white; }
 
-    .badge-role {
-      background: #f1f3f5;
-      color: #495057;
-      border: 1px solid #ced4da;
-      margin-top: 0.25rem;
-    }
-
-    .badge-supervisor {
-      background: var(--dark);
-      color: white;
-    }
-
-    .badge-offday {
-      display: block;
-      margin-top: 0.35rem;
-      font-size: 0.7rem;
-      color: #6c757d;
-      background: #fff;
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      border: 1px dashed #ced4da;
-      cursor: pointer;
-    }
-    .badge-offday:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    /* خلايا الشفتات */
+    /* خلايا الأيام */
     .day-cell {
-      position: relative;
-      background: #fff;
-      transition: background-color 0.15s;
-      min-height: 85px;
+      min-height: 95px;
       height: 100%;
-    }
-
-    .day-cell:hover {
-      background-color: #fbfbfb;
-    }
-
-    .day-cell.is-off {
-      background: repeating-linear-gradient(
-        -45deg,
-        #f8f9fa,
-        #f8f9fa 8px,
-        #f1f3f5 8px,
-        #f1f3f5 16px
-      );
-    }
-
-    .day-cell.is-leave {
-      background-color: #fffbeb;
-      border-left: 3px solid var(--warning);
-    }
-
-    .shift-box {
       background: white;
+      position: relative;
+    }
+
+    /* كارت الشفت العادي */
+    .shift-card {
+      background: #fff;
       border: 1.5px solid var(--primary-border);
       border-right: 4px solid var(--primary);
       border-radius: var(--radius-sm);
-      padding: 0.4rem 0.5rem;
+      padding: 0.45rem 0.55rem;
       box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      position: relative;
-      margin-bottom: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
 
-    .shift-box.supervisor-shift {
-      border-right-color: var(--dark);
-    }
-
-    .time-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
+    .time-egypt {
+      font-size: 0.85rem;
+      font-weight: 800;
       color: var(--dark);
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      margin-bottom: 0.2rem;
+      gap: 0.3rem;
     }
-
-    .time-flag {
-      font-size: 0.65rem;
-      padding: 0.05rem 0.3rem;
-      border-radius: 3px;
-      font-weight: 600;
-    }
-
-    .flag-eg {
+    .time-egypt .flag {
       background: #fee2e2;
       color: #991b1b;
-    }
-
-    .flag-sa {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .time-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .time-value {
-      font-weight: 600;
-      letter-spacing: -0.2px;
-      direction: ltr;
-      display: inline-block;
-    }
-
-    .shift-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.25rem;
-      margin-top: 0.3rem;
-      padding-top: 0.25rem;
-      border-top: 1px dashed #eee;
-    }
-
-    .icon-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      padding: 2px;
+      font-size: 0.65rem;
+      padding: 0.1rem 0.35rem;
       border-radius: 3px;
-      display: inline-flex;
-      align-items: center;
-    }
-    .icon-btn:hover {
-      color: var(--primary);
-      background: #fee2e2;
-    }
-    .icon-btn svg {
-      width: 13px;
-      height: 13px;
     }
 
-    .cell-empty-btn {
-      width: 100%;
-      height: 60px;
-      background: transparent;
-      border: 1px dashed transparent;
-      color: #bbb;
+    .time-saudi {
+      font-size: 0.72rem;
+      color: #475569;
+      font-weight: 600;
+      background: #f1f5f9;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+    }
+
+    .work-hours-count {
       font-size: 0.75rem;
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .day-cell:hover .cell-empty-btn {
-      border-color: #d1d5db;
-      color: var(--text-muted);
-    }
-    .cell-empty-btn:hover {
-      background: var(--primary-light) !important;
-      border-color: var(--primary) !important;
-      color: var(--primary) !important;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 0.1rem;
     }
 
-    .status-pill {
+    /* كارت الأوف / الراحة */
+    .off-card {
+      background: var(--off-bg);
+      border: 1.5px dashed var(--off-border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.5rem;
+      text-align: center;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
-      padding: 0.4rem 0.5rem;
-      border-radius: var(--radius-sm);
+    }
+
+    .off-tag {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--off-text);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* أزرار العمليات السريعة داخل الخلية */
+    .cell-actions {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+      justify-content: flex-end;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 0.3rem;
+    }
+
+    .action-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .action-btn:hover { background: #f1f5f9; color: var(--dark); }
+    .action-btn.off-btn { color: #dc2626; border-color: #fecaca; }
+    .action-btn.off-btn:hover { background: #fee2e2; }
+
+    /* خلية فارغة بالكامل */
+    .empty-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      height: 100%;
+      justify-content: center;
+    }
+    .add-shift-btn {
+      width: 100%;
+      padding: 0.35rem;
+      background: white;
+      border: 1px dashed #cbd5e1;
+      border-radius: 4px;
       font-size: 0.75rem;
       font-weight: 700;
-      text-align: center;
+      color: var(--primary);
+      cursor: pointer;
     }
+    .add-shift-btn:hover { background: var(--primary-light); border-color: var(--primary); }
 
-    .status-pill.off {
-      background: #e9ecef;
-      color: #495057;
-      border: 1px solid #ced4da;
-    }
-
-    .status-pill.leave {
-      background: var(--warning-bg);
-      color: #92400e;
-      border: 1px solid #fde68a;
-    }
-
-    /* ملخص اليوم بالأسفل */
-    .schedule-table tfoot td {
-      background: #f8f9fa;
+    .quick-off-btn {
+      width: 100%;
+      padding: 0.3rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 0.7rem;
       font-weight: 700;
-      font-size: 0.775rem;
+      color: var(--off-text);
+      cursor: pointer;
+    }
+    .quick-off-btn:hover { background: #e2e8f0; }
+
+    /* إجمالي ساعات الموظف */
+    .total-hours-cell {
       text-align: center;
-      padding: 0.6rem 0.4rem;
-      border-top: 2px solid var(--border);
+      vertical-align: middle !important;
+      background: #f8fafc;
+    }
+    .total-hours-cell .val {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--dark);
+    }
+    .total-hours-cell .sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
     /* ==========================================================================
-       6. النوافذ المنبثقة (Modals)
+       5. النوافذ المنبثقة البسيطة (Simple Modals)
        ========================================================================== */
     .modal-backdrop {
       position: fixed;
@@ -683,27 +463,15 @@
       transition: all 0.2s ease;
     }
 
-    .modal-backdrop.active {
-      opacity: 1;
-      visibility: visible;
-    }
+    .modal-backdrop.active { opacity: 1; visibility: visible; }
 
     .modal {
       background: white;
       width: 100%;
-      max-width: 580px;
+      max-width: 520px;
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
       overflow: hidden;
-      transform: translateY(20px);
-      transition: transform 0.25s ease;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .modal-backdrop.active .modal {
-      transform: translateY(0);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
     }
 
     .modal-header {
@@ -716,158 +484,77 @@
       border-bottom: 3px solid var(--primary);
     }
 
-    .modal-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+    .modal-header h3 { font-size: 1.05rem; font-weight: 800; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
 
-    .modal-close {
-      background: none;
-      border: none;
-      color: #aaa;
-      cursor: pointer;
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .modal-close:hover {
-      color: white;
-    }
-
-    .modal-body {
-      padding: 1.25rem;
-      overflow-y: auto;
-      flex: 1;
-    }
-
+    .modal-body { padding: 1.25rem; max-height: 80vh; overflow-y: auto; }
     .modal-footer {
       padding: 0.85rem 1.25rem;
-      background: #fafafa;
+      background: #f8fafc;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: flex-end;
       gap: 0.65rem;
     }
 
-    /* نماذج الإدخال */
-    .form-group {
-      margin-bottom: 1.15rem;
-    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--dark); }
+    .form-control { width: 100%; padding: 0.55rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.875rem; }
+    .form-control:focus { outline: none; border-color: var(--primary); }
 
-    .form-label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      color: var(--dark);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.55rem 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.875rem;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px var(--primary-light);
-    }
-
-    /* اختيار الأيام المتعددة */
-    .days-picker-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 0.4rem;
-      margin-top: 0.35rem;
-    }
-
-    .day-check-card {
-      position: relative;
-    }
-
-    .day-check-card input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .day-check-card label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0.45rem 0.25rem;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 0.775rem;
-      font-weight: 700;
-      background: white;
-      transition: all 0.2s;
-      text-align: center;
-    }
-
-    .day-check-card input:checked + label {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .day-check-card input:disabled + label {
-      background: #f3f4f6;
-      border-color: #e5e7eb;
-      color: #9ca3af;
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-
-    /* أداة اختيار الوقت بنظام 12 ساعة الصارم */
-    .time-picker-12h {
+    /* محدد وقت 12 ساعة الصارم */
+    .time-picker-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 0.5rem;
-      background: #f9fafb;
+      background: #f8fafc;
       padding: 0.65rem;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
     }
 
-    .time-picker-12h select {
-      padding: 0.45rem 0.5rem;
+    .time-picker-grid select {
+      padding: 0.45rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      font-size: 0.875rem;
-      background: white;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       text-align: center;
     }
 
-    .time-preview-box {
+    .preview-box {
       margin-top: 0.65rem;
       padding: 0.65rem 0.85rem;
       border-radius: var(--radius-sm);
-      background: #fdf2f2;
-      border: 1px solid #fecaca;
-      font-size: 0.825rem;
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      font-size: 0.85rem;
       color: #991b1b;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
     }
 
-    .time-preview-box .highlight {
-      font-weight: 800;
-      direction: ltr;
-      display: inline-block;
+    .day-checkboxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+      gap: 0.35rem;
     }
+    .day-check-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.4rem 0.2rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .day-check-item input { margin-bottom: 0.25rem; }
 
-    /* نظام التنبيهات (Toast Alerts) */
+    /* التنبيهات (Toast) */
     .toast-container {
       position: fixed;
       bottom: 1.5rem;
@@ -875,51 +562,36 @@
       z-index: 200;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      max-width: 380px;
-      width: calc(100% - 3rem);
-      pointer-events: none;
+      gap: 0.5rem;
     }
-
     .toast {
-      pointer-events: auto;
-      background: white;
-      border-radius: var(--radius-md);
-      padding: 0.85rem 1.15rem;
-      box-shadow: var(--shadow-lg);
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
       border-right: 4px solid var(--primary);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      animation: slideIn 0.3s forwards;
-    }
-
-    .toast.success { border-right-color: var(--success); }
-    .toast.warning { border-right-color: var(--warning); }
-    .toast.error { border-right-color: #EF4444; }
-
-    @keyframes slideIn {
-      from { transform: translateX(-100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     /* ==========================================================================
-       7. الطباعة وتصدير PDF (Print Media Styles)
+       6. تنسيقات الطباعة وتصدير PDF بخطوط كبيرة وواضحة جداً
        ========================================================================== */
     @media print {
       @page {
         size: A4 landscape;
-        margin: 8mm;
+        margin: 8mm 6mm;
       }
 
       body {
         background: white !important;
         color: black !important;
-        font-size: 9pt;
+        font-size: 11pt !important;
       }
 
-      .header, .stats-grid, .toolbar, .filter-bar, .modal-backdrop, 
-      .toast-container, .shift-actions, .cell-empty-btn, .no-print {
+      .header, .top-panel, .filter-row, .modal-backdrop, 
+      .cell-actions, .empty-actions, .no-print {
         display: none !important;
       }
 
@@ -929,559 +601,321 @@
         padding: 0 !important;
       }
 
-      .card {
+      .schedule-card {
         border: none !important;
         box-shadow: none !important;
       }
 
-      .print-header {
+      .print-header-bar {
         display: flex !important;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #292929;
+        border-bottom: 2.5px solid #000;
         padding-bottom: 8px;
         margin-bottom: 12px;
       }
 
+      .print-header-bar h2 {
+        font-size: 16pt !important;
+        font-weight: 900 !important;
+        color: #000 !important;
+      }
+
       .schedule-table {
         min-width: 100% !important;
-        border: 1px solid #666 !important;
+        border: 1.5px solid #000 !important;
       }
 
       .schedule-table th, 
       .schedule-table td {
-        border: 1px solid #888 !important;
-        padding: 4px !important;
+        border: 1.5px solid #000 !important;
+        padding: 6px 4px !important;
       }
 
       .schedule-table th {
-        background-color: #333 !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        background-color: #eee !important;
+        color: #000 !important;
+        font-size: 11pt !important;
+        font-weight: 900 !important;
       }
 
-      .shift-box {
-        border: 1px solid #aaa !important;
-        box-shadow: none !important;
-        padding: 2px 4px !important;
-        break-inside: avoid;
+      .emp-title {
+        font-size: 11.5pt !important;
+        font-weight: 900 !important;
       }
 
-      .time-row {
-        font-size: 7.5pt !important;
+      .time-egypt {
+        font-size: 11pt !important;
+        font-weight: 900 !important;
+      }
+
+      .time-saudi {
+        font-size: 9.5pt !important;
+        color: #222 !important;
+        font-weight: 700 !important;
+        background: none !important;
+        padding: 0 !important;
+      }
+
+      .work-hours-count {
+        font-size: 9.5pt !important;
+        font-weight: 800 !important;
+        color: #000 !important;
+      }
+
+      .off-card {
+        background: #f5f5f5 !important;
+        border: 1px solid #666 !important;
+      }
+
+      .off-tag {
+        font-size: 11pt !important;
+        font-weight: 900 !important;
+        color: #000 !important;
+      }
+
+      .total-hours-cell .val {
+        font-size: 13pt !important;
+        font-weight: 900 !important;
       }
     }
 
-    .print-header {
-      display: none;
-    }
-
-    /* ==========================================================================
-       8. التجاوب للشاشات الصغيرة
-       ========================================================================== */
-    @media (max-width: 768px) {
-      .header-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .week-nav, .action-group {
-        justify-content: space-between;
-        width: 100%;
-      }
-    }
+    .print-header-bar { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- ترويسة الموقع مع حالة المزامنة -->
+  <!-- الترويسة العلوية -->
   <header class="header">
     <div class="header-container">
       <div class="brand">
         <span class="brand-logo">RG</span>
-        <div>
-          <div class="brand-title">منظّم جداول التيم — Rental Gate</div>
-          <div class="brand-subtitle">إدارة شفتات الموظفين والإجازات • بنظام 12 ساعة المزدوج (مصر / السعودية)</div>
+        <div class="brand-text">
+          <h1>منظّم جداول التيم — Rental Gate</h1>
+          <p>إدارة الشفتات بنظام 12 ساعة وتحديد الأوف السريع بنقرة واحدة</p>
         </div>
       </div>
 
-      <div class="header-actions">
-        <div class="sync-status" id="syncStatusBadge">
-          <span class="sync-dot" id="syncDot"></span>
-          <span id="syncStatusText">متزامن مع Google Sheets</span>
-        </div>
-
-        <button class="btn btn-outline btn-sm" id="btnManualSync" title="تحديث وقراءة البيانات فوراً">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          تحديث السحابة
-        </button>
+      <div class="sync-badge">
+        <span class="sync-dot" id="syncDot"></span>
+        <span id="syncStatusText">متزامن مع Google Sheets</span>
       </div>
     </div>
   </header>
 
-  <!-- المحتوى الرئيسي -->
+  <!-- الصفحة الرئيسية -->
   <main class="container">
 
-    <!-- ترويسة الطباعة الرسمية -->
-    <div class="print-header">
+    <!-- ترويسة خاصة بالطباعة (PDF) -->
+    <div class="print-header-bar">
       <div>
-        <h2 style="color: #D7192D; margin:0;">Rental Gate — جدول الشفتات الأسبوعي</h2>
-        <div id="printWeekSubtitle" style="font-size: 11pt; color: #555;">الأسبوع: ...</div>
+        <h2>Rental Gate — جدول الشفتات الأسبوعي</h2>
+        <div id="printWeekDate" style="font-size: 12pt; font-weight: 700; margin-top: 4px;">الأسبوع: ...</div>
       </div>
-      <div style="text-align: left; font-size: 9pt; color: #666;">
-        <div>تاريخ الطباعة: <span id="printDateStamp"></span></div>
-        <div>جميع الأوقات بنظام 12 ساعة (ص/م)</div>
+      <div style="text-align: left; font-size: 10pt; font-weight: 700;">
+        <div>تاريخ الطباعة: <span id="printDateToday"></span></div>
+        <div>نظام الأوقات: 12 ساعة (ص / م)</div>
       </div>
     </div>
 
-    <!-- بطاقات الإحصائيات الحية -->
-    <section class="stats-grid no-print">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        </div>
-        <div class="stat-info">
-          <h4>إجمالي التيم</h4>
-          <div class="stat-value" id="statTotalEmployees">0</div>
-        </div>
+    <!-- لوحة التحكم والتنقل الأسبوعي -->
+    <div class="top-panel no-print">
+      <div class="week-nav">
+        <button class="btn btn-outline btn-sm" id="btnPrevWeek">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          السابق
+        </button>
+        <button class="btn btn-outline btn-sm" id="btnCurrentWeek">الأسبوع الحالي</button>
+        <button class="btn btn-outline btn-sm" id="btnNextWeek">
+          التالي
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <span class="week-display" id="weekDateDisplay">جاري التحميل...</span>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon dark">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-        </div>
-        <div class="stat-info">
-          <h4>المشرفين</h4>
-          <div class="stat-value" id="statSupervisors">0</div>
-        </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btnOpenShiftModal">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+          + إضافة شفت عمل
+        </button>
+        <button class="btn btn-dark" id="btnOpenEmployeeModal">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+          + إضافة موظف
+        </button>
+        <button class="btn btn-outline" id="btnExportExcel" title="تصدير شيت إكسيل أسبوعي بنفس شكل ومصفوفة الجدول">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+          تصدير Excel أسبوعي
+        </button>
+        <button class="btn btn-outline" id="btnPrintSchedule" title="طباعة الجدول بحجم خط كبير وأفقي">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+          طباعة / PDF
+        </button>
       </div>
+    </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </div>
-        <div class="stat-info">
-          <h4>خدمة العملاء</h4>
-          <div class="stat-value" id="statCsCount">0</div>
-        </div>
-      </div>
+    <!-- شريط تصفية وبحث سريع -->
+    <div class="filter-row no-print">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث سريع باسم الموظف أو الوظيفة...">
+    </div>
 
-      <div class="stat-card">
-        <div class="stat-icon warning">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <div class="stat-info">
-          <h4>شفتات الأسبوع الحالي</h4>
-          <div class="stat-value" id="statWeekShifts">0</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- البطاقة الرئيسية: الجدول وأدوات التحكم -->
-    <div class="card">
-      
-      <!-- شريط أدوات التنقل والعمليات -->
-      <div class="toolbar no-print">
-        <div class="week-nav">
-          <button class="btn btn-outline btn-sm" id="btnPrevWeek" title="الأسبوع السابق">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-            السابق
-          </button>
-          
-          <button class="btn btn-outline btn-sm" id="btnCurrentWeek">الأسبوع الحالي</button>
-          
-          <button class="btn btn-outline btn-sm" id="btnNextWeek" title="الأسبوع التالي">
-            التالي
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-          </button>
-
-          <span class="current-week-display" id="weekDateDisplay">جاري الحساب...</span>
-          
-          <input type="date" id="weekPicker" class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem;" title="الانتقال إلى تاريخ معين">
-        </div>
-
-        <div class="action-group">
-          <button class="btn btn-primary" id="btnOpenShiftModal">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
-            إضافة شفت تفاعلي
-          </button>
-
-          <button class="btn btn-dark" id="btnOpenEmployeeModal">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
-            إدارة الموظفين
-          </button>
-
-          <button class="btn btn-outline" id="btnOpenLeaveModal">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            تسجيل إجازة
-          </button>
-
-          <button class="btn btn-outline" id="btnExportExcel" title="تصدير بيانات الأسبوع بصيغة إكسيل مع دعم العربية وتوقيت 12 ساعة">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-            تصدير Excel
-          </button>
-
-          <button class="btn btn-outline" id="btnPrintSchedule" title="طباعة الجدول أو حفظه كـ PDF أفقي A4">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-            طباعة / PDF
-          </button>
-        </div>
-      </div>
-
-      <!-- فلتر الموظفين والبحث السريع -->
-      <div class="filter-bar no-print">
-        <div class="search-box">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          <input type="text" id="searchInput" placeholder="بحث باسم الموظف أو الوظيفة...">
-        </div>
-
-        <select id="roleFilter" class="role-select">
-          <option value="ALL">جميع الوظائف</option>
-        </select>
-      </div>
-
-      <!-- الجدول الأسبوعي المعروض -->
-      <div class="table-container">
+    <!-- جدول الشفتات الأسبوعي -->
+    <div class="schedule-card">
+      <div class="table-responsive">
         <table class="schedule-table" id="scheduleTable">
           <thead>
             <tr id="scheduleHeaderRow">
-              <th class="emp-col">الموظف والوظيفة</th>
-              <!-- توليد أعمدة الأيام ديناميكياً من الأحد للسبت -->
+              <th class="emp-header">الموظف والوظيفة</th>
+              <!-- توليد الأعمدة ديناميكياً من الأحد إلى السبت -->
+              <th class="total-header">إجمالي الأسبوع</th>
             </tr>
           </thead>
           <tbody id="scheduleBody">
-            <!-- تحميل صفوف الموظفين والشفتات ديناميكياً -->
+            <!-- تحميل الصفوف تلقائياً -->
           </tbody>
-          <tfoot id="scheduleFoot">
-            <!-- ملخص الحضور والشفتات لكل يوم -->
-          </tfoot>
         </table>
       </div>
-
     </div>
+
   </main>
 
   <!-- ==========================================================================
-       9. نافذة إضافة / تعديل الشفت بنظام 12 ساعة الصارم
+       مودال 1: إضافة موظف مبسطة (فقط الاسم والوظيفة دون إجبار على يوم الأوف)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="employeeModalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>إضافة موظف جديد للتيم</h3>
+        <button class="modal-close" onclick="closeModal('employeeModalBackdrop')">&times;</button>
+      </div>
+      <form id="employeeForm" onsubmit="handleSaveEmployee(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">اسم الموظف الثلاثي:</label>
+            <input type="text" id="empNameInput" class="form-control" required placeholder="مثال: أحمد عبد الله">
+          </div>
+          <div class="form-group">
+            <label class="form-label">الوظيفة:</label>
+            <select id="empRoleInput" class="form-control" required>
+              <option value="خدمة عملاء">خدمة عملاء</option>
+              <option value="مشرف">مشرف</option>
+            </select>
+          </div>
+          <small style="color:var(--text-muted); font-size:0.8rem;">
+            * ملاحظة: يمكنك تحديد يوم الأوف لأي موظف بضغطة واحدة من داخل الجدول في أي وقت.
+          </small>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('employeeModalBackdrop')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ الموظف</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       مودال 2: إضافة أو تعديل شفت بنظام 12 ساعة الحصري
        ========================================================================== -->
   <div class="modal-backdrop" id="shiftModalBackdrop">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          <span id="shiftModalTitle">إضافة شفت عمل جديد</span>
-        </h3>
+        <h3 id="shiftModalTitle">إضافة شفت عمل</h3>
         <button class="modal-close" onclick="closeModal('shiftModalBackdrop')">&times;</button>
       </div>
+      <form id="shiftForm" onsubmit="handleSaveShift(event)">
+        <input type="hidden" id="editShiftId" value="">
+        <input type="hidden" id="singleDateTarget" value="">
 
-      <div class="modal-body">
-        <form id="shiftForm" onsubmit="handleSaveShift(event)">
-          <input type="hidden" id="editShiftId" value="">
-
+        <div class="modal-body">
           <div class="form-group">
-            <label class="form-label" for="shiftEmployeeSelect">اختر الموظف:</label>
-            <select id="shiftEmployeeSelect" class="form-control" required onchange="onShiftEmployeeChange()">
+            <label class="form-label">الموظف:</label>
+            <select id="shiftEmployeeSelect" class="form-control" required>
               <option value="">-- اختر موظفاً --</option>
             </select>
           </div>
 
-          <!-- تحديد الأيام التفاعلي -->
-          <div class="form-group" id="daysSelectionGroup">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.35rem;">
-              <label class="form-label" style="margin:0;">أيام الشفت في الأسبوع الحالي:</label>
-              <div>
-                <button type="button" class="btn btn-outline btn-sm" onclick="toggleAllDays(true)">تحديد الكل</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="toggleAllDays(false)">إلغاء</button>
-              </div>
+          <!-- اختيار الأيام في حالة الإضافة المتعددة -->
+          <div class="form-group" id="daysSelectWrapper">
+            <label class="form-label">الأيام المراد إضافة الشفت لها في هذا الأسبوع:</label>
+            <div class="day-checkboxes" id="shiftDaysCheckboxes">
+              <!-- خانات الأيام -->
             </div>
-            
-            <div class="days-picker-grid" id="shiftDaysGrid">
-              <!-- أزرار الأيام من الأحد إلى السبت -->
-            </div>
-            <small style="color:var(--text-muted); font-size:0.75rem; margin-top:4px; display:block;">
-              * يتم تعطيل يوم الأوف الأسبوعي وأيام الإجازات المسجلة تلقائياً لحماية الجدول من التعارض.
-            </small>
           </div>
 
-          <!-- وقت بداية الشفت بنظام 12 ساعة -->
+          <!-- وقت البداية 12 ساعة -->
           <div class="form-group">
             <label class="form-label">وقت بداية الشفت (توقيت مصر):</label>
-            <div class="time-picker-12h">
-              <select id="startHour" required onchange="updateShiftTimePreview()">
-                <!-- ساعات 01 إلى 12 -->
-              </select>
-              <select id="startMinute" required onchange="updateShiftTimePreview()">
+            <div class="time-picker-grid">
+              <select id="startHour" required onchange="updateShiftPreview()"></select>
+              <select id="startMinute" required onchange="updateShiftPreview()">
                 <option value="00">00 دقيقة</option>
                 <option value="15">15 دقيقة</option>
                 <option value="30">30 دقيقة</option>
                 <option value="45">45 دقيقة</option>
               </select>
-              <select id="startPeriod" required onchange="updateShiftTimePreview()">
+              <select id="startPeriod" required onchange="updateShiftPreview()">
                 <option value="ص">صباحاً (ص)</option>
                 <option value="م">مساءً (م)</option>
               </select>
             </div>
           </div>
 
-          <!-- وقت نهاية الشفت بنظام 12 ساعة -->
+          <!-- وقت النهاية 12 ساعة -->
           <div class="form-group">
             <label class="form-label">وقت نهاية الشفت (توقيت مصر):</label>
-            <div class="time-picker-12h">
-              <select id="endHour" required onchange="updateShiftTimePreview()">
-                <!-- ساعات 01 إلى 12 -->
-              </select>
-              <select id="endMinute" required onchange="updateShiftTimePreview()">
+            <div class="time-picker-grid">
+              <select id="endHour" required onchange="updateShiftPreview()"></select>
+              <select id="endMinute" required onchange="updateShiftPreview()">
                 <option value="00">00 دقيقة</option>
                 <option value="15">15 دقيقة</option>
                 <option value="30">30 دقيقة</option>
                 <option value="45">45 دقيقة</option>
               </select>
-              <select id="endPeriod" required onchange="updateShiftTimePreview()">
+              <select id="endPeriod" required onchange="updateShiftPreview()">
                 <option value="ص">صباحاً (ص)</option>
                 <option value="م" selected>مساءً (م)</option>
               </select>
             </div>
           </div>
 
-          <!-- صندوق معاينة التحويل لتوقيت السعودية وحساب الساعات -->
-          <div class="time-preview-box" id="shiftTimePreviewBox">
-            <div><strong>توقيت مصر:</strong> <span class="highlight" id="previewEgyptTime">--:-- ص</span></div>
-            <div><strong>المعادل في السعودية:</strong> <span class="highlight" id="previewSaudiTime">--:-- ص</span></div>
-            <div><strong>المدة المقدرة:</strong> <span id="previewDuration">0 ساعات</span> <span id="previewOvernight" style="color:var(--warning); font-weight:700;"></span></div>
+          <!-- صندوق معاينة التوقيت وساعات العمل الحقيقية -->
+          <div class="preview-box">
+            <div>⏰ <strong>مصر:</strong> <span id="prevEgTime">09:00 ص - 05:00 م</span></div>
+            <div>🇸🇦 <strong>السعودية (للعلم فقط):</strong> <span id="prevSaTime">10:00 ص - 06:00 م</span></div>
+            <div>⏳ <strong>مدة العمل الفعلية:</strong> <span id="prevDuration" style="font-weight:900;">8 ساعات عمل</span></div>
           </div>
-
-          <div class="modal-footer" style="padding-left:0; padding-right:0; margin-top: 1rem;">
-            <button type="button" class="btn btn-outline" onclick="closeModal('shiftModalBackdrop')">إلغاء</button>
-            <button type="submit" class="btn btn-primary" id="btnSubmitShift">حفظ الشفت</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       10. نافذة إدارة الموظفين
-       ========================================================================== -->
-  <div class="modal-backdrop" id="employeeModalBackdrop">
-    <div class="modal" style="max-width: 650px;">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-          إدارة موظفي Rental Gate
-        </h3>
-        <button class="modal-close" onclick="closeModal('employeeModalBackdrop')">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <!-- نموذج إضافة موظف -->
-        <form id="employeeForm" onsubmit="handleSaveEmployee(event)" style="background: #fdfdfd; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.25rem;">
-          <input type="hidden" id="editEmpId" value="">
-          <h4 style="font-size:0.9rem; margin-bottom:0.75rem; color:var(--dark);" id="empFormHeading">إضافة موظف جديد</h4>
-
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
-            <div>
-              <label class="form-label">اسم الموظف الثلاثي:</label>
-              <input type="text" id="empNameInput" class="form-control" required placeholder="مثال: أحمد عبد الله">
-            </div>
-
-            <div>
-              <label class="form-label">الوظيفة:</label>
-              <div style="display:flex; gap:0.35rem;">
-                <select id="empRoleInput" class="form-control" required>
-                  <option value="خدمة عملاء">خدمة عملاء</option>
-                  <option value="مشرف">مشرف</option>
-                </select>
-                <button type="button" class="btn btn-outline btn-sm" onclick="addNewCustomRolePrompt()" title="إضافة مسمى وظيفي جديد">+</button>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:grid; grid-template-columns: 1fr auto; gap:0.75rem; align-items:end;">
-            <div>
-              <label class="form-label">يوم الأوف الأسبوعي الأساسي:</label>
-              <select id="empOffDayInput" class="form-control" required>
-                <option value="0">الأحد</option>
-                <option value="1">الإثنين</option>
-                <option value="2">الثلاثاء</option>
-                <option value="3">الأربعاء</option>
-                <option value="4">الخميس</option>
-                <option value="5" selected>الجمعة</option>
-                <option value="6">السبت</option>
-              </select>
-            </div>
-
-            <div>
-              <button type="button" class="btn btn-outline" id="btnCancelEditEmp" style="display:none;" onclick="cancelEditEmployee()">إلغاء التعديل</button>
-              <button type="submit" class="btn btn-primary" id="btnSaveEmp">حفظ الموظف</button>
-            </div>
-          </div>
-        </form>
-
-        <!-- قائمة الموظفين الحاليين -->
-        <h4 style="font-size:0.9rem; margin-bottom:0.5rem; color:var(--dark);">قائمة التيم الحالية</h4>
-        <div style="max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm);">
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.825rem;">
-            <thead style="background: #f1f3f5; position: sticky; top:0;">
-              <tr>
-                <th style="padding: 0.5rem; text-align:right;">الاسم</th>
-                <th style="padding: 0.5rem; text-align:right;">الوظيفة</th>
-                <th style="padding: 0.5rem; text-align:right;">يوم الأوف</th>
-                <th style="padding: 0.5rem; text-align:center;">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="employeesListTableBody">
-              <!-- تحميل قائمة الموظفين -->
-            </tbody>
-          </table>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ==========================================================================
-       11. نافذة إدارة الإجازات
-       ========================================================================== -->
-  <div class="modal-backdrop" id="leaveModalBackdrop">
-    <div class="modal" style="max-width: 620px;">
-      <div class="modal-header">
-        <h3 class="modal-title">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          تسجيل وإدارة إجازات الموظفين
-        </h3>
-        <button class="modal-close" onclick="closeModal('leaveModalBackdrop')">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <form id="leaveForm" onsubmit="handleSaveLeave(event)" style="background: #fcfcfc; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.25rem;">
-          <input type="hidden" id="editLeaveId" value="">
-
-          <div class="form-group">
-            <label class="form-label">الموظف:</label>
-            <select id="leaveEmployeeSelect" class="form-control" required>
-              <option value="">-- اختر الموظف --</option>
-            </select>
-          </div>
-
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
-            <div class="form-group">
-              <label class="form-label">من تاريخ (بداية الإجازة):</label>
-              <input type="date" id="leaveStartDate" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">إلى تاريخ (نهاية الإجازة):</label>
-              <input type="date" id="leaveEndDate" class="form-control" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">ملاحظات الإجازة (اختياري):</label>
-            <input type="text" id="leaveNotesInput" class="form-control" placeholder="مثال: إجازة سنوية، عارضة، راحة مرضية...">
-          </div>
-
-          <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
-            <button type="submit" class="btn btn-primary" id="btnSaveLeave">تسجيل الإجازة</button>
-          </div>
-        </form>
-
-        <h4 style="font-size:0.9rem; margin-bottom:0.5rem; color:var(--dark);">سجل الإجازات المسجلة</h4>
-        <div style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm);">
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.825rem;">
-            <thead style="background: #f1f3f5; position: sticky; top:0;">
-              <tr>
-                <th style="padding: 0.5rem; text-align:right;">الموظف</th>
-                <th style="padding: 0.5rem; text-align:right;">الفترة</th>
-                <th style="padding: 0.5rem; text-align:right;">الملاحظة</th>
-                <th style="padding: 0.5rem; text-align:center;">إجراء</th>
-              </tr>
-            </thead>
-            <tbody id="leavesListTableBody">
-              <!-- تحميل الإجازات -->
-            </tbody>
-          </table>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('shiftModalBackdrop')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ الشفت</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 
-  <!-- ==========================================================================
-       12. نافذة التأكيد الشاملة (Custom Confirm Modal)
-       ========================================================================== -->
-  <div class="modal-backdrop" id="confirmModalBackdrop" style="z-index: 150;">
-    <div class="modal" style="max-width: 440px;">
-      <div class="modal-header" style="background:#b91c1c;">
-        <h3 class="modal-title" style="color:white;">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-          تأكيد العملية
-        </h3>
-        <button class="modal-close" onclick="closeConfirmModal(false)">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p id="confirmModalMessage" style="font-size: 0.95rem; color: var(--text);"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="closeConfirmModal(false)">إلغاء</button>
-        <button type="button" class="btn btn-danger" id="confirmModalAcceptBtn">متابعة التأكيد</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- حاوية التنبيهات المنبثقة (Toasts) -->
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- ==========================================================================
-       13. الشيفرة البرمجية بالكامل (JavaScript Logic)
-       ========================================================================== -->
+       الشيفرة البرمجية (JavaScript Engine)
+       ========================================================================== */ -->
   <script>
-    /**
-     * منظّم جداول التيم — Rental Gate
-     * بنية برمجية قياسية قائمة على State Management وتوافق كامل مع Google Apps Script
-     */
-
     // 1. رابط الـ API المركزي المعتمد
     const API_URL = "https://script.google.com/macros/s/AKfycbxyaskGoLR5oxajelpGGKhz7Q1vNPLeTl8IGg0YfItF2RBglca-OeRYPgxvmulOCzJ-_A/exec";
 
-    // 2. أسماء أيام الأسبوع القياسية
-    const DAYS_ARABIC = [
-      "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"
-    ];
+    const DAYS_ARABIC = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-    // 3. حالة التطبيق (State)
+    // حالة التطبيق (State)
     const state = {
       employees: [],
       shifts: [],
-      leaves: [],
-      roles: ["خدمة عملاء", "مشرف"],
-      currentWeekStart: getStartOfWeek(new Date()), // الأحد من الأسبوع الحالي
-      searchQuery: "",
-      filterRole: "ALL",
-      syncState: "synced", // 'synced' | 'saving' | 'offline'
+      currentWeekStart: getStartOfWeek(new Date()),
+      searchQuery: ""
     };
 
-    // Callback لمودال التأكيد
-    let confirmResolver = null;
-
     /* ==========================================================================
-       دوال الوقت والتاريخ ونظام الـ 12 ساعة الحصري
+       دوال الوقت ونظام 12 ساعة الصارم وحساب مدة العمل
        ========================================================================== */
 
-    /**
-     * تحويل الوقت من نظام 24 ساعة (HH:mm) إلى 12 ساعة بالعربية (hh:mm ص/م)
-     * معالجة دقيقة لمنتصف الليل (12:00 ص) ومنتصف النهار (12:00 م)
-     */
     function formatTime12h(time24) {
       if (!time24) return "";
       const [hStr, mStr] = time24.split(":");
@@ -1493,9 +927,6 @@
       return `${String(h12).padStart(2, "0")}:${m} ${period}`;
     }
 
-    /**
-     * تحويل مكونات 12 ساعة (ساعة، دقيقة، فترة) إلى نظام المعيار HH:mm للحفظ
-     */
     function convert12hTo24h(h12, min, period) {
       let h = parseInt(h12, 10);
       const m = String(min).padStart(2, "0");
@@ -1504,9 +935,6 @@
       return `${String(h).padStart(2, "0")}:${m}`;
     }
 
-    /**
-     * حساب التاريخ بداية الأسبوع (الأحد) لأي تاريخ معطى
-     */
     function getStartOfWeek(d) {
       const date = new Date(d);
       const day = date.getDay(); // 0 is Sunday
@@ -1516,9 +944,6 @@
       return start;
     }
 
-    /**
-     * صياغة التاريخ بصيغة YYYY-MM-DD دون أي تأثير لفارق التوقيت المحلي
-     */
     function formatDateISO(d) {
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -1526,378 +951,253 @@
       return `${year}-${month}-${day}`;
     }
 
-    /**
-     * التحقق مما إذا كانت مصر في التوقيت الصيفي (DST) في تاريخ معين
-     * القاعدة الرسمية بمصر: من الجمعة الأخيرة في أبريل حتى الخميس الأخير في أكتوبر
-     */
+    // التحقق من تطبيق مصر للتوقيت الصيفي ديناميكياً
     function isEgyptDST(dateObj) {
       const year = dateObj.getFullYear();
-      
-      // الجمعة الأخيرة في أبريل
       const apr30 = new Date(year, 3, 30);
-      const aprLastFriDay = 30 - ((apr30.getDay() + 2) % 7);
-      const dstStart = new Date(year, 3, aprLastFriDay, 0, 0, 0);
+      const lastFriApr = 30 - ((apr30.getDay() + 2) % 7);
+      const dstStart = new Date(year, 3, lastFriApr, 0, 0, 0);
 
-      // الخميس الأخير في أكتوبر
       const oct31 = new Date(year, 9, 31);
-      const octLastThuDay = 31 - ((oct31.getDay() + 3) % 7);
-      const dstEnd = new Date(year, 9, octLastThuDay, 23, 59, 59);
+      const lastThuOct = 31 - ((oct31.getDay() + 3) % 7);
+      const dstEnd = new Date(year, 9, lastThuOct, 23, 59, 59);
 
       return dateObj >= dstStart && dateObj <= dstEnd;
     }
 
-    /**
-     * تحويل وقت مصر إلى توقيت السعودية بدقة حسب تاريخ الشفت
-     * في الشتاء: مصر UTC+2، السعودية UTC+3 (السعودية تسبق بساعة واحدة +1)
-     * في الصيف: مصر تطبق التوقيت الصيفي UTC+3، والسعودية UTC+3 (نفس التوقيت تماماً فارق 0 ساعة)
-     */
-    function convertCairoTimeToSaudi(dateStr, time24Str) {
-      if (!time24Str) return { time12h: "", time24: "", isNextDay: false };
-      
+    // تحويل توقيت مصر إلى السعودية (للعلم فقط)
+    function convertToSaudiTime(dateStr, time24) {
+      if (!time24) return "";
       const dateObj = new Date(dateStr + "T00:00:00");
       const isDst = isEgyptDST(dateObj);
-      const hourDiff = isDst ? 0 : 1; // +1 في الشتاء، +0 في الصيف
+      const diffHours = isDst ? 0 : 1; // 0 في الصيف، +1 في الشتاء
 
-      const [hStr, mStr] = time24Str.split(":");
-      let h = parseInt(hStr, 10);
-      const m = parseInt(mStr, 10);
+      let [h, m] = time24.split(":").map(Number);
+      h += diffHours;
+      if (h >= 24) h -= 24;
 
-      h += hourDiff;
-      let isNextDay = false;
-      if (h >= 24) {
-        h -= 24;
-        isNextDay = true;
-      }
-
-      const time24Result = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-      return {
-        time24: time24Result,
-        time12h: formatTime12h(time24Result),
-        isNextDay: isNextDay
-      };
+      const saudi24 = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+      return formatTime12h(saudi24);
     }
 
-    /**
-     * احتساب مدة الشفت بالساعات والدقائق مع دعم الشفتات العابرة لمنتصف الليل
-     */
-    function calculateShiftDuration(start24, end24) {
-      if (!start24 || !end24) return { totalMinutes: 0, text: "", crossesMidnight: false };
+    // احتساب ساعات العمل الفعلية بين البداية والنهاية
+    function getWorkDuration(start24, end24) {
+      if (!start24 || !end24) return { hours: 0, text: "" };
       const [sh, sm] = start24.split(":").map(Number);
       const [eh, em] = end24.split(":").map(Number);
 
-      let startMins = sh * 60 + sm;
-      let endMins = eh * 60 + em;
-      let crossesMidnight = false;
+      let startM = sh * 60 + sm;
+      let endM = eh * 60 + em;
+      if (endM < startM) endM += 24 * 60; // تخطي منتصف الليل
 
-      if (endMins < startMins) {
-        endMins += 24 * 60; // عبور لليوم التالي
-        crossesMidnight = true;
-      }
+      const diffM = endM - startM;
+      const hours = diffM / 60;
+      const hInt = Math.floor(hours);
+      const mins = diffM % 60;
 
-      const diff = endMins - startMins;
-      const hours = Math.floor(diff / 60);
-      const mins = diff % 60;
-
-      let text = `${hours} ساعة`;
-      if (mins > 0) text += ` و ${mins} دقيقة`;
-
-      return { totalMinutes: diff, text, crossesMidnight };
+      let text = `${hInt} ساعات عمل`;
+      if (mins > 0) text += ` و ${mins} د`;
+      return { hours: Number(hours.toFixed(1)), text };
     }
 
     /* ==========================================================================
-       الربط مع السحابة والتخزين المحلي (Sync & Database)
+       التخزين السحابي والمحلي
        ========================================================================== */
 
-    /**
-     * تحميل البيانات الأولية من التخزين المحلي أولاً ثم طلب أحدث نسخة من Apps Script
-     */
-    async function initializeData() {
-      loadFromLocalStorage();
-      renderAll();
-      await fetchFromGoogleSheets();
-    }
-
-    function loadFromLocalStorage() {
+    function loadLocal() {
       try {
         const emp = localStorage.getItem("rg_employees");
         const sh = localStorage.getItem("rg_shifts");
-        const lv = localStorage.getItem("rg_leaves");
-        const rl = localStorage.getItem("rg_roles");
-
         if (emp) state.employees = JSON.parse(emp);
         if (sh) state.shifts = JSON.parse(sh);
-        if (lv) state.leaves = JSON.parse(lv);
-        if (rl) state.roles = JSON.parse(rl);
 
-        // بيانات تجريبية افتراضية في حال كانت القاعدة فارغة تماماً
         if (state.employees.length === 0) {
           state.employees = [
-            { id: "emp_1", name: "محمود حسن", role: "مشرف", offDay: 5 },
-            { id: "emp_2", name: "سارة إبراهيم", role: "خدمة عملاء", offDay: 6 },
-            { id: "emp_3", name: "عمر فاروق", role: "خدمة عملاء", offDay: 0 }
+            { id: "emp_1", name: "محمود حسن", role: "مشرف" },
+            { id: "emp_2", name: "سارة إبراهيم", role: "خدمة عملاء" },
+            { id: "emp_3", name: "عمر فاروق", role: "خدمة عملاء" }
           ];
-          saveToLocalStorage();
+          saveLocal();
         }
-      } catch (e) {
-        console.error("Local storage error:", e);
-      }
+      } catch (e) { console.error(e); }
     }
 
-    function saveToLocalStorage() {
+    function saveLocal() {
       localStorage.setItem("rg_employees", JSON.stringify(state.employees));
       localStorage.setItem("rg_shifts", JSON.stringify(state.shifts));
-      localStorage.setItem("rg_leaves", JSON.stringify(state.leaves));
-      localStorage.setItem("rg_roles", JSON.stringify(state.roles));
     }
 
-    function setSyncState(status, message) {
-      state.syncState = status;
+    function setSyncStatus(type, msg) {
       const dot = document.getElementById("syncDot");
       const text = document.getElementById("syncStatusText");
-      
-      dot.className = "sync-dot " + (status === "saving" ? "saving" : status === "offline" ? "offline" : "");
-      text.textContent = message;
+      dot.className = "sync-dot " + (type === "saving" ? "saving" : type === "offline" ? "offline" : "");
+      text.textContent = msg;
     }
 
-    /**
-     * جلب القوائم من Google Apps Script (GET ?action=list)
-     */
-    async function fetchFromGoogleSheets() {
-      setSyncState("saving", "جارٍ التحديث من Google Sheets...");
+    async function syncFetchCloud() {
+      setSyncStatus("saving", "جارٍ التحديث من Google Sheets...");
       try {
-        const res = await fetch(`${API_URL}?action=list`, {
-          method: "GET",
-          headers: { "Accept": "application/json" }
-        });
-
-        if (!res.ok) throw new Error("Network response was not ok");
+        const res = await fetch(`${API_URL}?action=list`);
+        if (!res.ok) throw new Error();
         const data = await res.json();
-
-        if (data && (data.ok || Array.isArray(data.employees))) {
-          // استخراج البيانات وتحديث الحالة
-          if (Array.isArray(data.employees)) state.employees = data.employees;
+        if (data && Array.isArray(data.employees)) {
+          state.employees = data.employees;
           if (Array.isArray(data.shifts)) state.shifts = data.shifts;
-          if (Array.isArray(data.leaves)) state.leaves = data.leaves;
-          if (Array.isArray(data.roles)) state.roles = data.roles;
-
-          saveToLocalStorage();
-          setSyncState("synced", "متزامن مع Google Sheets");
-          showToast("تم تحديث البيانات من السحابة بنجاح", "success");
-        } else {
-          setSyncState("synced", "البيانات جاهزة محلياً");
+          saveLocal();
+          setSyncStatus("synced", "متزامن مع Google Sheets");
         }
-      } catch (err) {
-        console.warn("Apps Script Sync failed, working in offline/local fallback mode:", err);
-        setSyncState("offline", "حفظ محلي فقط (فشل الاتصال)");
+      } catch (e) {
+        setSyncStatus("offline", "حفظ محلي فقط");
       }
-      renderAll();
+      renderSchedule();
     }
 
-    /**
-     * حفظ سجل في Google Apps Script (POST save)
-     */
-    async function syncSaveRecord(table, record) {
-      setSyncState("saving", "جارٍ حفظ التغييرات على السحابة...");
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            action: "save",
-            table: table,
-            record: record
-          })
-        });
-        const resJson = await response.json().catch(() => ({ ok: true }));
-        setSyncState("synced", "تم الحفظ على Google Sheets");
-        return true;
-      } catch (err) {
-        console.error("Cloud save failed, saved locally:", err);
-        setSyncState("offline", "محفوظ محلياً فقط (غير متزامن)");
-        return false;
-      }
-    }
-
-    /**
-     * حذف سجل في Google Apps Script (POST delete)
-     */
-    async function syncDeleteRecord(table, id) {
-      setSyncState("saving", "جارٍ الحذف من السحابة...");
+    async function syncSaveCloud(table, record) {
+      setSyncStatus("saving", "جارٍ الحفظ على السحابة...");
       try {
         await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            action: "delete",
-            table: table,
-            record: { id: id }
-          })
+          body: JSON.stringify({ action: "save", table, record })
         });
-        setSyncState("synced", "تم التحديث على Google Sheets");
-        return true;
-      } catch (err) {
-        console.error("Cloud delete failed, deleted locally:", err);
-        setSyncState("offline", "محذوف محلياً (غير متزامن)");
-        return false;
+        setSyncStatus("synced", "تم الحفظ على Google Sheets");
+      } catch (e) {
+        setSyncStatus("offline", "محفوظ محلياً فقط");
+      }
+    }
+
+    async function syncDeleteCloud(table, id) {
+      setSyncStatus("saving", "جارٍ الحذف من السحابة...");
+      try {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "delete", table, record: { id } })
+        });
+        setSyncStatus("synced", "تم التحديث على Google Sheets");
+      } catch (e) {
+        setSyncStatus("offline", "محذوف محلياً");
       }
     }
 
     /* ==========================================================================
-       إدارة الموظفين (Employees Controller)
+       إدارة الموظفين المبسطة
        ========================================================================== */
 
-    async function handleSaveEmployee(e) {
+    function handleSaveEmployee(e) {
       e.preventDefault();
-      const idInput = document.getElementById("editEmpId").value.trim();
       const name = document.getElementById("empNameInput").value.trim();
-      const role = document.getElementById("empRoleInput").value.trim();
-      const offDay = parseInt(document.getElementById("empOffDayInput").value, 10);
+      const role = document.getElementById("empRoleInput").value;
 
-      if (!name) {
-        showToast("يرجى إدخال اسم الموظف", "warning");
-        return;
-      }
+      if (!name) return;
 
-      // التحقق من عدم تكرار الاسم لموظف آخر
-      const duplicate = state.employees.find(emp => 
-        emp.name.toLowerCase() === name.toLowerCase() && emp.id !== idInput
-      );
-      if (duplicate) {
-        showToast("يوجد موظف مسجل بنفس هذا الاسم بالفعل!", "error");
-        return;
-      }
+      const newEmp = {
+        id: "emp_" + Date.now(),
+        name,
+        role
+      };
 
-      let empRecord;
-      if (idInput) {
-        // تعديل
-        const index = state.employees.findIndex(emp => emp.id === idInput);
-        if (index !== -1) {
-          state.employees[index] = { ...state.employees[index], name, role, offDay };
-          empRecord = state.employees[index];
-        }
-        showToast("تم تحديث بيانات الموظف بنجاح", "success");
-      } else {
-        // إنشاء جديد
-        empRecord = {
-          id: "emp_" + Date.now() + "_" + Math.floor(Math.random()*1000),
-          name,
-          role,
-          offDay
-        };
-        state.employees.push(empRecord);
-        showToast("تمت إضافة الموظف بنجاح", "success");
-      }
+      state.employees.push(newEmp);
+      saveLocal();
+      renderSchedule();
+      closeModal("employeeModalBackdrop");
+      document.getElementById("employeeForm").reset();
+      showToast(`تمت إضافة الموظف (${name}) بنجاح`);
 
-      saveToLocalStorage();
-      renderAll();
-      cancelEditEmployee();
-
-      // مزامنة مع السحابة
-      syncSaveRecord("employees", empRecord);
-    }
-
-    function editEmployee(id) {
-      const emp = state.employees.find(e => e.id === id);
-      if (!emp) return;
-
-      document.getElementById("editEmpId").value = emp.id;
-      document.getElementById("empNameInput").value = emp.name;
-      document.getElementById("empRoleInput").value = emp.role;
-      document.getElementById("empOffDayInput").value = emp.offDay;
-
-      document.getElementById("empFormHeading").textContent = "تعديل بيانات: " + emp.name;
-      document.getElementById("btnSaveEmp").textContent = "حفظ التعديلات";
-      document.getElementById("btnCancelEditEmp").style.display = "inline-flex";
-    }
-
-    function cancelEditEmployee() {
-      document.getElementById("editEmpId").value = "";
-      document.getElementById("empNameInput").value = "";
-      document.getElementById("empOffDayInput").value = "5"; // الجمعة كافتراضي
-      document.getElementById("empFormHeading").textContent = "إضافة موظف جديد";
-      document.getElementById("btnSaveEmp").textContent = "حفظ الموظف";
-      document.getElementById("btnCancelEditEmp").style.display = "none";
-    }
-
-    async function promptDeleteEmployee(id) {
-      const emp = state.employees.find(e => e.id === id);
-      if (!emp) return;
-
-      const confirmed = await openConfirmModal(
-        `هل أنت متأكد من رغبتك في حذف الموظف (${emp.name})؟ سيتم أيضاً حذف الشفتات المرتبطة به.`
-      );
-      if (!confirmed) return;
-
-      // حذف الشفتات والإجازات المرتبطة
-      state.shifts = state.shifts.filter(s => s.employeeId !== id);
-      state.leaves = state.leaves.filter(l => l.employeeId !== id);
-      state.employees = state.employees.filter(e => e.id !== id);
-
-      saveToLocalStorage();
-      renderAll();
-      showToast("تم حذف الموظف وكافة سجلاته", "success");
-
-      syncDeleteRecord("employees", id);
-    }
-
-    async function quickChangeOffDay(empId) {
-      const emp = state.employees.find(e => e.id === empId);
-      if (!emp) return;
-
-      const currentDay = DAYS_ARABIC[emp.offDay];
-      const nextDayIdx = (emp.offDay + 1) % 7;
-      const nextDayName = DAYS_ARABIC[nextDayIdx];
-
-      const confirmed = await openConfirmModal(
-        `يوم الأوف الحالي لـ (${emp.name}) هو ${currentDay}. هل تريد تغييره إلى ${nextDayName}؟`
-      );
-      if (confirmed) {
-        emp.offDay = nextDayIdx;
-        saveToLocalStorage();
-        renderAll();
-        showToast(`تم تغيير يوم الأوف إلى ${nextDayName}`, "success");
-        syncSaveRecord("employees", emp);
-      }
-    }
-
-    function addNewCustomRolePrompt() {
-      const newRole = prompt("أدخل المسمى الوظيفي الجديد:");
-      if (newRole && newRole.trim()) {
-        const trimmed = newRole.trim();
-        if (!state.roles.includes(trimmed)) {
-          state.roles.push(trimmed);
-          saveToLocalStorage();
-          renderRolesDropdowns();
-          showToast(`تمت إضافة الوظيفة: ${trimmed}`, "success");
-          syncSaveRecord("roles", { roleName: trimmed });
-        }
-      }
+      syncSaveCloud("employees", newEmp);
     }
 
     /* ==========================================================================
-       إدارة الشفتات والتعارضات (Shift Controller & Conflicts)
+       التحكم بالأوف والشفتات (One-Click Off / Shifts)
        ========================================================================== */
 
-    function populateTimeSelectors() {
-      const startHourSelect = document.getElementById("startHour");
-      const endHourSelect = document.getElementById("endHour");
+    // تحويل اليوم إلى أوف بضغطة واحدة مباشرة
+    function toggleOffDay(empId, dateStr) {
+      let shift = state.shifts.find(s => s.employeeId === empId && s.date === dateStr);
 
-      startHourSelect.innerHTML = "";
-      endHourSelect.innerHTML = "";
-
-      // نظام 12 ساعة الصارم: من 01 إلى 12
-      for (let h = 1; h <= 12; h++) {
-        const val = String(h).padStart(2, "0");
-        startHourSelect.innerHTML += `<option value="${val}">${val}</option>`;
-        endHourSelect.innerHTML += `<option value="${val}">${val}</option>`;
+      if (shift && shift.isOff) {
+        // إذا كان أوف بالفعل وضغط عليه، نحذفه ليعود اليوم فارغاً لإضافة شفت
+        state.shifts = state.shifts.filter(s => s.id !== shift.id);
+        saveLocal();
+        renderSchedule();
+        showToast("تم إلغاء الأوف، يمكنك الآن إضافة شفت", "info");
+        syncDeleteCloud("shifts", shift.id);
+        return;
       }
 
-      startHourSelect.value = "09";
-      endHourSelect.value = "05";
-      updateShiftTimePreview();
+      if (!shift) {
+        shift = {
+          id: "sh_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+          employeeId: empId,
+          date: dateStr,
+          isOff: true,
+          startTime: "",
+          endTime: ""
+        };
+        state.shifts.push(shift);
+      } else {
+        shift.isOff = true;
+        shift.startTime = "";
+        shift.endTime = "";
+      }
+
+      saveLocal();
+      renderSchedule();
+      showToast("تم تحويل اليوم إلى (أوف / راحة)", "info");
+      syncSaveCloud("shifts", shift);
     }
 
-    function updateShiftTimePreview() {
+    function openShiftModalFor(empId, targetDateStr = null) {
+      populateHoursSelect();
+      const selectEmp = document.getElementById("shiftEmployeeSelect");
+      selectEmp.innerHTML = `<option value="">-- اختر موظفاً --</option>`;
+      state.employees.forEach(emp => {
+        selectEmp.innerHTML += `<option value="${emp.id}">${emp.name} (${emp.role})</option>`;
+      });
+
+      if (empId) selectEmp.value = empId;
+
+      document.getElementById("editShiftId").value = "";
+      document.getElementById("singleDateTarget").value = targetDateStr || "";
+
+      const daysWrapper = document.getElementById("daysSelectWrapper");
+      const daysContainer = document.getElementById("shiftDaysCheckboxes");
+      daysContainer.innerHTML = "";
+
+      if (targetDateStr) {
+        daysWrapper.style.display = "none";
+      } else {
+        daysWrapper.style.display = "block";
+        const dates = getWeekDates(state.currentWeekStart);
+        dates.forEach((d, idx) => {
+          const iso = formatDateISO(d);
+          daysContainer.innerHTML += `
+            <label class="day-check-item">
+              <input type="checkbox" value="${iso}" checked>
+              <span>${DAYS_ARABIC[idx]}</span>
+            </label>
+          `;
+        });
+      }
+
+      updateShiftPreview();
+      openModal("shiftModalBackdrop");
+    }
+
+    function populateHoursSelect() {
+      const sH = document.getElementById("startHour");
+      const eH = document.getElementById("endHour");
+      sH.innerHTML = ""; eH.innerHTML = "";
+      for (let i = 1; i <= 12; i++) {
+        const val = String(i).padStart(2, "0");
+        sH.innerHTML += `<option value="${val}">${val}</option>`;
+        eH.innerHTML += `<option value="${val}">${val}</option>`;
+      }
+      sH.value = "09";
+      eH.value = "05";
+    }
+
+    function updateShiftPreview() {
       const sH = document.getElementById("startHour").value;
       const sM = document.getElementById("startMinute").value;
       const sP = document.getElementById("startPeriod").value;
@@ -1909,81 +1209,21 @@
       const start24 = convert12hTo24h(sH, sM, sP);
       const end24 = convert12hTo24h(eH, eM, eP);
 
-      const egyptStart12 = formatTime12h(start24);
-      const egyptEnd12 = formatTime12h(end24);
+      const refDate = formatDateISO(state.currentWeekStart);
+      const saStart = convertToSaudiTime(refDate, start24);
+      const saEnd = convertToSaudiTime(refDate, end24);
 
-      // استعراض تاريخ اليوم الأول للأسبوع المختار للتأكد من حساب صيف/شتاء
-      const refDateISO = formatDateISO(state.currentWeekStart);
-      const saudiStart = convertCairoTimeToSaudi(refDateISO, start24);
-      const saudiEnd = convertCairoTimeToSaudi(refDateISO, end24);
+      const duration = getWorkDuration(start24, end24);
 
-      const duration = calculateShiftDuration(start24, end24);
-
-      document.getElementById("previewEgyptTime").textContent = `${egyptStart12} — ${egyptEnd12}`;
-      document.getElementById("previewSaudiTime").textContent = `${saudiStart.time12h} — ${saudiEnd.time12h}`;
-      document.getElementById("previewDuration").textContent = duration.text;
-
-      const overnightSpan = document.getElementById("previewOvernight");
-      if (duration.crossesMidnight) {
-        overnightSpan.textContent = " (يتجاوز منتصف الليل +1 يوم)";
-      } else {
-        overnightSpan.textContent = "";
-      }
+      document.getElementById("prevEgTime").textContent = `${formatTime12h(start24)} — ${formatTime12h(end24)}`;
+      document.getElementById("prevSaTime").textContent = `${saStart} — ${saEnd}`;
+      document.getElementById("prevDuration").textContent = duration.text;
     }
 
-    function buildShiftDaysGrid(selectedEmpId, preselectedDateStr = null) {
-      const grid = document.getElementById("shiftDaysGrid");
-      grid.innerHTML = "";
-
-      const emp = state.employees.find(e => e.id === selectedEmpId);
-      const weekDates = getWeekDates(state.currentWeekStart);
-
-      weekDates.forEach((dateObj, dayIdx) => {
-        const dateStr = formatDateISO(dateObj);
-        const dayName = DAYS_ARABIC[dayIdx];
-        
-        let isOff = emp && emp.offDay === dayIdx;
-        let isLeave = emp && isEmployeeOnLeave(emp.id, dateStr);
-
-        const disabled = isOff || isLeave;
-        let note = "";
-        if (isOff) note = " (أوف)";
-        if (isLeave) note = " (إجازة)";
-
-        const isChecked = preselectedDateStr ? preselectedDateStr === dateStr : (!disabled);
-
-        grid.innerHTML += `
-          <div class="day-check-card">
-            <input type="checkbox" id="shiftDay_${dayIdx}" value="${dateStr}" 
-              ${isChecked && !disabled ? "checked" : ""} ${disabled ? "disabled" : ""}>
-            <label for="shiftDay_${dayIdx}">
-              <span>${dayName}</span>
-              <span style="font-size:0.65rem; font-weight:normal; color:${disabled ? '#EF4444':'#666'}">${note || dateObj.getDate() + '/' + (dateObj.getMonth()+1)}</span>
-            </label>
-          </div>
-        `;
-      });
-    }
-
-    function onShiftEmployeeChange() {
-      const empId = document.getElementById("shiftEmployeeSelect").value;
-      buildShiftDaysGrid(empId);
-    }
-
-    function toggleAllDays(select) {
-      const checkboxes = document.querySelectorAll("#shiftDaysGrid input[type='checkbox']:not(:disabled)");
-      checkboxes.forEach(cb => cb.checked = select);
-    }
-
-    async function handleSaveShift(e) {
+    function handleSaveShift(e) {
       e.preventDefault();
-      const shiftId = document.getElementById("editShiftId").value;
       const empId = document.getElementById("shiftEmployeeSelect").value;
-
-      if (!empId) {
-        showToast("يرجى اختيار الموظف أولاً", "warning");
-        return;
-      }
+      if (!empId) return;
 
       const sH = document.getElementById("startHour").value;
       const sM = document.getElementById("startMinute").value;
@@ -1993,218 +1233,61 @@
       const eM = document.getElementById("endMinute").value;
       const eP = document.getElementById("endPeriod").value;
 
-      const startTime24 = convert12hTo24h(sH, sM, sP);
-      const endTime24 = convert12hTo24h(eH, eM, eP);
+      const startTime = convert12hTo24h(sH, sM, sP);
+      const endTime = convert12hTo24h(eH, eM, eP);
 
-      // التحقق من صحة البداية والنهاية
-      if (startTime24 === endTime24) {
-        showToast("خطأ: لا يمكن أن يكون وقت بداية الشفت مطابقاً تماماً لوقت نهايته!", "error");
+      const singleTarget = document.getElementById("singleDateTarget").value;
+      let targetDates = [];
+
+      if (singleTarget) {
+        targetDates.push(singleTarget);
+      } else {
+        const cbs = document.querySelectorAll("#shiftDaysCheckboxes input:checked");
+        cbs.forEach(cb => targetDates.push(cb.value));
+      }
+
+      if (targetDates.length === 0) {
+        showToast("يرجى اختيار يوم واحد على الأقل", "error");
         return;
       }
 
-      // الأيام المختارة
-      const selectedDates = [];
-      const checkboxes = document.querySelectorAll("#shiftDaysGrid input[type='checkbox']:checked");
-      checkboxes.forEach(cb => selectedDates.push(cb.value));
-
-      if (selectedDates.length === 0) {
-        showToast("يرجى اختيار يوم واحد على الأقل لإضافة الشفت", "warning");
-        return;
-      }
-
-      const emp = state.employees.find(e => e.id === empId);
-
-      // حفظ الشفتات للأيام المختارة مع فحص التعارض والتحديث
-      let savedCount = 0;
-      for (const dateStr of selectedDates) {
-        const dateObj = new Date(dateStr + "T00:00:00");
-        const dayIdx = dateObj.getDay();
-
-        // 1. منع الإضافة في يوم الأوف الأسبوعي
-        if (emp.offDay === dayIdx) {
-          showToast(`تم تخطي ${dateStr}: يوافق يوم الأوف الأسبوعي للموظف`, "warning");
-          continue;
-        }
-
-        // 2. منع الإضافة أثناء الإجازة
-        if (isEmployeeOnLeave(empId, dateStr)) {
-          showToast(`تم تخطي ${dateStr}: الموظف مسجل في إجازة رسمية`, "warning");
-          continue;
-        }
-
-        // 3. التحقق إذا كان يوجد شفت مسبق في نفس اليوم -> استبداله (تحديثه) بدلاً من التكرار
-        const existingIdx = state.shifts.findIndex(s => s.employeeId === empId && s.date === dateStr);
-        let record;
-
-        if (existingIdx !== -1) {
-          state.shifts[existingIdx].startTime = startTime24;
-          state.shifts[existingIdx].endTime = endTime24;
-          record = state.shifts[existingIdx];
+      targetDates.forEach(dateStr => {
+        let existing = state.shifts.find(s => s.employeeId === empId && s.date === dateStr);
+        if (existing) {
+          existing.isOff = false;
+          existing.startTime = startTime;
+          existing.endTime = endTime;
+          syncSaveCloud("shifts", existing);
         } else {
-          record = {
-            id: shiftId && selectedDates.length === 1 ? shiftId : ("sh_" + Date.now() + "_" + Math.floor(Math.random()*1000)),
+          const newShift = {
+            id: "sh_" + Date.now() + "_" + Math.floor(Math.random()*1000),
             employeeId: empId,
             date: dateStr,
-            startTime: startTime24,
-            endTime: endTime24
+            isOff: false,
+            startTime,
+            endTime
           };
-          state.shifts.push(record);
+          state.shifts.push(newShift);
+          syncSaveCloud("shifts", newShift);
         }
-
-        savedCount++;
-        syncSaveRecord("shifts", record);
-      }
-
-      saveToLocalStorage();
-      renderAll();
-      closeModal("shiftModalBackdrop");
-      showToast(`تم حفظ ${savedCount} شفت بنجاح بنظام 12 ساعة`, "success");
-    }
-
-    async function promptDeleteShift(shiftId) {
-      const shift = state.shifts.find(s => s.id === shiftId);
-      if (!shift) return;
-
-      const confirmed = await openConfirmModal("هل أنت متأكد من حذف هذا الشفت نهائياً؟");
-      if (!confirmed) return;
-
-      state.shifts = state.shifts.filter(s => s.id !== shiftId);
-      saveToLocalStorage();
-      renderAll();
-      showToast("تم حذف الشفت بنجاح", "success");
-
-      syncDeleteRecord("shifts", shiftId);
-    }
-
-    function openShiftModalForCell(empId, dateStr) {
-      openShiftModal();
-      document.getElementById("shiftEmployeeSelect").value = empId;
-      buildShiftDaysGrid(empId, dateStr);
-    }
-
-    function openEditShiftModal(shiftId) {
-      const shift = state.shifts.find(s => s.id === shiftId);
-      if (!shift) return;
-
-      openShiftModal();
-      document.getElementById("shiftModalTitle").textContent = "تعديل الشفت";
-      document.getElementById("editShiftId").value = shift.id;
-      document.getElementById("shiftEmployeeSelect").value = shift.employeeId;
-      buildShiftDaysGrid(shift.employeeId, shift.date);
-
-      // تفكيك 24 ساعة للبداية
-      const [sH24, sM] = shift.startTime.split(":");
-      let shNum = parseInt(sH24, 10);
-      const sPeriod = shNum >= 12 ? "م" : "ص";
-      let sh12 = shNum % 12;
-      if (sh12 === 0) sh12 = 12;
-
-      document.getElementById("startHour").value = String(sh12).padStart(2, "0");
-      document.getElementById("startMinute").value = sM;
-      document.getElementById("startPeriod").value = sPeriod;
-
-      // تفكيك 24 ساعة للنهاية
-      const [eH24, eM] = shift.endTime.split(":");
-      let ehNum = parseInt(eH24, 10);
-      const ePeriod = ehNum >= 12 ? "م" : "ص";
-      let eh12 = ehNum % 12;
-      if (eh12 === 0) eh12 = 12;
-
-      document.getElementById("endHour").value = String(eh12).padStart(2, "0");
-      document.getElementById("endMinute").value = eM;
-      document.getElementById("endPeriod").value = ePeriod;
-
-      updateShiftTimePreview();
-    }
-
-    /* ==========================================================================
-       إدارة الإجازات وحذف الشفتات المتعارضة (Leaves Controller)
-       ========================================================================== */
-
-    function isEmployeeOnLeave(empId, dateStr) {
-      return state.leaves.some(l => {
-        return l.employeeId === empId && dateStr >= l.startDate && dateStr <= l.endDate;
       });
+
+      saveLocal();
+      renderSchedule();
+      closeModal("shiftModalBackdrop");
+      showToast("تم حفظ الشفت بنجاح");
     }
 
-    async function handleSaveLeave(e) {
-      e.preventDefault();
-      const empId = document.getElementById("leaveEmployeeSelect").value;
-      const startDate = document.getElementById("leaveStartDate").value;
-      const endDate = document.getElementById("leaveEndDate").value;
-      const notes = document.getElementById("leaveNotesInput").value.trim();
-
-      if (!empId || !startDate || !endDate) {
-        showToast("يرجى ملء جميع حقول الإجازة المطلوبة", "warning");
-        return;
-      }
-
-      if (endDate < startDate) {
-        showToast("خطأ: تاريخ نهاية الإجازة لا يمكن أن يكون قبل تاريخ بدايتها!", "error");
-        return;
-      }
-
-      // التحقق من تعارض الإجازات للموظف نفسه
-      const overlapLeave = state.leaves.find(l => 
-        l.employeeId === empId && !(endDate < l.startDate || startDate > l.endDate)
-      );
-      if (overlapLeave) {
-        showToast("يوجد بالفعل إجازة أخرى مسجلة للموظف تتداخل مع هذه الفترة!", "error");
-        return;
-      }
-
-      // التحقق من وجود شفتات مسجلة للموظف في فترة الإجازة
-      const conflictingShifts = state.shifts.filter(s => 
-        s.employeeId === empId && s.date >= startDate && s.date <= endDate
-      );
-
-      if (conflictingShifts.length > 0) {
-        const confirmed = await openConfirmModal(
-          `هناك (${conflictingShifts.length}) شفتات مسجلة للموظف خلال فترة الإجازة المختارة. هل تريد حذف هذه الشفتات تلقائياً لمنع أي تعارض؟`
-        );
-        if (confirmed) {
-          for (const sh of conflictingShifts) {
-            state.shifts = state.shifts.filter(s => s.id !== sh.id);
-            syncDeleteRecord("shifts", sh.id);
-          }
-          showToast(`تم حذف ${conflictingShifts.length} شفتات متعارضة بنجاح`, "info");
-        }
-      }
-
-      const leaveRecord = {
-        id: "lv_" + Date.now() + "_" + Math.floor(Math.random()*1000),
-        employeeId: empId,
-        startDate: startDate,
-        endDate: endDate,
-        notes: notes
-      };
-
-      state.leaves.push(leaveRecord);
-      saveToLocalStorage();
-      renderAll();
-      closeModal("leaveModalBackdrop");
-      showToast("تم تسجيل الإجازة بنجاح", "success");
-
-      syncSaveRecord("leaves", leaveRecord);
-    }
-
-    async function promptDeleteLeave(leaveId) {
-      const leave = state.leaves.find(l => l.id === leaveId);
-      if (!leave) return;
-
-      const confirmed = await openConfirmModal("هل أنت متأكد من حذف هذه الإجازة؟");
-      if (!confirmed) return;
-
-      state.leaves = state.leaves.filter(l => l.id !== leaveId);
-      saveToLocalStorage();
-      renderAll();
-      showToast("تم حذف الإجازة بنجاح", "success");
-
-      syncDeleteRecord("leaves", leaveId);
+    function deleteShiftDirect(shiftId) {
+      state.shifts = state.shifts.filter(s => s.id !== shiftId);
+      saveLocal();
+      renderSchedule();
+      showToast("تم حذف الشفت");
+      syncDeleteCloud("shifts", shiftId);
     }
 
     /* ==========================================================================
-       رسم وتحديث واجهة الجدول والإحصائيات (Rendering Engine)
+       رسم الجدول وتحديث الحسابات
        ========================================================================== */
 
     function getWeekDates(startDate) {
@@ -2217,516 +1300,235 @@
       return dates;
     }
 
-    function renderAll() {
-      renderStats();
-      renderScheduleHeader();
-      renderScheduleBody();
-      renderScheduleFooter();
-      renderEmployeeModalsData();
-      renderLeavesTable();
-      renderRolesDropdowns();
-    }
+    function renderSchedule() {
+      const dates = getWeekDates(state.currentWeekStart);
 
-    function renderStats() {
-      document.getElementById("statTotalEmployees").textContent = state.employees.length;
-      document.getElementById("statSupervisors").textContent = 
-        state.employees.filter(e => e.role === "مشرف").length;
-      document.getElementById("statCsCount").textContent = 
-        state.employees.filter(e => e.role.includes("خدمة عملاء")).length;
+      // ترويسة الأسبوع
+      const title = `من ${DAYS_ARABIC[0]} ${dates[0].getDate()}/${dates[0].getMonth()+1} إلى ${DAYS_ARABIC[6]} ${dates[6].getDate()}/${dates[6].getMonth()+1}/${dates[6].getFullYear()}`;
+      document.getElementById("weekDateDisplay").textContent = title;
+      document.getElementById("printWeekDate").textContent = `الفترة: ${title}`;
+      document.getElementById("printDateToday").textContent = new Date().toLocaleDateString("ar-EG");
 
-      // حساب عدد شفتات الأسبوع الحالي
-      const weekDates = getWeekDates(state.currentWeekStart).map(d => formatDateISO(d));
-      const weekShiftsCount = state.shifts.filter(s => weekDates.includes(s.date)).length;
-      document.getElementById("statWeekShifts").textContent = weekShiftsCount;
-    }
-
-    function renderRolesDropdowns() {
-      const roleFilter = document.getElementById("roleFilter");
-      const empRoleInput = document.getElementById("empRoleInput");
-
-      const currentFilter = roleFilter.value;
-      roleFilter.innerHTML = '<option value="ALL">جميع الوظائف</option>';
-      empRoleInput.innerHTML = "";
-
-      state.roles.forEach(r => {
-        roleFilter.innerHTML += `<option value="${r}">${r}</option>`;
-        empRoleInput.innerHTML += `<option value="${r}">${r}</option>`;
-      });
-
-      roleFilter.value = currentFilter || "ALL";
-    }
-
-    function renderScheduleHeader() {
-      const weekDates = getWeekDates(state.currentWeekStart);
-      const startStr = formatDateISO(weekDates[0]);
-      const endStr = formatDateISO(weekDates[6]);
-      
-      const titleText = `من ${DAYS_ARABIC[0]} ${weekDates[0].getDate()}/${weekDates[0].getMonth()+1} إلى ${DAYS_ARABIC[6]} ${weekDates[6].getDate()}/${weekDates[6].getMonth()+1}/${weekDates[6].getFullYear()}`;
-      document.getElementById("weekDateDisplay").textContent = titleText;
-      document.getElementById("printWeekSubtitle").textContent = `الفترة: ${titleText}`;
-      document.getElementById("printDateStamp").textContent = new Date().toLocaleDateString("ar-EG");
-
+      // ترويسة الأعمدة
       const headerRow = document.getElementById("scheduleHeaderRow");
-      headerRow.innerHTML = `<th class="emp-col">الموظف والوظيفة</th>`;
+      headerRow.innerHTML = `<th class="emp-header">الموظف والوظيفة</th>`;
 
-      const todayISO = formatDateISO(new Date());
+      const todayIso = formatDateISO(new Date());
 
-      weekDates.forEach((dateObj, idx) => {
-        const isToday = formatDateISO(dateObj) === todayISO;
-        const dayName = DAYS_ARABIC[idx];
-        const dateFormatted = `${dateObj.getDate()}/${dateObj.getMonth() + 1}`;
-
+      dates.forEach((d, idx) => {
+        const isToday = formatDateISO(d) === todayIso;
         headerRow.innerHTML += `
-          <th class="${isToday ? 'today-header' : ''}">
-            <span class="day-name">${dayName}</span>
-            <span class="day-date">${dateFormatted}</span>
+          <th class="${isToday ? 'is-today' : ''}">
+            <span class="day-name">${DAYS_ARABIC[idx]}</span>
+            <span class="day-date">${d.getDate()}/${d.getMonth()+1}</span>
           </th>
         `;
       });
-    }
+      headerRow.innerHTML += `<th class="total-header">إجمالي الأسبوع</th>`;
 
-    function renderScheduleBody() {
+      // بناء صفوف الموظفين
       const tbody = document.getElementById("scheduleBody");
       tbody.innerHTML = "";
 
-      const weekDates = getWeekDates(state.currentWeekStart);
+      const filtered = state.employees.filter(e => 
+        e.name.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
+        e.role.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
 
-      // تصفية وبحث الموظفين
-      const filteredEmployees = state.employees.filter(emp => {
-        const matchesQuery = emp.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                             emp.role.toLowerCase().includes(state.searchQuery.toLowerCase());
-        const matchesRole = state.filterRole === "ALL" || emp.role === state.filterRole;
-        return matchesQuery && matchesRole;
-      });
-
-      if (filteredEmployees.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
-              لا يوجد موظفين مسجلين أو يطابقون خيارات البحث الحالية.
-            </td>
-          </tr>
-        `;
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:#888;">لا يوجد موظفين مسجلين حالياً</td></tr>`;
         return;
       }
 
-      filteredEmployees.forEach(emp => {
+      filtered.forEach(emp => {
         const tr = document.createElement("tr");
 
-        // خلية بيانات الموظف
-        const isSuper = emp.role === "مشرف";
-        const offDayName = DAYS_ARABIC[emp.offDay];
-        let empHtml = `
-          <td class="emp-info-cell">
-            <div class="emp-name-row">
-              <span class="emp-name" onclick="editEmployeeFromTable('${emp.id}')" title="اضغط لتعديل الموظف">${escapeHtml(emp.name)}</span>
-              <span class="badge ${isSuper ? 'badge-supervisor' : 'badge-role'}">${escapeHtml(emp.role)}</span>
+        let empTotalHours = 0;
+
+        let rowHtml = `
+          <td>
+            <div class="emp-name-box">
+              <span class="emp-title">${emp.name}</span>
+              <span class="emp-badge ${emp.role === 'مشرف' ? 'super' : ''}">${emp.role}</span>
             </div>
-            <span class="badge-offday" onclick="quickChangeOffDay('${emp.id}')" title="اضغط لتغيير يوم الأوف السريع">
-              الأوف الأسبوعي: <strong>${offDayName}</strong>
-            </span>
           </td>
         `;
 
-        // 7 خلايا للأيام من الأحد للسبت
-        weekDates.forEach((dateObj, dayIdx) => {
-          const dateStr = formatDateISO(dateObj);
-          const isOffDay = emp.offDay === dayIdx;
-          const isOnLeave = isEmployeeOnLeave(emp.id, dateStr);
-
-          // البحث عن شفت مسجل في هذا اليوم
+        dates.forEach(d => {
+          const dateStr = formatDateISO(d);
           const shift = state.shifts.find(s => s.employeeId === emp.id && s.date === dateStr);
 
-          let cellClass = "day-cell";
           let cellContent = "";
 
-          if (isOnLeave) {
-            cellClass += " is-leave";
-            const leaveObj = state.leaves.find(l => l.employeeId === emp.id && dateStr >= l.startDate && dateStr <= l.endDate);
-            const noteText = leaveObj && leaveObj.notes ? ` (${escapeHtml(leaveObj.notes)})` : "";
+          if (shift && shift.isOff) {
+            // يوم أوف
             cellContent = `
-              <div class="status-pill leave" title="إجازة رسمية للموظف">
-                إجازة رسمية${noteText}
+              <div class="off-card">
+                <span class="off-tag">🏖️ أوف / راحة</span>
+                <div class="cell-actions no-print">
+                  <button class="action-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="إلغاء الأوف">إلغاء الأوف</button>
+                  <button class="action-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')" title="تحديد شفت بديل">شفت</button>
+                </div>
               </div>
             `;
-          } else if (isOffDay) {
-            cellClass += " is-off";
-            cellContent = `
-              <div class="status-pill off" title="يوم راحة أسبوعية">
-                أوف أسبوعي
-              </div>
-            `;
-          } else if (shift) {
-            // شفت عمل قائم: تنسيق 12 ساعة الحصري لمصر والسعودية
-            const egyptStart12 = formatTime12h(shift.startTime);
-            const egyptEnd12 = formatTime12h(shift.endTime);
-
-            const saudiStart = convertCairoTimeToSaudi(dateStr, shift.startTime);
-            const saudiEnd = convertCairoTimeToSaudi(dateStr, shift.endTime);
-
-            const duration = calculateShiftDuration(shift.startTime, shift.endTime);
+          } else if (shift && shift.startTime) {
+            // شفت عمل
+            const egTime = `${formatTime12h(shift.startTime)} — ${formatTime12h(shift.endTime)}`;
+            const saTime = `${convertToSaudiTime(dateStr, shift.startTime)} — ${convertToSaudiTime(dateStr, shift.endTime)}`;
+            const dur = getWorkDuration(shift.startTime, shift.endTime);
+            empTotalHours += dur.hours;
 
             cellContent = `
-              <div class="shift-box ${isSuper ? 'supervisor-shift' : ''}">
-                <div class="time-badge">
-                  <span class="time-flag flag-eg">مصر</span>
-                  <span class="time-value">${egyptStart12} — ${egyptEnd12}</span>
+              <div class="shift-card">
+                <div class="time-egypt">
+                  <span class="flag">مصر</span>
+                  <span>${egTime}</span>
                 </div>
-                <div class="time-badge" style="margin-bottom:0.15rem;">
-                  <span class="time-flag flag-sa">السعودية</span>
-                  <span class="time-value">${saudiStart.time12h} — ${saudiEnd.time12h}</span>
+                <div class="time-saudi">
+                  🇸🇦 السعودية: ${saTime}
                 </div>
-                <div style="font-size:0.68rem; color:#666; margin-top:2px;">
-                  المدة: <strong>${duration.text}</strong>
-                  ${duration.crossesMidnight ? '<span style="color:#D7192D;">(+1)</span>' : ''}
+                <div class="work-hours-count">
+                  ⏱️ ${dur.text}
                 </div>
-                <div class="shift-actions no-print">
-                  <button class="icon-btn" onclick="openEditShiftModal('${shift.id}')" title="تعديل الشفت">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                  </button>
-                  <button class="icon-btn" onclick="promptDeleteShift('${shift.id}')" title="حذف الشفت">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                  </button>
+                <div class="cell-actions no-print">
+                  <button class="action-btn off-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="تحويل الشفت إلى أوف">تحويل لأوف</button>
+                  <button class="action-btn" onclick="deleteShiftDirect('${shift.id}')" title="حذف الشفت">حذف</button>
                 </div>
               </div>
             `;
           } else {
-            // خلية فارغة جاهزة لإضافة الشفت
+            // يوم فارغ
             cellContent = `
-              <button class="cell-empty-btn no-print" onclick="openShiftModalForCell('${emp.id}', '${dateStr}')" title="اضغط لإضافة شفت سريع">
-                + إضافة شفت
-              </button>
+              <div class="empty-actions no-print">
+                <button class="add-shift-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')">+ شفت</button>
+                <button class="quick-off-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')">أوف</button>
+              </div>
             `;
           }
 
-          empHtml += `<td class="${cellClass}">${cellContent}</td>`;
+          rowHtml += `<td class="day-cell">${cellContent}</td>`;
         });
 
-        tr.innerHTML = empHtml;
+        // عمود إجمالي ساعات الأسبوع
+        rowHtml += `
+          <td class="total-hours-cell">
+            <div class="val">${empTotalHours} س</div>
+            <div class="sub">ساعات عمل</div>
+          </td>
+        `;
+
+        tr.innerHTML = rowHtml;
         tbody.appendChild(tr);
       });
     }
 
-    function renderScheduleFooter() {
-      const tfoot = document.getElementById("scheduleFoot");
-      const weekDates = getWeekDates(state.currentWeekStart);
-
-      let footHtml = `<tr><td style="text-align:right; font-weight:800; background:#eee;">إجمالي شفتات اليوم:</td>`;
-
-      weekDates.forEach((dateObj, dayIdx) => {
-        const dateStr = formatDateISO(dateObj);
-        const dayShifts = state.shifts.filter(s => s.date === dateStr);
-        const dayLeaves = state.leaves.filter(l => dateStr >= l.startDate && dateStr <= l.endDate);
-        const dayOffs = state.employees.filter(e => e.offDay === dayIdx);
-
-        footHtml += `
-          <td>
-            <div style="color:var(--primary); font-size:0.85rem;">${dayShifts.length} شفت</div>
-            <div style="font-size:0.68rem; color:#6b7280; font-weight:normal;">
-              أوف: ${dayOffs.length} | إجازة: ${dayLeaves.length}
-            </div>
-          </td>
-        `;
-      });
-
-      footHtml += `</tr>`;
-      tfoot.innerHTML = footHtml;
-    }
-
-    function renderEmployeeModalsData() {
-      // 1. قائمة اختيار الموظف في مودال الشفتات ومودال الإجازات
-      const shiftSelect = document.getElementById("shiftEmployeeSelect");
-      const leaveSelect = document.getElementById("leaveEmployeeSelect");
-
-      const currShiftVal = shiftSelect.value;
-      const currLeaveVal = leaveSelect.value;
-
-      let options = `<option value="">-- اختر الموظف --</option>`;
-      state.employees.forEach(e => {
-        options += `<option value="${e.id}">${escapeHtml(e.name)} (${e.role})</option>`;
-      });
-
-      shiftSelect.innerHTML = options;
-      leaveSelect.innerHTML = options;
-
-      shiftSelect.value = currShiftVal;
-      leaveSelect.value = currLeaveVal;
-
-      // 2. جدول الموظفين داخل مودال الإدارة
-      const empTbody = document.getElementById("employeesListTableBody");
-      empTbody.innerHTML = "";
-
-      state.employees.forEach(emp => {
-        empTbody.innerHTML += `
-          <tr style="border-bottom: 1px solid var(--border);">
-            <td style="padding: 0.5rem; font-weight:600;">${escapeHtml(emp.name)}</td>
-            <td style="padding: 0.5rem;"><span class="badge ${emp.role === 'مشرف' ? 'badge-supervisor' : 'badge-role'}">${escapeHtml(emp.role)}</span></td>
-            <td style="padding: 0.5rem; color:#555;">${DAYS_ARABIC[emp.offDay]}</td>
-            <td style="padding: 0.5rem; text-align:center;">
-              <button class="btn btn-outline btn-sm" onclick="editEmployee('${emp.id}')" style="margin-left:4px;">تعديل</button>
-              <button class="btn btn-danger btn-sm" onclick="promptDeleteEmployee('${emp.id}')">حذف</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    function renderLeavesTable() {
-      const tbody = document.getElementById("leavesListTableBody");
-      tbody.innerHTML = "";
-
-      if (state.leaves.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:1rem; color:#888;">لا توجد إجازات مسجلة حالياً</td></tr>`;
-        return;
-      }
-
-      state.leaves.forEach(lv => {
-        const emp = state.employees.find(e => e.id === lv.employeeId);
-        const empName = emp ? emp.name : "موظف محذوف";
-
-        tbody.innerHTML += `
-          <tr style="border-bottom: 1px solid var(--border);">
-            <td style="padding: 0.5rem; font-weight:600;">${escapeHtml(empName)}</td>
-            <td style="padding: 0.5rem; direction:ltr; text-align:right;">${lv.startDate} &larr; ${lv.endDate}</td>
-            <td style="padding: 0.5rem; color:#555;">${escapeHtml(lv.notes || '-')}</td>
-            <td style="padding: 0.5rem; text-align:center;">
-              <button class="btn btn-danger btn-sm" onclick="promptDeleteLeave('${lv.id}')">حذف</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    function editEmployeeFromTable(empId) {
-      openModal("employeeModalBackdrop");
-      editEmployee(empId);
-    }
-
     /* ==========================================================================
-       تصدير البيانات إلى Excel و PDF
+       تصدير Excel مرتب بنفس مصفوفة الـ PDF والطباعة
        ========================================================================== */
 
-    /**
-     * تصدير بيانات الأسبوع إلى ملف Excel (CSV مرمز بـ UTF-8 BOM)
-     * يدعم نصوص اللغة العربية بالكامل وأوقات نظام 12 ساعة الحصرية
-     */
-    function exportToExcel() {
-      const weekDates = getWeekDates(state.currentWeekStart);
-      const weekDatesISO = weekDates.map(d => formatDateISO(d));
+    function exportWeeklyMatrixExcel() {
+      const dates = getWeekDates(state.currentWeekStart);
 
+      // عناوين الأعمدة
       const headers = [
         "اسم الموظف",
         "الوظيفة",
-        "اليوم",
-        "التاريخ",
-        "بداية الشفت (مصر)",
-        "نهاية الشفت (مصر)",
-        "بداية الشفت (السعودية)",
-        "نهاية الشفت (السعودية)",
-        "مدة الشفت",
-        "الحالة والملاحظات"
+        ...dates.map((d, i) => `${DAYS_ARABIC[i]} (${d.getDate()}/${d.getMonth()+1})`),
+        "إجمالي ساعات العمل"
       ];
 
       const rows = [];
 
       state.employees.forEach(emp => {
-        weekDates.forEach((dateObj, dayIdx) => {
-          const dateStr = formatDateISO(dateObj);
-          const dayName = DAYS_ARABIC[dayIdx];
-          const isOff = emp.offDay === dayIdx;
-          const isLeave = isEmployeeOnLeave(emp.id, dateStr);
+        let totalHours = 0;
+        const rowCells = [`"${emp.name}"`, `"${emp.role}"`];
+
+        dates.forEach(d => {
+          const dateStr = formatDateISO(d);
           const shift = state.shifts.find(s => s.employeeId === emp.id && s.date === dateStr);
 
-          let egStart = "-", egEnd = "-", saStart = "-", saEnd = "-", duration = "-", status = "عمل";
-
-          if (isLeave) {
-            status = "إجازة رسمية";
-          } else if (isOff) {
-            status = "أوف أسبوعي";
-          } else if (shift) {
-            egStart = formatTime12h(shift.startTime);
-            egEnd = formatTime12h(shift.endTime);
-
-            const saS = convertCairoTimeToSaudi(dateStr, shift.startTime);
-            const saE = convertCairoTimeToSaudi(dateStr, shift.endTime);
-
-            saStart = saS.time12h;
-            saEnd = saE.time12h + (saE.isNextDay ? " (+1)" : "");
-
-            const durObj = calculateShiftDuration(shift.startTime, shift.endTime);
-            duration = durObj.text + (durObj.crossesMidnight ? " (عابر للمنتصف)" : "");
+          if (shift && shift.isOff) {
+            rowCells.push(`"أوف / راحة"`);
+          } else if (shift && shift.startTime) {
+            const eg = `${formatTime12h(shift.startTime)} - ${formatTime12h(shift.endTime)}`;
+            const sa = `${convertToSaudiTime(dateStr, shift.startTime)} - ${convertToSaudiTime(dateStr, shift.endTime)}`;
+            const dur = getWorkDuration(shift.startTime, shift.endTime);
+            totalHours += dur.hours;
+            // صياغة واضحة داخل الخلية الواحدة
+            rowCells.push(`"مصر: ${eg} | السعودية: ${sa} (${dur.hours} س)"`);
           } else {
-            status = "لا يوجد شفت";
+            rowCells.push(`"-"`);
           }
-
-          rows.push([
-            `"${emp.name.replace(/"/g, '""')}"`,
-            `"${emp.role.replace(/"/g, '""')}"`,
-            `"${dayName}"`,
-            `"${dateStr}"`,
-            `"${egStart}"`,
-            `"${egEnd}"`,
-            `"${saStart}"`,
-            `"${saEnd}"`,
-            `"${duration}"`,
-            `"${status}"`
-          ]);
         });
+
+        rowCells.push(`"${totalHours} ساعة عمل"`);
+        rows.push(rowCells.join(","));
       });
 
-      // إضافة علامة BOM UTF-8 لفتح الملف باللغة العربية فوراً في Microsoft Excel
-      const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
+      // ترميز UTF-8 مع BOM لضمان فتح اللغة العربية بسلاسة في Excel
+      const csvData = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
       const a = document.createElement("a");
-      a.href = url;
-      a.download = `RentalGate_Schedule_${formatDateISO(weekDates[0])}.csv`;
+      a.href = URL.createObjectURL(blob);
+      a.download = `RentalGate_Schedule_Week_${formatDateISO(dates[0])}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
 
-      showToast("تم تصدير ملف الإكسيل بنجاح وبنظام 12 ساعة", "success");
-    }
-
-    function printSchedule() {
-      window.print();
+      showToast("تم تصدير شيت الإكسيل الأسبوعي بنجاح");
     }
 
     /* ==========================================================================
-       التحكم بالنوافذ والتنبيهات (Modals & Toasts Engine)
+       النوافذ والتنبيهات
        ========================================================================== */
 
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add("active");
-    }
+    function openModal(id) { document.getElementById(id).classList.add("active"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove("active");
-    }
-
-    function openShiftModal() {
-      document.getElementById("shiftModalTitle").textContent = "إضافة شفت عمل تفاعلي";
-      document.getElementById("editShiftId").value = "";
-      document.getElementById("shiftForm").reset();
-      populateTimeSelectors();
-      onShiftEmployeeChange();
-      openModal("shiftModalBackdrop");
-    }
-
-    function openConfirmModal(message) {
-      return new Promise((resolve) => {
-        confirmResolver = resolve;
-        document.getElementById("confirmModalMessage").textContent = message;
-        openModal("confirmModalBackdrop");
-      });
-    }
-
-    function closeConfirmModal(result) {
-      closeModal("confirmModalBackdrop");
-      if (confirmResolver) {
-        confirmResolver(result);
-        confirmResolver = null;
-      }
-    }
-
-    document.getElementById("confirmModalAcceptBtn").addEventListener("click", () => {
-      closeConfirmModal(true);
-    });
-
-    function showToast(message, type = "info") {
+    function showToast(msg) {
       const container = document.getElementById("toastContainer");
       const toast = document.createElement("div");
-      toast.className = `toast ${type}`;
-
-      let iconSvg = '';
-      if (type === 'success') {
-        iconSvg = '<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#10B981"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
-      } else if (type === 'error') {
-        iconSvg = '<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#EF4444"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
-      } else {
-        iconSvg = '<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#D97706"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>';
-      }
-
-      toast.innerHTML = `
-        <div style="flex-shrink:0;">${iconSvg}</div>
-        <div style="flex:1; font-size:0.875rem; font-weight:600; color:var(--dark);">${escapeHtml(message)}</div>
-      `;
-
+      toast.className = "toast";
+      toast.textContent = msg;
       container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = "0";
-        toast.style.transition = "opacity 0.3s";
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
-    }
-
-    function escapeHtml(str) {
-      if (!str) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      setTimeout(() => toast.remove(), 3500);
     }
 
     /* ==========================================================================
-       المستمعات والأحداث الأولية (Event Listeners & Init)
+       بدء التشغيل والأحداث
        ========================================================================== */
 
     document.addEventListener("DOMContentLoaded", () => {
-      initializeData();
+      loadLocal();
+      renderSchedule();
+      syncFetchCloud();
 
-      // أحداث أزرار الأسبوع
+      // التنقل بالأسبوع
       document.getElementById("btnPrevWeek").addEventListener("click", () => {
         state.currentWeekStart.setDate(state.currentWeekStart.getDate() - 7);
-        renderAll();
+        renderSchedule();
       });
-
       document.getElementById("btnNextWeek").addEventListener("click", () => {
         state.currentWeekStart.setDate(state.currentWeekStart.getDate() + 7);
-        renderAll();
+        renderSchedule();
       });
-
       document.getElementById("btnCurrentWeek").addEventListener("click", () => {
         state.currentWeekStart = getStartOfWeek(new Date());
-        renderAll();
+        renderSchedule();
       });
 
-      document.getElementById("weekPicker").addEventListener("change", (e) => {
-        if (e.target.value) {
-          state.currentWeekStart = getStartOfWeek(new Date(e.target.value));
-          renderAll();
-        }
-      });
-
-      // أحداث فتح النوافذ
-      document.getElementById("btnOpenShiftModal").addEventListener("click", openShiftModal);
+      // فتح النوافذ
       document.getElementById("btnOpenEmployeeModal").addEventListener("click", () => openModal("employeeModalBackdrop"));
-      document.getElementById("btnOpenLeaveModal").addEventListener("click", () => openModal("leaveModalBackdrop"));
+      document.getElementById("btnOpenShiftModal").addEventListener("click", () => openShiftModalFor(null));
 
-      // أحداث الفلترة والبحث
+      // التصدير والطباعة
+      document.getElementById("btnExportExcel").addEventListener("click", exportWeeklyMatrixExcel);
+      document.getElementById("btnPrintSchedule").addEventListener("click", () => window.print());
+
+      // البحث
       document.getElementById("searchInput").addEventListener("input", (e) => {
         state.searchQuery = e.target.value;
-        renderScheduleBody();
-      });
-
-      document.getElementById("roleFilter").addEventListener("change", (e) => {
-        state.filterRole = e.target.value;
-        renderScheduleBody();
-      });
-
-      // أحداث التصدير والمزامنة
-      document.getElementById("btnExportExcel").addEventListener("click", exportToExcel);
-      document.getElementById("btnPrintSchedule").addEventListener("click", printSchedule);
-      document.getElementById("btnManualSync").addEventListener("click", fetchFromGoogleSheets);
-
-      // إغلاق النوافذ عند الضغط في الخلفية الخارجية
-      window.addEventListener("click", (e) => {
-        if (e.target.classList.contains("modal-backdrop") && !e.target.classList.contains("active-prevent")) {
-          e.target.classList.remove("active");
-        }
+        renderSchedule();
       });
     });
   </script>
