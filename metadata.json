@@ -1,6 +1,0 @@
-{
-  "name": "منظّم جداول التيم — Rental Gate",
-  "description": "نظام احترافي لإدارة وتنظيم جداول شفتات فريق Rental Gate بنظام 12 ساعة (توقيت مصر والسعودية) مع تصدير PNG فائق الدقة وExcel تفاعلي وPDF أفقي.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
