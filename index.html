@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       1. المتغيرات والسمات الديناميكية (Theme Variables & Custom Colors)
+       1. المتغيرات والسمات الديناميكية (Design System & Theme)
        ========================================================================== */
     :root {
       --primary: #D7192D;
@@ -32,6 +32,7 @@
       --radius-md: 10px;
       --radius-lg: 14px;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
       --font: 'Cairo', system-ui, -apple-system, sans-serif;
     }
 
@@ -64,7 +65,7 @@
     }
 
     /* ==========================================================================
-       2. شريط التنقل العلوي المتجاوب وشعار الشركة
+       2. شريط التنقل العلوي (Header)
        ========================================================================== */
     .header {
       background-color: var(--dark);
@@ -106,18 +107,8 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    .brand-logo-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .brand-logo-fallback {
-      color: white;
-      font-weight: 900;
-      font-size: 1.15rem;
-      letter-spacing: 0.5px;
-    }
+    .brand-logo-container img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-logo-fallback { color: white; font-weight: 900; font-size: 1.15rem; }
 
     .brand-text h1 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
     .brand-text p { font-size: 0.72rem; color: #cbd5e1; }
@@ -141,7 +132,9 @@
       display: flex;
       align-items: center;
       gap: 0.35rem;
+      transition: all 0.2s;
     }
+    .theme-toggle-btn:hover { background: rgba(255,255,255,0.2); }
 
     .sync-badge {
       display: flex;
@@ -163,7 +156,7 @@
     .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
     /* ==========================================================================
-       3. شريط الأدوات وعناصر التحكم
+       3. شريط الأدوات وعناصر التحكم السريعة
        ========================================================================== */
     .container {
       max-width: 1600px;
@@ -178,7 +171,7 @@
       border-radius: var(--radius-lg);
       border: 1px solid var(--border);
       padding: 0.85rem 1.1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
       box-shadow: var(--shadow-sm);
       display: flex;
       justify-content: space-between;
@@ -237,7 +230,7 @@
     .btn-danger-outline:hover { background: #fee2e2; }
     .btn-sm { padding: 0.22rem 0.5rem; font-size: 0.725rem; }
 
-    /* شريط الفلترة وتحديد الأيام المعروضة */
+    /* فلترة وبحث وتحديد الأيام */
     .filter-bar {
       display: flex;
       align-items: center;
@@ -271,7 +264,6 @@
       font-size: 0.775rem;
       font-weight: 700;
       overflow-x: auto;
-      max-width: 100%;
     }
 
     .day-chip {
@@ -287,40 +279,7 @@
     .day-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
     /* ==========================================================================
-       4. شريط الحافظة العائم للنسخ واللصق السريع
-       ========================================================================== */
-    .clipboard-bar {
-      position: fixed;
-      bottom: 4.8rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(120%);
-      background: var(--dark);
-      color: white;
-      padding: 0.6rem 1.25rem;
-      border-radius: 50px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-      border: 2px solid var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      z-index: 95;
-      font-size: 0.85rem;
-      font-weight: 700;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .clipboard-bar.active { transform: translateX(-50%) translateY(0); }
-    .clipboard-bar .clear-clip-btn {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      padding: 0.2rem 0.55rem;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 0.75rem;
-    }
-
-    /* ==========================================================================
-       5. جدول الشفتات الأسبوعي وتصميم الكارت المطابق للصورة
+       4. جدول الشفتات الأسبوعي
        ========================================================================== */
     .schedule-card {
       background: var(--surface);
@@ -359,7 +318,7 @@
     }
 
     .schedule-table th.emp-header {
-      width: 220px;
+      width: 235px;
       text-align: right;
       padding-right: 0.85rem;
       background-color: #1a1a1a;
@@ -381,16 +340,64 @@
     .schedule-table th .day-date { font-size: 0.7rem; color: #cbd5e1; font-weight: 600; }
     .schedule-table th.is-today { background-color: var(--primary); }
 
-    /* تفاصيل خلية الموظف */
-    .emp-cell-content { display: flex; flex-direction: column; gap: 0.3rem; }
-    .emp-row-top { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; }
-    .emp-title { font-weight: 800; color: var(--text); font-size: 0.9rem; }
-    .reorder-btns { display: flex; gap: 2px; }
-    .reorder-btn {
-      background: var(--surface-subtle); border: 1px solid var(--border);
-      color: var(--text-muted); cursor: pointer; font-size: 0.65rem; padding: 1px 4px; border-radius: 3px;
+    /* ==========================================================================
+       كرت الموظف: أزرار النسخ واللصق بجانب الاسم مباشرة
+       ========================================================================== */
+    .emp-cell-content { display: flex; flex-direction: column; gap: 0.35rem; }
+    
+    .emp-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.35rem;
     }
-    .reorder-btn:hover { background: var(--border); color: var(--text); }
+
+    .emp-title {
+      font-weight: 800;
+      color: var(--text);
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emp-toolbar-btns {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .emp-tool-btn {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.7rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .emp-tool-btn:hover { background: var(--border); color: var(--text); }
+    
+    .emp-tool-btn.btn-copy-emp { color: #2563eb; border-color: #bfdbfe; background: #eff6ff; }
+    .emp-tool-btn.btn-copy-emp:hover { background: #dbeafe; }
+
+    .emp-tool-btn.btn-paste-emp { color: #059669; border-color: #a7f3d0; background: #ecfdf5; }
+    .emp-tool-btn.btn-paste-emp:hover { background: #d1fae5; }
+    .emp-tool-btn.btn-paste-emp.glow {
+      animation: pulseGreen 1.3s infinite;
+      border-color: #10B981;
+      font-weight: 800;
+    }
+    @keyframes pulseGreen {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.4); }
+    }
+
     .emp-badge {
       display: inline-block; width: fit-content; padding: 0.1rem 0.4rem;
       border-radius: 4px; font-size: 0.68rem; font-weight: 700;
@@ -421,10 +428,7 @@
     .shift-card:active { cursor: grabbing; }
     .shift-card.is-dragging { opacity: 0.4; }
 
-    body.dark-theme .shift-card {
-      background: #202122;
-      border-color: #5f1e24;
-    }
+    body.dark-theme .shift-card { background: #202122; border-color: #5f1e24; }
 
     /* السطر الأول: شارة مصر الوردية + الوقت */
     .time-line-egypt {
@@ -447,7 +451,7 @@
       line-height: 1.3;
     }
 
-    /* السطر الثاني: شريط توقيت السعودية بالأزرق الخفيف */
+    /* السطر الثاني: شريط توقيت السعودية بالأزرق الهادئ */
     .time-line-saudi {
       background: #f0f7ff;
       color: #0369a1;
@@ -552,7 +556,7 @@
     }
     .quick-off-btn:hover { background: var(--border); }
 
-    .paste-btn-active {
+    .paste-day-btn {
       width: 100%;
       padding: 0.3rem;
       background: #eff6ff;
@@ -562,11 +566,6 @@
       font-weight: 800;
       color: #1d4ed8;
       cursor: pointer;
-      animation: pulse 1.2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
     }
 
     .total-hours-cell {
@@ -578,7 +577,7 @@
     .total-hours-cell .sub { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
     /* ==========================================================================
-       6. النوافذ المنبثقة وإدارة الشفتات الثابتة
+       5. النوافذ المنبثقة (Modals)
        ========================================================================== */
     .modal-backdrop {
       position: fixed;
@@ -636,47 +635,6 @@
     .form-control { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--surface); color: var(--text); }
     .form-control:focus { outline: none; border-color: var(--primary); }
 
-    /* قوالب الشفتات الثابتة وإدارتها */
-    .presets-container {
-      margin-bottom: 0.95rem;
-      padding: 0.65rem;
-      background: var(--surface-subtle);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-    }
-    .presets-title {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .presets-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-    .preset-chip-wrapper { display: inline-flex; align-items: center; background: var(--surface); border: 1.5px solid var(--border); border-radius: 4px; overflow: hidden; }
-    .preset-chip-btn {
-      padding: 0.2rem 0.55rem;
-      border: none;
-      background: none;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text);
-      cursor: pointer;
-    }
-    .preset-chip-btn:hover { color: var(--primary); }
-    .preset-delete-btn, .preset-edit-btn {
-      padding: 0.2rem 0.35rem;
-      border: none;
-      background: var(--surface-subtle);
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.65rem;
-      border-right: 1px solid var(--border);
-    }
-    .preset-delete-btn:hover { color: #dc2626; background: #fee2e2; }
-    .preset-edit-btn:hover { color: #2563eb; background: #dbeafe; }
-
     .time-picker-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -719,13 +677,27 @@
     }
     .day-check-item input { margin-bottom: 0.2rem; }
 
+    /* بطاقات قائمة الشفتات الثابتة في نافذتها المستقلة */
+    .preset-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+    }
+    .preset-card-info h4 { font-size: 0.875rem; font-weight: 800; color: var(--text); }
+    .preset-card-info p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+
     /* جدول إدارة الموظفين */
     .emp-mgmt-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.825rem; }
     .emp-mgmt-table th, .emp-mgmt-table td { border: 1px solid var(--border); padding: 0.5rem; text-align: right; }
     .emp-mgmt-table th { background: var(--surface-subtle); font-weight: 800; }
 
     /* ==========================================================================
-       7. الترس العائم ونافذة تخصيص الألوان والشعار (Settings Modal)
+       6. الترس العائم ونافذة الألوان والشعار
        ========================================================================== */
     .floating-gear-btn {
       position: fixed;
@@ -743,9 +715,9 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s;
     }
-    .floating-gear-btn:hover { transform: scale(1.1) rotate(45deg); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+    .floating-gear-btn:hover { transform: scale(1.1) rotate(45deg); }
     .floating-gear-btn svg { width: 22px; height: 22px; }
 
     .color-swatches { display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
@@ -769,7 +741,7 @@
     }
 
     /* ==========================================================================
-       8. طباعة PDF في صفحة واحدة أفقية فقط (Single Page Guarantee up to 20 emps)
+       7. طباعة PDF في صفحة واحدة أفقية فقط (Single Page Guarantee up to 20 emps)
        ========================================================================== */
     @media print {
       @page {
@@ -788,8 +760,8 @@
         print-color-adjust: exact !important;
       }
 
-      .header, .top-toolbar, .filter-bar, .clipboard-bar, .floating-gear-btn,
-      .modal-backdrop, .cell-actions, .empty-actions, .reorder-btns, .no-print {
+      .header, .top-toolbar, .filter-bar, .floating-gear-btn,
+      .modal-backdrop, .cell-actions, .empty-actions, .emp-toolbar-btns, .no-print {
         display: none !important;
       }
 
@@ -829,7 +801,6 @@
 
       .emp-title { font-size: 8pt !important; font-weight: 900 !important; }
 
-      /* مطابقة كارت الشفت في الطباعة تماماً لصورة المستخدم */
       .shift-card {
         border: 1px solid #fca5a5 !important;
         border-right: 3px solid #D7192D !important;
@@ -891,12 +862,10 @@
 
     .print-header-bar, .print-footer-notice { display: none; }
 
-    /* تحسين التجاوب للهواتف */
     @media (max-width: 768px) {
       .header-container { flex-direction: column; align-items: flex-start; }
       .top-toolbar { flex-direction: column; align-items: stretch; }
       .week-nav, .actions-cluster { width: 100%; justify-content: space-between; }
-      .clipboard-bar { width: 92%; justify-content: space-between; font-size: 0.78rem; padding: 0.5rem 0.85rem; }
     }
   </style>
 </head>
@@ -910,8 +879,8 @@
           <span class="brand-logo-fallback" id="brandLogoFallback">RG</span>
         </div>
         <div class="brand-text">
-          <h1 id="brandTitleDisplay">منظّم جداول التيم — Rental Gate</h1>
-          <p>نظام الشفتات 12 ساعة • سحب وإفلات • نسخ ولصق • A4 صفحة واحدة</p>
+          <h1>منظّم جداول التيم — Rental Gate</h1>
+          <p>إدارة الشفتات 12 ساعة • نسخ ولصق سريع • A4 صفحة واحدة</p>
         </div>
       </div>
 
@@ -932,7 +901,7 @@
   <!-- الصفحة الرئيسية -->
   <main class="container">
 
-    <!-- ترويسة الطباعة الرسمية للـ PDF مع شعار الشركة -->
+    <!-- ترويسة الطباعة الرسمية للـ PDF -->
     <div class="print-header-bar">
       <div style="display:flex; align-items:center; gap:0.5rem;">
         <div id="printLogoHolder"></div>
@@ -966,6 +935,11 @@
         <button class="btn btn-primary" id="btnOpenShiftModal">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
           + إضافة شفت
+        </button>
+
+        <!-- زر الشفتات الثابتة المستقل المضاف -->
+        <button class="btn btn-outline" id="btnOpenPresetsModal" style="border-color:#f59e0b; color:#d97706;" title="عرض وإدارة مواعيد الشفتات الثابتة">
+          ⚡ الشفتات الثابتة
         </button>
         
         <button class="btn btn-dark" id="btnOpenEmployeeManager">
@@ -1011,8 +985,7 @@
         <table class="schedule-table" id="scheduleTable">
           <thead>
             <tr id="scheduleHeaderRow">
-              <th class="emp-header">الموظف والترتيب</th>
-              <!-- توليد الأعمدة ديناميكياً -->
+              <th class="emp-header">الموظف والترتيب والنسخ</th>
               <th class="total-header">إجمالي الأسبوع</th>
             </tr>
           </thead>
@@ -1021,20 +994,14 @@
       </div>
     </div>
 
-    <!-- الملاحظة الرسمية الخاصة بالـ PDF -->
+    <!-- الملاحظة الرسمية للـ PDF -->
     <div class="print-footer-notice">
       ⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate
     </div>
 
   </main>
 
-  <!-- شريط الحافظة العائم للنسخ واللصق -->
-  <div class="clipboard-bar" id="clipboardBar">
-    <span id="clipboardDesc">📋 شفت منسوخ: --</span>
-    <button class="clear-clip-btn" onclick="clearClipboard()">إلغاء النسخ ✕</button>
-  </div>
-
-  <!-- الترس العائم أسفل الشاشة للوصول للإعدادات -->
+  <!-- الترس العائم لتخصيص الألوان والشعار -->
   <button class="floating-gear-btn" id="btnOpenSettings" title="تخصيص الألوان وشعار الشركة">
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -1043,67 +1010,149 @@
   </button>
 
   <!-- ==========================================================================
-       مودال 1: إعدادات الألوان وشعار الشركة
+       مودال 1: نافذة الشفتات الثابتة المستقلة بالكامل
        ========================================================================== -->
-  <div class="modal-backdrop" id="settingsModalBackdrop">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>⚙️ تخصيص الألوان وهوية الشركة</h3>
-        <button class="modal-close" onclick="closeModal('settingsModalBackdrop')">&times;</button>
+  <div class="modal-backdrop" id="presetsModalBackdrop">
+    <div class="modal" style="max-width: 540px;">
+      <div class="modal-header" style="border-bottom-color:#f59e0b;">
+        <h3>⚡ إدارة مواعيد الشفتات الثابتة</h3>
+        <button class="modal-close" onclick="closeModal('presetsModalBackdrop')">&times;</button>
       </div>
       <div class="modal-body">
         
-        <!-- قسم شعار الشركة -->
-        <div class="form-group" style="padding-bottom:1rem; border-bottom:1px solid var(--border);">
-          <label class="form-label">شعار الشركة (Company Logo):</label>
-          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
-            <div id="settingsLogoPreview" style="width:50px; height:50px; border-radius:6px; background:#eee; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid #ccc;">
-              <span style="font-weight:900; color:#666;">RG</span>
+        <!-- نموذج إضافة شفت ثابت جديد -->
+        <form id="presetForm" onsubmit="handleSavePreset(event)" style="background: var(--surface-subtle); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1rem;">
+          <input type="hidden" id="editPresetId" value="">
+          <h4 id="presetFormHeading" style="font-size:0.875rem; font-weight:800; margin-bottom:0.6rem; color:var(--text);">+ إضافة شفت ثابت جديد</h4>
+
+          <div class="form-group" style="margin-bottom:0.6rem;">
+            <label class="form-label">اسم الشفت الثابت:</label>
+            <input type="text" id="presetNameInput" class="form-control" required placeholder="مثال: شفت الصباح الرئيسي، شفت مسائي">
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-bottom:0.6rem;">
+            <div>
+              <label class="form-label">بداية الشفت (مصر):</label>
+              <div class="time-picker-grid" style="padding:0.35rem; gap:0.25rem;">
+                <select id="presetStartH"></select>
+                <select id="presetStartM">
+                  <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                </select>
+                <select id="presetStartP"><option value="ص">ص</option><option value="م">م</option></select>
+              </div>
             </div>
-            <div style="flex:1;">
-              <input type="file" id="logoFileInput" accept="image/*" class="form-control" style="padding:0.3rem; font-size:0.75rem;">
-              <small style="color:var(--text-muted); font-size:0.7rem; display:block; margin-top:2px;">اختر صورة الشعار من جهازك ليتم استبدال RG فوراً في الموقع والـ PDF</small>
+
+            <div>
+              <label class="form-label">نهاية الشفت (مصر):</label>
+              <div class="time-picker-grid" style="padding:0.35rem; gap:0.25rem;">
+                <select id="presetEndH"></select>
+                <select id="presetEndM">
+                  <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                </select>
+                <select id="presetEndP"><option value="ص">ص</option><option value="م" selected>م</option></select>
+              </div>
             </div>
           </div>
-          <button type="button" class="btn btn-outline btn-sm" onclick="resetDefaultLogo()">استعادة شعار RG الافتراضي</button>
-        </div>
 
-        <!-- قسم اللون الأساسي -->
-        <div class="form-group" style="margin-top:1rem;">
-          <label class="form-label">اللون الأساسي للشركة (Primary Color):</label>
-          <div style="display:flex; align-items:center; gap:0.5rem;">
-            <input type="color" id="primaryColorInput" value="#D7192D" style="width:45px; height:38px; border:none; cursor:pointer; border-radius:4px;">
-            <span id="primaryColorHex" style="font-weight:700; font-size:0.85rem;">#D7192D</span>
+          <div style="display:flex; justify-content:flex-end; gap:0.4rem;">
+            <button type="button" class="btn btn-outline btn-sm" id="btnCancelEditPreset" style="display:none;" onclick="cancelEditPreset()">إلغاء</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btnSavePreset">حفظ الشفت الثابت</button>
           </div>
-          <div class="color-swatches">
-            <button class="color-swatch-btn" style="background:#D7192D;" title="أحمر Rental Gate" onclick="setPrimaryColor('#D7192D')"></button>
-            <button class="color-swatch-btn" style="background:#2563EB;" title="أزرق عصري" onclick="setPrimaryColor('#2563EB')"></button>
-            <button class="color-swatch-btn" style="background:#059669;" title="أخضر زمردي" onclick="setPrimaryColor('#059669')"></button>
-            <button class="color-swatch-btn" style="background:#7C3AED;" title="بنفسجي ملكي" onclick="setPrimaryColor('#7C3AED')"></button>
-            <button class="color-swatch-btn" style="background:#EA580C;" title="برتقالي حيوي" onclick="setPrimaryColor('#EA580C')"></button>
-          </div>
-        </div>
+        </form>
 
-        <!-- قسم اللون الداكن للترويسة -->
-        <div class="form-group" style="margin-top:1rem;">
-          <label class="form-label">لون الترويسة والعناصر الداكنة (Dark Color):</label>
-          <div style="display:flex; align-items:center; gap:0.5rem;">
-            <input type="color" id="darkColorInput" value="#292929" style="width:45px; height:38px; border:none; cursor:pointer; border-radius:4px;">
-            <span id="darkColorHex" style="font-weight:700; font-size:0.85rem;">#292929</span>
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="resetThemeColors()">استعادة الألوان الافتراضية</button>
-        <button type="button" class="btn btn-primary" onclick="closeModal('settingsModalBackdrop')">تم وحفظ</button>
+        <h4 style="font-size: 0.875rem; font-weight: 800; color: var(--text); margin-bottom: 0.5rem;">قائمة الشفتات الثابتة المحفوظة:</h4>
+        <div id="presetsListContainer" style="max-height: 250px; overflow-y: auto;"></div>
       </div>
     </div>
   </div>
 
   <!-- ==========================================================================
-       مودال 2: إدارة الموظفين
+       مودال 2: إضافة شفت عمل (بسيطة ونظيفة وخالية من الشفتات الثابتة)
        ========================================================================== -->
+  <div class="modal-backdrop" id="shiftModalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="shiftModalTitle">إضافة شفت عمل</h3>
+        <button class="modal-close" onclick="closeModal('shiftModalBackdrop')">&times;</button>
+      </div>
+      <form id="shiftForm" onsubmit="handleSaveShift(event)">
+        <input type="hidden" id="editShiftId" value="">
+        <input type="hidden" id="singleDateTarget" value="">
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">الموظف:</label>
+            <select id="shiftEmployeeSelect" class="form-control" required></select>
+          </div>
+
+          <!-- اختيار شفت ثابت جاهز اختياري لتعبئة الساعات فوراً -->
+          <div class="form-group" style="background:var(--surface-subtle); padding:0.5rem 0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+              <label class="form-label" style="margin:0;">تعبئة سريعة من شفت ثابت (اختياري):</label>
+              <button type="button" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:1px 5px;" onclick="openPresetsModalFromShift()">إدارة الشفتات</button>
+            </div>
+            <select id="quickPresetDropdown" class="form-control" onchange="applyPresetFromDropdown(this.value)">
+              <option value="">-- اختر شفت ثابت للتعبئة التلقائية --</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="daysSelectWrapper">
+            <label class="form-label">الأيام المراد تطبيق الشفت عليها في الأسبوع:</label>
+            <div class="day-checkboxes" id="shiftDaysCheckboxes"></div>
+          </div>
+
+          <!-- وقت البداية 12 ساعة -->
+          <div class="form-group">
+            <label class="form-label">وقت بداية الشفت (توقيت مصر):</label>
+            <div class="time-picker-grid">
+              <select id="startHour" required onchange="updateShiftPreview()"></select>
+              <select id="startMinute" required onchange="updateShiftPreview()">
+                <option value="00">00 دقيقة</option>
+                <option value="15">15 دقيقة</option>
+                <option value="30">30 دقيقة</option>
+                <option value="45">45 دقيقة</option>
+              </select>
+              <select id="startPeriod" required onchange="updateShiftPreview()">
+                <option value="ص">صباحاً (ص)</option>
+                <option value="م">مساءً (م)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- وقت النهاية 12 ساعة -->
+          <div class="form-group">
+            <label class="form-label">وقت نهاية الشفت (توقيت مصر):</label>
+            <div class="time-picker-grid">
+              <select id="endHour" required onchange="updateShiftPreview()"></select>
+              <select id="endMinute" required onchange="updateShiftPreview()">
+                <option value="00">00 دقيقة</option>
+                <option value="15">15 دقيقة</option>
+                <option value="30">30 دقيقة</option>
+                <option value="45">45 دقيقة</option>
+              </select>
+              <select id="endPeriod" required onchange="updateShiftPreview()">
+                <option value="ص">صباحاً (ص)</option>
+                <option value="م" selected>مساءً (م)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="preview-box">
+            <div>⏰ <strong>مصر:</strong> <span id="prevEgTime">09:00 ص - 05:00 م</span></div>
+            <div>🇸🇦 <strong>السعودية (للعلم فقط):</strong> <span id="prevSaTime">10:00 ص - 06:00 م</span></div>
+            <div>⏳ <strong>مدة العمل الفعلية:</strong> <span id="prevDuration" style="font-weight:900;">8 ساعات عمل</span></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('shiftModalBackdrop')">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ الشفت</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال إدارة الموظفين -->
   <div class="modal-backdrop" id="empManagerModalBackdrop">
     <div class="modal" style="max-width: 620px;">
       <div class="modal-header">
@@ -1153,9 +1202,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       مودال 3: تبديل الشفتات بين موظفين
-       ========================================================================== -->
+  <!-- مودال تبديل الشفتات بين موظفين -->
   <div class="modal-backdrop" id="swapModalBackdrop">
     <div class="modal">
       <div class="modal-header">
@@ -1186,92 +1233,61 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       مودال 4: إضافة وتعديل الشفت مع إدارة الشفتات الثابتة (إضافة، تعديل، حذف)
-       ========================================================================== -->
-  <div class="modal-backdrop" id="shiftModalBackdrop">
+  <!-- مودال إعدادات الألوان والشعار -->
+  <div class="modal-backdrop" id="settingsModalBackdrop">
     <div class="modal">
       <div class="modal-header">
-        <h3 id="shiftModalTitle">إضافة شفت عمل</h3>
-        <button class="modal-close" onclick="closeModal('shiftModalBackdrop')">&times;</button>
+        <h3>⚙️ تخصيص الألوان وهوية الشركة</h3>
+        <button class="modal-close" onclick="closeModal('settingsModalBackdrop')">&times;</button>
       </div>
-      <form id="shiftForm" onsubmit="handleSaveShift(event)">
-        <input type="hidden" id="editShiftId" value="">
-        <input type="hidden" id="singleDateTarget" value="">
-
-        <div class="modal-body">
-          <!-- شريط الشفتات الثابتة مع أزرار التعديل والحذف والإضافة -->
-          <div class="presets-container">
-            <div class="presets-title">
-              <span>⚡ الشفتات الثابتة (اضغط لتطبيق الوقت فوراً):</span>
-              <button type="button" class="btn btn-outline btn-sm" style="font-size:0.68rem; padding:1px 6px;" onclick="addCustomPresetPrompt()">+ إضافة شفت ثابت</button>
+      <div class="modal-body">
+        
+        <div class="form-group" style="padding-bottom:1rem; border-bottom:1px solid var(--border);">
+          <label class="form-label">شعار الشركة (Company Logo):</label>
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <div id="settingsLogoPreview" style="width:50px; height:50px; border-radius:6px; background:#eee; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid #ccc;">
+              <span style="font-weight:900; color:#666;">RG</span>
             </div>
-            <div class="presets-chips" id="presetsChipsContainer"></div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">الموظف:</label>
-            <select id="shiftEmployeeSelect" class="form-control" required></select>
-          </div>
-
-          <div class="form-group" id="daysSelectWrapper">
-            <label class="form-label">الأيام المراد تطبيق الشفت عليها:</label>
-            <div class="day-checkboxes" id="shiftDaysCheckboxes"></div>
-          </div>
-
-          <!-- وقت البداية 12 ساعة -->
-          <div class="form-group">
-            <label class="form-label">وقت بداية الشفت (توقيت مصر):</label>
-            <div class="time-picker-grid">
-              <select id="startHour" required onchange="updateShiftPreview()"></select>
-              <select id="startMinute" required onchange="updateShiftPreview()">
-                <option value="00">00 دقيقة</option>
-                <option value="15">15 دقيقة</option>
-                <option value="30">30 دقيقة</option>
-                <option value="45">45 دقيقة</option>
-              </select>
-              <select id="startPeriod" required onchange="updateShiftPreview()">
-                <option value="ص">صباحاً (ص)</option>
-                <option value="م">مساءً (م)</option>
-              </select>
+            <div style="flex:1;">
+              <input type="file" id="logoFileInput" accept="image/*" class="form-control" style="padding:0.3rem; font-size:0.75rem;">
+              <small style="color:var(--text-muted); font-size:0.7rem; display:block; margin-top:2px;">اختر صورة الشعار لاستبدال RG في الموقع والـ PDF</small>
             </div>
           </div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="resetDefaultLogo()">استعادة شعار RG الافتراضي</button>
+        </div>
 
-          <!-- وقت النهاية 12 ساعة -->
-          <div class="form-group">
-            <label class="form-label">وقت نهاية الشفت (توقيت مصر):</label>
-            <div class="time-picker-grid">
-              <select id="endHour" required onchange="updateShiftPreview()"></select>
-              <select id="endMinute" required onchange="updateShiftPreview()">
-                <option value="00">00 دقيقة</option>
-                <option value="15">15 دقيقة</option>
-                <option value="30">30 دقيقة</option>
-                <option value="45">45 دقيقة</option>
-              </select>
-              <select id="endPeriod" required onchange="updateShiftPreview()">
-                <option value="ص">صباحاً (ص)</option>
-                <option value="م" selected>مساءً (م)</option>
-              </select>
-            </div>
+        <div class="form-group" style="margin-top:1rem;">
+          <label class="form-label">اللون الأساسي (Primary Color):</label>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <input type="color" id="primaryColorInput" value="#D7192D" style="width:45px; height:38px; border:none; cursor:pointer; border-radius:4px;">
+            <span id="primaryColorHex" style="font-weight:700; font-size:0.85rem;">#D7192D</span>
           </div>
-
-          <!-- صندوق المعاينة -->
-          <div class="preview-box">
-            <div>⏰ <strong>مصر:</strong> <span id="prevEgTime">09:00 ص - 05:00 م</span></div>
-            <div>🇸🇦 <strong>السعودية (للعلم فقط):</strong> <span id="prevSaTime">10:00 ص - 06:00 م</span></div>
-            <div>⏳ <strong>مدة العمل الفعلية:</strong> <span id="prevDuration" style="font-weight:900;">8 ساعات عمل</span></div>
+          <div class="color-swatches">
+            <button class="color-swatch-btn" style="background:#D7192D;" title="أحمر Rental Gate" onclick="setPrimaryColor('#D7192D')"></button>
+            <button class="color-swatch-btn" style="background:#2563EB;" title="أزرق عصري" onclick="setPrimaryColor('#2563EB')"></button>
+            <button class="color-swatch-btn" style="background:#059669;" title="أخضر زمردي" onclick="setPrimaryColor('#059669')"></button>
+            <button class="color-swatch-btn" style="background:#7C3AED;" title="بنفسجي ملكي" onclick="setPrimaryColor('#7C3AED')"></button>
+            <button class="color-swatch-btn" style="background:#EA580C;" title="برتقالي حيوي" onclick="setPrimaryColor('#EA580C')"></button>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline" onclick="closeModal('shiftModalBackdrop')">إلغاء</button>
-          <button type="submit" class="btn btn-primary">حفظ الشفت</button>
+        <div class="form-group" style="margin-top:1rem;">
+          <label class="form-label">لون الترويسة الداكن (Dark Color):</label>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <input type="color" id="darkColorInput" value="#292929" style="width:45px; height:38px; border:none; cursor:pointer; border-radius:4px;">
+            <span id="darkColorHex" style="font-weight:700; font-size:0.85rem;">#292929</span>
+          </div>
         </div>
-      </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="resetThemeColors()">استعادة الألوان الافتراضية</button>
+        <button type="button" class="btn btn-primary" onclick="closeModal('settingsModalBackdrop')">تم وحفظ</button>
+      </div>
     </div>
   </div>
 
-  <!-- مودال الشكر التفاعلي عند التصدير -->
+  <!-- مودال الشكر التفاعلي -->
   <div class="modal-backdrop" id="thankyouModalBackdrop">
     <div class="modal" style="max-width: 420px;">
       <div class="modal-body thankyou-card">
@@ -1308,7 +1324,8 @@
         { id: "p3", name: "مسائي متأخر", sH: "05", sM: "00", sP: "م", eH: "01", eM: "00", eP: "ص" },
         { id: "p4", name: "ليلي كامل", sH: "11", sM: "00", sP: "م", eH: "07", eM: "00", eP: "ص" }
       ],
-      clipboardShift: null, // الحافظة للنسخ واللصق
+      copiedEmployeeSchedule: null, // الحافظة لنسخ جدول الموظف بالكامل
+      singleCopiedShift: null,      // الحافظة لنسخ شفت فردي
       companyLogo: null
     };
 
@@ -1461,7 +1478,6 @@
       document.getElementById("themeText").textContent = isDark ? "الوضع الفاتح" : "الوضع الليلي";
     }
 
-    /* تخصيص الألوان */
     function applyPrimaryColor(color) {
       document.documentElement.style.setProperty("--primary", color);
       document.documentElement.style.setProperty("--primary-border", color + "88");
@@ -1490,7 +1506,6 @@
       showToast("تمت استعادة الألوان الافتراضية");
     }
 
-    /* تطبيق وحفظ الشعار */
     function applyCompanyLogo(dataUrl) {
       const container = document.getElementById("brandLogoContainer");
       const printHolder = document.getElementById("printLogoHolder");
@@ -1572,51 +1587,105 @@
     }
 
     /* ==========================================================================
-       النسخ واللصق التفاعلي للشفتات (Copy & Paste)
+       نسخ ولصق جدول الموظف بالكامل من كرت الاسم
        ========================================================================== */
 
-    function copyShift(shiftId) {
+    function copyEmployeeSchedule(empId) {
+      const emp = state.employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      const dates = getWeekDates(state.currentWeekStart).map(d => formatDateISO(d));
+      const empShifts = state.shifts.filter(s => s.employeeId === empId && dates.includes(s.date));
+
+      if (empShifts.length === 0) {
+        showToast(`لا توجد شفتات مسجلة للموظف (${emp.name}) في هذا الأسبوع لنسخها`, "error");
+        return;
+      }
+
+      state.copiedEmployeeSchedule = {
+        sourceName: emp.name,
+        shifts: empShifts.map(s => ({
+          date: s.date,
+          startTime: s.startTime,
+          endTime: s.endTime,
+          isOff: s.isOff
+        }))
+      };
+
+      renderSchedule();
+      showToast(`تم نسخ كامل جدول (${emp.name}) للأسبوع! اضغط زر اللصق (📥) بجانب أي موظف لتطبيقه عليه.`);
+    }
+
+    function pasteEmployeeSchedule(targetEmpId) {
+      if (!state.copiedEmployeeSchedule) {
+        showToast("يرجى نسخ جدول موظف أولاً بالضغط على زر (📋) بجانب اسمه", "error");
+        return;
+      }
+
+      const targetEmp = state.employees.find(e => e.id === targetEmpId);
+      if (!targetEmp) return;
+
+      const dates = getWeekDates(state.currentWeekStart).map(d => formatDateISO(d));
+
+      // تطبيق كل شفت من الشفتات المنسوخة
+      state.copiedEmployeeSchedule.shifts.forEach(copied => {
+        let existing = state.shifts.find(s => s.employeeId === targetEmpId && s.date === copied.date);
+        if (existing) {
+          existing.isOff = copied.isOff;
+          existing.startTime = copied.startTime;
+          existing.endTime = copied.endTime;
+          syncSaveCloud("shifts", existing);
+        } else {
+          const newShift = {
+            id: "sh_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+            employeeId: targetEmpId,
+            date: copied.date,
+            isOff: copied.isOff,
+            startTime: copied.startTime,
+            endTime: copied.endTime
+          };
+          state.shifts.push(newShift);
+          syncSaveCloud("shifts", newShift);
+        }
+      });
+
+      saveLocal();
+      renderSchedule();
+      showToast(`تم لصق وتطبيق جدول (${state.copiedEmployeeSchedule.sourceName}) على الموظف (${targetEmp.name}) بنجاح!`);
+    }
+
+    /* نسخ شفت فردي */
+    function copySingleShift(shiftId) {
       const shift = state.shifts.find(s => s.id === shiftId);
       if (!shift) return;
 
-      state.clipboardShift = {
+      state.singleCopiedShift = {
         startTime: shift.startTime,
         endTime: shift.endTime,
         isOff: shift.isOff
       };
 
-      const bar = document.getElementById("clipboardBar");
-      const desc = document.getElementById("clipboardDesc");
-
-      if (shift.isOff) {
-        desc.textContent = "📋 تم نسخ: (أوف / راحة)";
-      } else {
-        const timeText = `${formatTime12h(shift.startTime)} — ${formatTime12h(shift.endTime)}`;
-        desc.textContent = `📋 تم نسخ الشفت: (${timeText})`;
-      }
-
-      bar.classList.add("active");
       renderSchedule();
-      showToast("تم نسخ الشفت! اضغط 'لصق' في أي يوم بالجدول");
+      showToast("تم نسخ الشفت الفردي! اضغط 'لصق' في أي يوم بالجدول");
     }
 
-    function pasteShift(targetEmpId, targetDate) {
-      if (!state.clipboardShift) return;
+    function pasteSingleShift(targetEmpId, targetDate) {
+      if (!state.singleCopiedShift) return;
 
       let existing = state.shifts.find(s => s.employeeId === targetEmpId && s.date === targetDate);
       if (existing) {
-        existing.isOff = state.clipboardShift.isOff;
-        existing.startTime = state.clipboardShift.startTime;
-        existing.endTime = state.clipboardShift.endTime;
+        existing.isOff = state.singleCopiedShift.isOff;
+        existing.startTime = state.singleCopiedShift.startTime;
+        existing.endTime = state.singleCopiedShift.endTime;
         syncSaveCloud("shifts", existing);
       } else {
         const newShift = {
           id: "sh_" + Date.now() + "_" + Math.floor(Math.random()*1000),
           employeeId: targetEmpId,
           date: targetDate,
-          isOff: state.clipboardShift.isOff,
-          startTime: state.clipboardShift.startTime,
-          endTime: state.clipboardShift.endTime
+          isOff: state.singleCopiedShift.isOff,
+          startTime: state.singleCopiedShift.startTime,
+          endTime: state.singleCopiedShift.endTime
         };
         state.shifts.push(newShift);
         syncSaveCloud("shifts", newShift);
@@ -1627,105 +1696,151 @@
       showToast("تم لصق الشفت بنجاح!");
     }
 
-    function clearClipboard() {
-      state.clipboardShift = null;
-      document.getElementById("clipboardBar").classList.remove("active");
-      renderSchedule();
-      showToast("تم إلغاء النسخ");
-    }
-
     /* ==========================================================================
-       إدارة الشفتات الثابتة (إضافة، تعديل، حذف)
+       إدارة الشفتات الثابتة المستقلة (إضافة، تعديل، حذف)
        ========================================================================== */
 
-    function renderPresetChips() {
-      const container = document.getElementById("presetsChipsContainer");
+    function populatePresetHoursSelectors() {
+      const sH = document.getElementById("presetStartH");
+      const eH = document.getElementById("presetEndH");
+      sH.innerHTML = ""; eH.innerHTML = "";
+      for (let i = 1; i <= 12; i++) {
+        const val = String(i).padStart(2, "0");
+        sH.innerHTML += `<option value="${val}">${val}</option>`;
+        eH.innerHTML += `<option value="${val}">${val}</option>`;
+      }
+      sH.value = "09";
+      eH.value = "05";
+    }
+
+    function renderPresetsModalList() {
+      const container = document.getElementById("presetsListContainer");
       container.innerHTML = "";
 
+      if (state.shiftPresets.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:1rem;">لا توجد شفتات ثابتة محفوظة بعد</p>`;
+        return;
+      }
+
       state.shiftPresets.forEach(p => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "preset-chip-wrapper";
+        const item = document.createElement("div");
+        item.className = "preset-card-item";
 
-        wrapper.innerHTML = `
-          <button type="button" class="preset-chip-btn" onclick="applyShiftPresetById('${p.id}')">
-            ${p.name} (${p.sH}:${p.sM} ${p.sP} - ${p.eH}:${p.eM} ${p.eP})
-          </button>
-          <button type="button" class="preset-edit-btn" title="تعديل الشفت الثابت" onclick="editShiftPreset('${p.id}')">✏️</button>
-          <button type="button" class="preset-delete-btn" title="حذف الشفت الثابت" onclick="deleteShiftPreset('${p.id}')">✕</button>
+        item.innerHTML = `
+          <div class="preset-card-info">
+            <h4>${p.name}</h4>
+            <p>من ${p.sH}:${p.sM} ${p.sP} إلى ${p.eH}:${p.eM} ${p.eP}</p>
+          </div>
+          <div style="display:flex; gap:0.35rem;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="editPresetInModal('${p.id}')">تعديل</button>
+            <button type="button" class="btn btn-danger-outline btn-sm" onclick="deletePresetFromModal('${p.id}')">حذف</button>
+          </div>
         `;
-        container.appendChild(wrapper);
+        container.appendChild(item);
+      });
+
+      // تحديث قائمة الشفتات في نافذة إضافة الشفت العادية
+      updateQuickPresetsDropdown();
+    }
+
+    function updateQuickPresetsDropdown() {
+      const dropdown = document.getElementById("quickPresetDropdown");
+      dropdown.innerHTML = `<option value="">-- اختر شفت ثابت للتعبئة التلقائية --</option>`;
+      state.shiftPresets.forEach(p => {
+        dropdown.innerHTML += `<option value="${p.id}">${p.name} (${p.sH}:${p.sM} ${p.sP} - ${p.eH}:${p.eM} ${p.eP})</option>`;
       });
     }
 
-    function applyShiftPresetById(presetId) {
-      const preset = state.shiftPresets.find(p => p.id === presetId);
-      if (!preset) return;
-
-      document.getElementById("startHour").value = preset.sH;
-      document.getElementById("startMinute").value = preset.sM;
-      document.getElementById("startPeriod").value = preset.sP;
-
-      document.getElementById("endHour").value = preset.eH;
-      document.getElementById("endMinute").value = preset.eM;
-      document.getElementById("endPeriod").value = preset.eP;
-
-      updateShiftPreview();
-      showToast(`تم تطبيق: ${preset.name}`);
-    }
-
-    function addCustomPresetPrompt() {
-      const name = prompt("أدخل اسم الشفت الثابت الجديد (مثال: شفت العصر، شفت إضافي):");
-      if (!name || !name.trim()) return;
-
-      const sH = document.getElementById("startHour").value;
-      const sM = document.getElementById("startMinute").value;
-      const sP = document.getElementById("startPeriod").value;
-      const eH = document.getElementById("endHour").value;
-      const eM = document.getElementById("endMinute").value;
-      const eP = document.getElementById("endPeriod").value;
-
-      state.shiftPresets.push({
-        id: "p_" + Date.now(),
-        name: name.trim(),
-        sH, sM, sP, eH, eM, eP
-      });
-
-      saveLocal();
-      renderPresetChips();
-      showToast(`تم حفظ الشفت الثابت (${name}) بنجاح`);
-    }
-
-    function editShiftPreset(presetId) {
+    function applyPresetFromDropdown(presetId) {
+      if (!presetId) return;
       const p = state.shiftPresets.find(x => x.id === presetId);
       if (!p) return;
 
-      const newName = prompt("تعديل اسم الشفت الثابت:", p.name);
-      if (!newName || !newName.trim()) return;
+      document.getElementById("startHour").value = p.sH;
+      document.getElementById("startMinute").value = p.sM;
+      document.getElementById("startPeriod").value = p.sP;
 
-      // أخذ الأوقات الحالية من المحدِّد
-      p.name = newName.trim();
-      p.sH = document.getElementById("startHour").value;
-      p.sM = document.getElementById("startMinute").value;
-      p.sP = document.getElementById("startPeriod").value;
-      p.eH = document.getElementById("endHour").value;
-      p.eM = document.getElementById("endMinute").value;
-      p.eP = document.getElementById("endPeriod").value;
+      document.getElementById("endHour").value = p.eH;
+      document.getElementById("endMinute").value = p.eM;
+      document.getElementById("endPeriod").value = p.eP;
 
-      saveLocal();
-      renderPresetChips();
-      showToast(`تم تحديث شفت (${p.name}) بالأوقات المحددة حالياً`);
+      updateShiftPreview();
+      showToast(`تم تعبئة أوقات: ${p.name}`);
     }
 
-    function deleteShiftPreset(presetId) {
-      const p = state.shiftPresets.find(x => x.id === presetId);
+    function handleSavePreset(e) {
+      e.preventDefault();
+      const id = document.getElementById("editPresetId").value;
+      const name = document.getElementById("presetNameInput").value.trim();
+      const sH = document.getElementById("presetStartH").value;
+      const sM = document.getElementById("presetStartM").value;
+      const sP = document.getElementById("presetStartP").value;
+      const eH = document.getElementById("presetEndH").value;
+      const eM = document.getElementById("presetEndM").value;
+      const eP = document.getElementById("presetEndP").value;
+
+      if (!name) return;
+
+      if (id) {
+        const p = state.shiftPresets.find(x => x.id === id);
+        if (p) {
+          p.name = name; p.sH = sH; p.sM = sM; p.sP = sP; p.eH = eH; p.eM = eM; p.eP = eP;
+          showToast(`تم تعديل الشفت الثابت (${name})`);
+        }
+      } else {
+        state.shiftPresets.push({
+          id: "p_" + Date.now(),
+          name, sH, sM, sP, eH, eM, eP
+        });
+        showToast(`تمت إضافة الشفت الثابت (${name}) بنجاح`);
+      }
+
+      saveLocal();
+      cancelEditPreset();
+      renderPresetsModalList();
+    }
+
+    function editPresetInModal(id) {
+      const p = state.shiftPresets.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById("editPresetId").value = p.id;
+      document.getElementById("presetNameInput").value = p.name;
+      document.getElementById("presetStartH").value = p.sH;
+      document.getElementById("presetStartM").value = p.sM;
+      document.getElementById("presetStartP").value = p.sP;
+      document.getElementById("presetEndH").value = p.eH;
+      document.getElementById("presetEndM").value = p.eM;
+      document.getElementById("presetEndP").value = p.eP;
+
+      document.getElementById("presetFormHeading").textContent = `تعديل: ${p.name}`;
+      document.getElementById("btnSavePreset").textContent = "حفظ التعديل";
+      document.getElementById("btnCancelEditPreset").style.display = "inline-flex";
+    }
+
+    function cancelEditPreset() {
+      document.getElementById("editPresetId").value = "";
+      document.getElementById("presetNameInput").value = "";
+      document.getElementById("presetFormHeading").textContent = "+ إضافة شفت ثابت جديد";
+      document.getElementById("btnSavePreset").textContent = "حفظ الشفت الثابت";
+      document.getElementById("btnCancelEditPreset").style.display = "none";
+    }
+
+    function deletePresetFromModal(id) {
+      const p = state.shiftPresets.find(x => x.id === id);
       if (!p) return;
 
       if (confirm(`هل أنت متأكد من حذف الشفت الثابت (${p.name})؟`)) {
-        state.shiftPresets = state.shiftPresets.filter(x => x.id !== presetId);
+        state.shiftPresets = state.shiftPresets.filter(x => x.id !== id);
         saveLocal();
-        renderPresetChips();
+        renderPresetsModalList();
         showToast("تم حذف الشفت الثابت");
       }
+    }
+
+    function openPresetsModalFromShift() {
+      closeModal("shiftModalBackdrop");
+      openModal("presetsModalBackdrop");
     }
 
     /* ==========================================================================
@@ -1912,7 +2027,7 @@
     }
 
     /* ==========================================================================
-       التحكم بالشفتات والأوف والسحب والإفلات
+       التحكم بالشفتات ونوافذ الإضافة والسحب والإفلات
        ========================================================================== */
 
     function toggleOffDay(empId, dateStr) {
@@ -1951,7 +2066,7 @@
 
     function openShiftModalFor(empId, targetDateStr = null) {
       populateHoursSelect();
-      renderPresetChips();
+      updateQuickPresetsDropdown();
 
       const selectEmp = document.getElementById("shiftEmployeeSelect");
       selectEmp.innerHTML = `<option value="">-- اختر موظفاً --</option>`;
@@ -1962,6 +2077,7 @@
       if (empId) selectEmp.value = empId;
       document.getElementById("editShiftId").value = "";
       document.getElementById("singleDateTarget").value = targetDateStr || "";
+      document.getElementById("quickPresetDropdown").value = "";
 
       const daysWrapper = document.getElementById("daysSelectWrapper");
       const daysContainer = document.getElementById("shiftDaysCheckboxes");
@@ -2147,7 +2263,7 @@
     }
 
     /* ==========================================================================
-       رسم الجدول وتوليد الكروت المطابقة لصورة المستخدم
+       رسم الجدول وتوليد الكروت وأزرار النسخ واللصق للموظف
        ========================================================================== */
 
     function getWeekDates(startDate) {
@@ -2200,7 +2316,7 @@
       document.getElementById("printDateToday").textContent = new Date().toLocaleDateString("ar-EG");
 
       const headerRow = document.getElementById("scheduleHeaderRow");
-      headerRow.innerHTML = `<th class="emp-header">الموظف والترتيب</th>`;
+      headerRow.innerHTML = `<th class="emp-header">الموظف والترتيب والنسخ</th>`;
 
       const todayIso = formatDateISO(new Date());
 
@@ -2233,15 +2349,21 @@
         const tr = document.createElement("tr");
         let empTotalHours = 0;
 
+        // حالة زر لصق الجدول
+        const isPasteReady = state.copiedEmployeeSchedule !== null;
+
         let rowHtml = `
           <td class="emp-cell-sticky">
             <div class="emp-cell-content">
               <div class="emp-row-top">
-                <span class="emp-title">${emp.name}</span>
-                <div class="reorder-btns no-print">
-                  <button class="reorder-btn" title="تحريك لأعلى" onclick="moveEmployeeOrder('${emp.id}', 'up')">▲</button>
-                  <button class="reorder-btn" title="تحريك لأسفل" onclick="moveEmployeeOrder('${emp.id}', 'down')">▼</button>
-                  <button class="reorder-btn" style="color:#ef4444;" title="حذف الموظف" onclick="deleteEmployee('${emp.id}')">✕</button>
+                <span class="emp-title" title="${emp.name}">${emp.name}</span>
+                <div class="emp-toolbar-btns no-print">
+                  <!-- أزرار النسخ واللصق على كرت الموظف بجانب الاسم مباشرة -->
+                  <button class="emp-tool-btn btn-copy-emp" onclick="copyEmployeeSchedule('${emp.id}')" title="نسخ كامل جدول (${emp.name}) لهذا الأسبوع">📋 نسخ</button>
+                  <button class="emp-tool-btn btn-paste-emp ${isPasteReady ? 'glow' : ''}" onclick="pasteEmployeeSchedule('${emp.id}')" title="لصق الجدول المنسوخ على (${emp.name})">📥 لصق</button>
+                  <button class="emp-tool-btn" title="تحريك لأعلى" onclick="moveEmployeeOrder('${emp.id}', 'up')">▲</button>
+                  <button class="emp-tool-btn" title="تحريك لأسفل" onclick="moveEmployeeOrder('${emp.id}', 'down')">▼</button>
+                  <button class="emp-tool-btn" style="color:#ef4444;" title="حذف الموظف" onclick="deleteEmployee('${emp.id}')">✕</button>
                 </div>
               </div>
               <span class="emp-badge ${emp.role === 'مشرف' ? 'super' : ''}">${emp.role}</span>
@@ -2263,7 +2385,7 @@
                    ondragend="handleDragEnd(event)">
                 <span class="off-tag">🏖️ أوف / راحة</span>
                 <div class="cell-actions no-print">
-                  <button class="action-btn copy-btn" onclick="copyShift('${shift.id}')" title="نسخ الأوف">📋 نسخ</button>
+                  <button class="action-btn copy-btn" onclick="copySingleShift('${shift.id}')" title="نسخ الأوف">📋</button>
                   <button class="action-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="إلغاء الأوف">إلغاء</button>
                   <button class="action-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')" title="تحديد شفت">شفت</button>
                 </div>
@@ -2275,48 +2397,42 @@
             const dur = getWorkDuration(shift.startTime, shift.endTime);
             empTotalHours += dur.hours;
 
-            /* كارت الشفت المطابق تماماً للصورة المرفقة */
             cellContent = `
               <div class="shift-card" draggable="true"
                    ondragstart="handleDragStart(event, '${shift.id}', '${emp.id}', '${dateStr}')"
                    ondragend="handleDragEnd(event)">
                 
-                <!-- السطر الأول: مصر 09:00 ص - 05:00 م -->
                 <div class="time-line-egypt">
                   <span class="flag-pill-egypt">مصر</span>
                   <span>${egTime}</span>
                 </div>
 
-                <!-- السطر الثاني: SA السعودية 10:00 ص - 06:00 م -->
                 <div class="time-line-saudi">
                   <span>SA السعودية:</span>
                   <span>${saTime}</span>
                 </div>
 
-                <!-- السطر الثالث: ساعات العمل بالأحمر -->
                 <div class="work-hours-count">
                   <span>⏱️</span>
                   <span>${dur.text}</span>
                 </div>
 
-                <!-- أزرار العمليات -->
                 <div class="cell-actions no-print">
-                  <button class="action-btn copy-btn" onclick="copyShift('${shift.id}')" title="نسخ الشفت">📋 نسخ</button>
+                  <button class="action-btn copy-btn" onclick="copySingleShift('${shift.id}')" title="نسخ الشفت">📋</button>
                   <button class="action-btn off-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')" title="تحويل لأوف">تحويل لأوف</button>
                   <button class="action-btn" onclick="deleteShiftDirect('${shift.id}')" title="حذف">حذف</button>
                 </div>
               </div>
             `;
           } else {
-            // خلية فارغة: مع إمكانية اللصق السريع إذا كان هناك شفت في الحافظة
-            let pasteButtonHtml = "";
-            if (state.clipboardShift) {
-              pasteButtonHtml = `<button class="paste-btn-active" onclick="pasteShift('${emp.id}', '${dateStr}')">📥 لصق هنا</button>`;
+            let singlePasteBtn = "";
+            if (state.singleCopiedShift) {
+              singlePasteBtn = `<button class="paste-day-btn" onclick="pasteSingleShift('${emp.id}', '${dateStr}')">📥 لصق</button>`;
             }
 
             cellContent = `
               <div class="empty-actions no-print">
-                ${pasteButtonHtml}
+                ${singlePasteBtn}
                 <button class="add-shift-btn" onclick="openShiftModalFor('${emp.id}', '${dateStr}')">+ شفت</button>
                 <button class="quick-off-btn" onclick="toggleOffDay('${emp.id}', '${dateStr}')">أوف</button>
               </div>
@@ -2346,7 +2462,7 @@
     }
 
     /* ==========================================================================
-       التصدير للـ Excel والطباعة في صفحة واحدة A4
+       التصدير للـ Excel والـ PDF في ورقة واحدة
        ========================================================================== */
 
     function exportWeeklyMatrixExcel() {
@@ -2400,7 +2516,6 @@
     }
 
     function exportSinglePagePDF() {
-      // إعداد مقياس الخط بناءً على عدد الموظفين لضمان البقاء في صفحة واحدة حتى 20 موظفاً
       const count = state.employees.length;
       const table = document.getElementById("scheduleTable");
 
@@ -2411,8 +2526,6 @@
       }
 
       window.print();
-
-      // إعادة التنسيق بعد الانتهاء
       table.style.removeProperty("font-size");
       setTimeout(openThankYouModal, 1000);
     }
@@ -2444,6 +2557,8 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       loadLocal();
+      populatePresetHoursSelectors();
+      renderPresetsModalList();
       renderDaysFilterChips();
       renderSchedule();
       syncFetchCloud();
@@ -2451,10 +2566,16 @@
       // الوضع الليلي
       document.getElementById("btnThemeToggle").addEventListener("click", toggleTheme);
 
+      // زر الشفتات الثابتة المستقل
+      document.getElementById("btnOpenPresetsModal").addEventListener("click", () => {
+        renderPresetsModalList();
+        openModal("presetsModalBackdrop");
+      });
+
       // زر الترس العائم للإعدادات
       document.getElementById("btnOpenSettings").addEventListener("click", () => openModal("settingsModalBackdrop"));
 
-      // استماع ملف الشعار
+      // رفع الشعار
       document.getElementById("logoFileInput").addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
