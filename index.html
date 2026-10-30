@@ -8,14 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات ExcelJS و FileSaver لإنشاء وتصدير ملف Excel حقيقي بالتنسيق والفلاتر والألوان -->
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
   <style>
-    /* ==========================================================================
-       1. المتغيرات والسمات الديناميكية (Design System & Theme)
-       ========================================================================== */
+    /* 1. نظام الألوان والسمات */
     :root {
       --primary: #D7192D;
       --primary-hover: #b81425;
@@ -69,9 +66,7 @@
       transition: background-color 0.25s, color 0.25s;
     }
 
-    /* ==========================================================================
-       2. شريط التنقل العلوي (Header)
-       ========================================================================== */
+    /* 2. شريط التنقل العلوي */
     .header {
       background-color: var(--dark);
       color: white;
@@ -150,9 +145,7 @@
     .sync-dot.saving { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
     .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
-    /* ==========================================================================
-       3. شريط الأدوات والعمليات
-       ========================================================================== */
+    /* 3. شريط الأدوات */
     .container {
       max-width: 1600px;
       width: 100%;
@@ -204,7 +197,6 @@
     .btn-excel:hover { background: #0c6736; }
     .btn-sm { padding: 0.22rem 0.5rem; font-size: 0.725rem; }
 
-    /* فلترة وبحث وتحديد الأيام */
     .filter-bar {
       display: flex; align-items: center; justify-content: space-between;
       gap: 0.75rem; margin-bottom: 0.85rem; flex-wrap: wrap;
@@ -230,9 +222,7 @@
     }
     .day-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-    /* ==========================================================================
-       4. جدول الشفتات الأسبوعي
-       ========================================================================== */
+    /* 4. جدول الشفتات الأسبوعي */
     .schedule-card {
       background: var(--surface); border-radius: var(--radius-lg);
       border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden;
@@ -260,7 +250,6 @@
     .schedule-table th .day-date { font-size: 0.7rem; color: #cbd5e1; font-weight: 600; }
     .schedule-table th.is-today { background-color: var(--primary); }
 
-    /* كرت الموظف */
     .emp-cell-content { display: flex; flex-direction: column; gap: 0.35rem; }
     .emp-row-top { display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; }
     .emp-title { font-weight: 800; color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -287,7 +276,6 @@
     }
     .emp-badge.super { background: var(--dark); color: white; }
 
-    /* خلية اليوم */
     .day-cell { min-height: 105px; height: 100%; background: var(--surface); position: relative; }
     .day-cell.drag-over { background-color: var(--primary-light) !important; border: 2px dashed var(--primary) !important; }
 
@@ -352,9 +340,7 @@
     .total-hours-cell .val { font-size: 1.1rem; font-weight: 900; color: var(--text); }
     .total-hours-cell .sub { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
-    /* ==========================================================================
-       5. النوافذ المنبثقة (Modals)
-       ========================================================================== */
+    /* 5. النوافذ المنبثقة */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(2px);
       z-index: 110; display: flex; align-items: center; justify-content: center; padding: 0.85rem;
@@ -421,7 +407,6 @@
     .emp-mgmt-table th, .emp-mgmt-table td { border: 1px solid var(--border); padding: 0.5rem; text-align: right; }
     .emp-mgmt-table th { background: var(--surface-subtle); font-weight: 800; }
 
-    /* الترس العائم */
     .floating-gear-btn {
       position: fixed; bottom: 1.25rem; left: 1.25rem; width: 46px; height: 46px;
       border-radius: 50%; background: var(--dark); color: white; border: 2px solid var(--primary);
@@ -447,15 +432,23 @@
     }
 
     /* ==========================================================================
-       6. طباعة PDF بميزة تخصيص ضغط الموظفين في صفحة واحدة
+       6. إعدادات الـ PDF الإجبارية: LANDSCAPE فقط في ورقة واحدة
        ========================================================================== */
-    @media print {
-      @page { size: A4 landscape; margin: 3mm 4mm 3mm 4mm; }
+    @page {
+      size: A4 landscape !important;
+      margin: 3mm 4mm 3mm 4mm !important;
+    }
 
+    @media print {
       html, body {
-        background: white !important; color: black !important; width: 100% !important;
-        height: 100% !important; margin: 0 !important; padding: 0 !important;
-        -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+        background: white !important;
+        color: black !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
 
       .header, .top-toolbar, .filter-bar, .floating-gear-btn,
@@ -515,7 +508,7 @@
 </head>
 <body>
 
-  <!-- شريط التنقل العلوي -->
+  <!-- الترويسة العلوية -->
   <header class="header">
     <div class="header-container">
       <div class="brand">
@@ -524,7 +517,7 @@
         </div>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات 12 ساعة • تصدير Excel بفلاتر وتصميم رسمي • A4 صفحة واحدة</p>
+          <p>إدارة الشفتات 12 ساعة • PDF Landscape حصري • Excel تفاعلي</p>
         </div>
       </div>
 
@@ -560,7 +553,7 @@
       </div>
     </div>
 
-    <!-- لوحة التحكم والتنقل الأسبوعي والعمليات -->
+    <!-- لوحة التحكم -->
     <div class="top-toolbar no-print">
       <div class="week-nav">
         <button class="btn btn-outline btn-sm" id="btnPrevWeek">
@@ -600,7 +593,6 @@
           مسح الأسبوع
         </button>
 
-        <!-- زر تصدير Excel المطور مع الفلاتر وتصميم Rental Gate الفاخر -->
         <button class="btn btn-excel" id="btnExportExcel" title="تصدير ملف Excel رسمي وفاخر مع فلاتر التصفية والتصميم المعتمد">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
           تصدير Excel تفاعلي
@@ -610,14 +602,14 @@
           ⚙️ تخصيص الـ PDF
         </button>
 
-        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF مباشر في ورقة A4 أفقية واحدة فقط">
+        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF مباشر (Landscape أفقي في صفحة واحدة)">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-          PDF صفحة واحدة
+          PDF أفقي (صفحة واحدة)
         </button>
       </div>
     </div>
 
-    <!-- شريط البحث وتحديد أيام الأسبوع الظاهرة -->
+    <!-- شريط البحث وتحديد أيام الأسبوع -->
     <div class="filter-bar no-print">
       <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث باسم الموظف أو الوظيفة...">
       
@@ -627,7 +619,7 @@
       </div>
     </div>
 
-    <!-- جدول الشفتات الأسبوعي الرئيسي -->
+    <!-- جدول الشفتات الأسبوعي -->
     <div class="schedule-card">
       <div class="table-wrapper">
         <table class="schedule-table" id="scheduleTable">
@@ -649,7 +641,7 @@
 
   </main>
 
-  <!-- الترس العائم لتخصيص الألوان والشعار -->
+  <!-- الترس العائم للإعدادات -->
   <button class="floating-gear-btn" id="btnOpenSettings" title="تخصيص الألوان وشعار الشركة">
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -657,13 +649,11 @@
     </svg>
   </button>
 
-  <!-- ==========================================================================
-       مودال: تخصيص الـ PDF وتخصيص عدد ضغط الموظفين
-       ========================================================================== -->
+  <!-- مودال: تخصيص الـ PDF وضغط الموظفين -->
   <div class="modal-backdrop" id="pdfCustomizerModalBackdrop">
     <div class="modal" style="max-width: 530px;">
       <div class="modal-header" style="border-bottom-color:#2563eb;">
-        <h3>⚙️ تخصيص الـ PDF وإعدادات ضغط الموظفين</h3>
+        <h3>⚙️ تخصيص الـ PDF وضغط الموظفين في ورقة أفقية</h3>
         <button class="modal-close" onclick="closeModal('pdfCustomizerModalBackdrop')">&times;</button>
       </div>
       <div class="modal-body">
@@ -675,7 +665,7 @@
 
         <div class="form-group" style="background:#f0f9ff; padding:0.85rem; border-radius:var(--radius-sm); border:1.5px solid #bae6fd;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-            <label class="form-label" style="margin:0; color:#0369a1; font-weight:800;">🔍 تخصيص نسبة ضغط الجدول بالموظفين:</label>
+            <label class="form-label" style="margin:0; color:#0369a1; font-weight:800;">🔍 نسبة ضغط الجدول بالموظفين (Landscape Fit):</label>
             <span id="scalePercentageLabel" style="font-weight:900; color:#0284c7; font-size:0.9rem;">100%</span>
           </div>
           
@@ -688,11 +678,11 @@
           </div>
 
           <div style="margin-top:0.6rem; display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
-            <span style="font-size:0.75rem; font-weight:700; color:#0c4a6e;">تحديد ضغط مسبق لعدد الموظفين:</span>
+            <span style="font-size:0.75rem; font-weight:700; color:#0c4a6e;">اختيار سريع:</span>
             <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(100)">حتى 6 موظفين</button>
             <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(80)">حتى 12 موظفاً</button>
             <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(65)">حتى 16 موظفاً</button>
-            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(52)">حتى 20 موظفاً (ورقة واحدة)</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(52)">حتى 20 موظفاً</button>
           </div>
         </div>
 
@@ -1019,12 +1009,9 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ==========================================================================
-       الشيفرة البرمجية (JavaScript Engine)
-       ========================================================================== -->
+  <!-- JavaScript Engine -->
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwgILlbN2SZQxsGMRNlM0z1IcoMgdOGCtaduZCTkAAWp3TykDeK8EVbz2EfoYV6OIR_hw/exec";
-
+    const API_URL = "https://script.google.com/macros/s/AKfycbx9xYJQBGqdHkDlMegZQnTx6x1UpnTXb9ydWo7yB7hFdnnxEY0cTxVEf5Dr6v_RTnzwJw/exec";
     const DAYS_ARABIC = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
     const state = {
@@ -1049,10 +1036,6 @@
     };
 
     let draggedShiftData = null;
-
-    /* ==========================================================================
-       دوال الوقت بنظام 12 ساعة وحساب مدة العمل
-       ========================================================================== */
 
     function formatTime12h(time24) {
       if (!time24) return "";
@@ -1134,10 +1117,6 @@
       if (mins > 0) text += ` و ${mins} د`;
       return { hours: Number(hours.toFixed(1)), text };
     }
-
-    /* ==========================================================================
-       التخزين وإعدادات الـ PDF
-       ========================================================================== */
 
     function loadLocal() {
       try {
@@ -1260,10 +1239,6 @@
       showToast("تمت استعادة شعار RG الافتراضي");
     }
 
-    /* ==========================================================================
-       التحكم في نسبة ضغط الـ PDF بالموظفين
-       ========================================================================== */
-
     function updatePdfScaleLabel(val) {
       document.getElementById("scalePercentageLabel").textContent = val + "%";
     }
@@ -1313,10 +1288,6 @@
       closeModal("pdfCustomizerModalBackdrop");
       exportSinglePagePDF();
     }
-
-    /* ==========================================================================
-       الربط السحابي مع Google Sheets
-       ========================================================================== */
 
     function setSyncStatus(type, msg) {
       const dot = document.getElementById("syncDot");
@@ -1370,10 +1341,6 @@
         setSyncStatus("offline", "محذوف محلياً");
       }
     }
-
-    /* ==========================================================================
-       نسخ ولصق جدول الموظف بالكامل
-       ========================================================================== */
 
     function copyEmployeeSchedule(empId) {
       const emp = state.employees.find(e => e.id === empId);
@@ -1476,10 +1443,6 @@
       renderSchedule();
       showToast("تم لصق الشفت بنجاح!");
     }
-
-    /* ==========================================================================
-       إدارة الشفتات الثابتة المستقلة
-       ========================================================================== */
 
     function populatePresetHoursSelectors() {
       const sH = document.getElementById("presetStartH");
@@ -1625,10 +1588,6 @@
       closeModal("shiftModalBackdrop");
       openModal("presetsModalBackdrop");
     }
-
-    /* ==========================================================================
-       إدارة الموظفين والترتيب
-       ========================================================================== */
 
     function moveEmployeeOrder(empId, direction) {
       const idx = state.employees.findIndex(e => e.id === empId);
@@ -1809,10 +1768,6 @@
       showToast(`تم تبديل شفتات (${empA.name}) مع (${empB.name}) بنجاح`);
     }
 
-    /* ==========================================================================
-       التحكم بالشفتات ونوافذ الإضافة والسحب والإفلات
-       ========================================================================== */
-
     function toggleOffDay(empId, dateStr) {
       let shift = state.shifts.find(s => s.employeeId === empId && s.date === dateStr);
 
@@ -1987,7 +1942,6 @@
       syncDeleteCloud("shifts", shiftId);
     }
 
-    /* السحب والإفلات */
     function handleDragStart(e, shiftId, sourceEmpId, sourceDate) {
       draggedShiftData = { shiftId, sourceEmpId, sourceDate };
       e.dataTransfer.effectAllowed = "move";
@@ -2044,10 +1998,6 @@
       saveLocal();
       renderSchedule();
     }
-
-    /* ==========================================================================
-       رسم الجدول وتوليد الكروت
-       ========================================================================== */
 
     function getWeekDates(startDate) {
       const dates = [];
@@ -2243,16 +2193,16 @@
     }
 
     /* ==========================================================================
-       محرك تصدير Excel الاحترافي المماثل للهوية مع فلاتر التصفية الحقيقية
+       تصدير Excel تفاعلي فاخر مع الفلاتر وتصميم Rental Gate الملكي
        ========================================================================== */
 
     async function exportExecutiveExcelSchedule() {
       try {
-        showToast("جارٍ إنشاء وتنسيق ملف الإكسيل التفاعلي...");
+        showToast("جارٍ إنشاء ملف الإكسيل التفاعلي بالفلاتر...");
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('جدول الشفتات الأسبوعي', {
-          views: [{ rtl: true, state: 'frozen', xSplit: 3, ySplit: 6 }] // اتجاه RTL وتثبيت الأعمدة والترويسة
+          views: [{ rtl: true, state: 'frozen', xSplit: 3, ySplit: 6 }]
         });
 
         const dates = getWeekDates(state.currentWeekStart);
@@ -2261,7 +2211,6 @@
         const startStr = formatDateISO(activeDates[0]);
         const endStr = formatDateISO(activeDates[activeDates.length - 1]);
 
-        // عناوين الأعمدة
         const headers = [
           "م", "اسم الموظف", "الوظيفة",
           ...activeDates.map(d => `${DAYS_ARABIC[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})`),
@@ -2269,7 +2218,7 @@
         ];
         const totalCols = headers.length;
 
-        // --- الصف 1: الترويسة السوداء الفاخرة المدمجة ---
+        // الصف 1: الترويسة السوداء
         worksheet.mergeCells(1, 1, 1, totalCols);
         const row1 = worksheet.getCell('A1');
         row1.value = "Rental Gate — جدول الشفتات الأسبوعي الرسمي";
@@ -2278,7 +2227,7 @@
         row1.alignment = { horizontal: 'center', vertical: 'middle' };
         worksheet.getRow(1).height = 32;
 
-        // --- الصف 2: الشريط العنابي الداكن المدمج ---
+        // الصف 2: الشريط العنابي
         worksheet.mergeCells(2, 1, 2, totalCols);
         const row2 = worksheet.getCell('A2');
         row2.value = `جدول شفتات العمل للأسبوع من (${startStr}) إلى (${endStr}) — نظام 12 ساعة (مصر / السعودية)`;
@@ -2287,7 +2236,7 @@
         row2.alignment = { horizontal: 'center', vertical: 'middle' };
         worksheet.getRow(2).height = 24;
 
-        // --- الصفوف من 3 إلى 5: صفوف فاصلة بلون وردي خافت جداً ---
+        // الصفوف من 3 إلى 5: مساحات وردية باهتة متناسقة
         for (let r = 3; r <= 5; r++) {
           worksheet.getRow(r).height = 13;
           for (let c = 1; c <= totalCols; c++) {
@@ -2297,30 +2246,30 @@
           }
         }
 
-        // --- الصف 6: شريط رؤوس الأعمدة الأسود ذو الإطار الأحمر وفلاتر التصفية ---
+        // الصف 6: رؤوس الأعمدة مع الفلاتر التفاعلية
         const headerRow = worksheet.getRow(6);
         headerRow.values = headers;
         headerRow.height = 28;
 
-        headerRow.eachCell((cell, colNumber) => {
+        headerRow.eachCell((cell) => {
           cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F1F1F' } };
           cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
           cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
           cell.border = {
-            top: { style: 'medium', color: { argb: 'FFD7192D' } }, // خط أحمر علوي مميز
+            top: { style: 'medium', color: { argb: 'FFD7192D' } },
             bottom: { style: 'thin', color: { argb: 'FF444444' } },
             left: { style: 'thin', color: { argb: 'FF333333' } },
             right: { style: 'thin', color: { argb: 'FF333333' } }
           };
         });
 
-        // تفعيل الفلاتر التلقائية (AutoFilter) في Excel على صف الأعمدة السادس
+        // تفعيل الفلاتر التلقائية
         worksheet.autoFilter = {
           from: { row: 6, column: 1 },
           to: { row: 6, column: totalCols }
         };
 
-        // --- الصفوف من 7 فصاعداً: تعبئة الموظفين والشفتات بنمط الزيبرا ---
+        // تعبئة البيانات
         state.employees.forEach((emp, empIdx) => {
           let totalHours = 0;
           const rowData = [empIdx + 1, emp.name, emp.role];
@@ -2343,18 +2292,16 @@
           });
 
           rowData.push(`${totalHours} ساعة عمل`);
-          rowData.push(""); // ملاحظات
+          rowData.push("");
 
           const excelRow = worksheet.addRow(rowData);
-          const currentRowNum = 7 + empIdx;
-          excelRow.height = 46; // مساحة كافية لأسطر الشفت
+          excelRow.height = 46;
           const isEven = empIdx % 2 === 0;
 
-          excelRow.eachCell((cell, colNumber) => {
+          excelRow.eachCell((cell) => {
             cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
             cell.font = { name: 'Arial', size: 9 };
             
-            // تلوين شرطي تلقائي لخلايا الأوف
             const val = String(cell.value || "");
             if (val.includes("أوف")) {
               cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF3F4F6' } };
@@ -2375,17 +2322,15 @@
           });
         });
 
-        // ضبط عرض الأعمدة
-        worksheet.getColumn(1).width = 6;  // م
-        worksheet.getColumn(2).width = 22; // اسم الموظف
-        worksheet.getColumn(3).width = 16; // الوظيفة
+        worksheet.getColumn(1).width = 6;
+        worksheet.getColumn(2).width = 22;
+        worksheet.getColumn(3).width = 16;
         for (let c = 4; c < totalCols - 1; c++) {
-          worksheet.getColumn(c).width = 24; // أيام الأسبوع
+          worksheet.getColumn(c).width = 24;
         }
-        worksheet.getColumn(totalCols - 1).width = 18; // إجمالي الساعات
-        worksheet.getColumn(totalCols).width = 16;     // ملاحظات
+        worksheet.getColumn(totalCols - 1).width = 18;
+        worksheet.getColumn(totalCols).width = 16;
 
-        // تنزيل الملف بصيغة XLSX حقيقية
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, `RentalGate_Schedule_Week_${startStr}.xlsx`);
@@ -2418,10 +2363,6 @@
       openModal("thankyouModalBackdrop");
     }
 
-    /* ==========================================================================
-       النوافذ والتنبيهات
-       ========================================================================== */
-
     function openModal(id) { document.getElementById(id).classList.add("active"); }
     function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
@@ -2435,10 +2376,6 @@
       setTimeout(() => toast.remove(), 3500);
     }
 
-    /* ==========================================================================
-       بدء التشغيل والمستمعات
-       ========================================================================== */
-
     document.addEventListener("DOMContentLoaded", () => {
       loadLocal();
       populatePresetHoursSelectors();
@@ -2447,10 +2384,8 @@
       renderSchedule();
       syncFetchCloud();
 
-      // الوضع الليلي
       document.getElementById("btnThemeToggle").addEventListener("click", toggleTheme);
 
-      // أزرار النوافذ
       document.getElementById("btnOpenPresetsModal").addEventListener("click", () => {
         renderPresetsModalList();
         openModal("presetsModalBackdrop");
@@ -2463,7 +2398,6 @@
 
       document.getElementById("btnOpenSettings").addEventListener("click", () => openModal("settingsModalBackdrop"));
 
-      // رفع الشعار
       document.getElementById("logoFileInput").addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -2479,11 +2413,9 @@
         reader.readAsDataURL(file);
       });
 
-      // منتقي الألوان
       document.getElementById("primaryColorInput").addEventListener("input", (e) => applyPrimaryColor(e.target.value));
       document.getElementById("darkColorInput").addEventListener("input", (e) => applyDarkColor(e.target.value));
 
-      // التنقل بالأسبوع
       document.getElementById("btnPrevWeek").addEventListener("click", () => {
         state.currentWeekStart.setDate(state.currentWeekStart.getDate() - 7);
         renderSchedule();
@@ -2497,7 +2429,6 @@
         renderSchedule();
       });
 
-      // فتح باقي النوافذ
       document.getElementById("btnOpenShiftModal").addEventListener("click", () => openShiftModalFor(null));
       document.getElementById("btnOpenEmployeeManager").addEventListener("click", () => {
         renderEmpMgmtTable();
@@ -2506,11 +2437,9 @@
       document.getElementById("btnOpenSwapModal").addEventListener("click", openSwapModal);
       document.getElementById("btnClearWeekSchedule").addEventListener("click", clearCurrentWeekSchedule);
 
-      // ربط تصدير الإكسيل والـ PDF
       document.getElementById("btnExportExcel").addEventListener("click", exportExecutiveExcelSchedule);
       document.getElementById("btnPrintSchedule").addEventListener("click", exportSinglePagePDF);
 
-      // البحث السريع
       document.getElementById("searchInput").addEventListener("input", (e) => {
         state.searchQuery = e.target.value;
         renderSchedule();
