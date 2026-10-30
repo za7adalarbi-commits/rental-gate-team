@@ -8,13 +8,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
-  <!-- مكتبات ExcelJS و FileSaver و html2canvas لتصدير الإكسيل والصور عالية الدقة -->
+  <!-- مكتبات ExcelJS و FileSaver لتصدير الإكسيل التفاعلي -->
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <!-- مكتبة html2canvas لتصدير الجدول كصورة PNG فائقة الجودة -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    /* 1. نظام الألوان والسمات */
+    /* ==========================================================================
+       1. المتغيرات والسمات الديناميكية (Design System & Theme)
+       ========================================================================== */
     :root {
       --primary: #D7192D;
       --primary-hover: #b81425;
@@ -68,7 +71,9 @@
       transition: background-color 0.25s, color 0.25s;
     }
 
-    /* 2. شريط التنقل العلوي */
+    /* ==========================================================================
+       2. شريط التنقل العلوي (Header)
+       ========================================================================== */
     .header {
       background-color: var(--dark);
       color: white;
@@ -147,7 +152,9 @@
     .sync-dot.saving { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
     .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
-    /* 3. شريط الأدوات */
+    /* ==========================================================================
+       3. شريط الأدوات والعمليات
+       ========================================================================== */
     .container {
       max-width: 1600px;
       width: 100%;
@@ -197,10 +204,11 @@
     .btn-danger-outline:hover { background: #fee2e2; }
     .btn-excel { background: #107C41; color: white; border-color: #0b5c30; }
     .btn-excel:hover { background: #0c6736; }
-    .btn-image { background: #6366F1; color: white; border-color: #4f46e5; }
-    .btn-image:hover { background: #4f46e5; }
+    .btn-image { background: #7C3AED; color: white; border-color: #6D28D9; }
+    .btn-image:hover { background: #6D28D9; }
     .btn-sm { padding: 0.22rem 0.5rem; font-size: 0.725rem; }
 
+    /* فلترة وبحث وتحديد الأيام */
     .filter-bar {
       display: flex; align-items: center; justify-content: space-between;
       gap: 0.75rem; margin-bottom: 0.85rem; flex-wrap: wrap;
@@ -226,14 +234,9 @@
     }
     .day-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-    /* حاوية منطقة التقاط الصورة */
-    #captureArea {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    /* 4. جدول الشفتات الأسبوعي */
+    /* ==========================================================================
+       4. جدول الشفتات الأسبوعي
+       ========================================================================== */
     .schedule-card {
       background: var(--surface); border-radius: var(--radius-lg);
       border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden;
@@ -261,6 +264,7 @@
     .schedule-table th .day-date { font-size: 0.7rem; color: #cbd5e1; font-weight: 600; }
     .schedule-table th.is-today { background-color: var(--primary); }
 
+    /* كرت الموظف */
     .emp-cell-content { display: flex; flex-direction: column; gap: 0.35rem; }
     .emp-row-top { display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; }
     .emp-title { font-weight: 800; color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -287,10 +291,11 @@
     }
     .emp-badge.super { background: var(--dark); color: white; }
 
+    /* خلية اليوم */
     .day-cell { min-height: 105px; height: 100%; background: var(--surface); position: relative; }
     .day-cell.drag-over { background-color: var(--primary-light) !important; border: 2px dashed var(--primary) !important; }
 
-    /* كارت الشفت */
+    /* كارت الشفت المطابق للصورة */
     .shift-card {
       background: #FFFFFF; border: 1px solid #fca5a5; border-right: 4px solid var(--primary);
       border-radius: 6px; padding: 0.4rem 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
@@ -510,31 +515,6 @@
 
     .print-header-bar, .print-footer-notice { display: none; }
 
-    /* تنسيقات تجهيز وتصدير صورة PNG نظيفة وفاخرة */
-    body.exporting-image .print-header-bar {
-      display: flex !important;
-      background: var(--surface) !important;
-      padding: 10px 14px !important;
-      border-bottom: 3px solid var(--primary) !important;
-    }
-    body.exporting-image .print-footer-notice {
-      display: block !important;
-      background: var(--surface-subtle) !important;
-      margin-top: 8px !important;
-      padding: 6px 12px !important;
-    }
-    body.exporting-image .cell-actions,
-    body.exporting-image .empty-actions,
-    body.exporting-image .emp-toolbar-btns,
-    body.exporting-image .no-print {
-      display: none !important;
-    }
-    body.exporting-image #captureArea {
-      padding: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    }
-
     @media (max-width: 768px) {
       .header-container { flex-direction: column; align-items: flex-start; }
       .top-toolbar { flex-direction: column; align-items: stretch; }
@@ -553,7 +533,7 @@
         </div>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات 12 ساعة • PDF Landscape حصري • Excel تفاعلي • PNG عالي الدقة</p>
+          <p>إدارة الشفتات 12 ساعة • PDF Landscape حصري • Excel تفاعلي • PNG عالي الجودة</p>
         </div>
       </div>
 
@@ -573,6 +553,21 @@
 
   <!-- الصفحة الرئيسية -->
   <main class="container">
+
+    <!-- ترويسة الطباعة الرسمية للـ PDF -->
+    <div class="print-header-bar">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <div id="printLogoHolder"></div>
+        <div>
+          <h2 id="printCustomHeading" style="font-size: 12pt; font-weight: 900; margin:0;">Rental Gate — جدول الشفتات الأسبوعي الرسمي</h2>
+          <div id="printWeekDate" style="font-size: 8.5pt; font-weight: 700; color: #475569;">الأسبوع: ...</div>
+        </div>
+      </div>
+      <div style="text-align: left; font-size: 7.5pt; font-weight: 700;">
+        <div>تاريخ الاستخراج: <span id="printDateToday"></span></div>
+        <div>نظام الأوقات: 12 ساعة (ص / م)</div>
+      </div>
+    </div>
 
     <!-- لوحة التحكم -->
     <div class="top-toolbar no-print">
@@ -614,16 +609,15 @@
           مسح الأسبوع
         </button>
 
-        <!-- زر تصدير Excel التفاعلي بالفلاتر -->
         <button class="btn btn-excel" id="btnExportExcel" title="تصدير ملف Excel رسمي وفاخر مع فلاتر التصفية والتصميم المعتمد">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-          تصدير Excel تفاعلي
+          Excel تفاعلي
         </button>
 
-        <!-- زر تصدير صورة PNG عالية الجودة الجديد -->
-        <button class="btn btn-image" id="btnExportImage" title="تصدير الجدول كصورة PNG فائقة الجودة للمشاركة السريعة على واتساب">
+        <!-- زر تصدير PNG عالي الجودة المضاف حديثاً -->
+        <button class="btn btn-image" id="btnExportPNG" title="تصدير جدول الشفتات كصورة PNG عالية الدقة بدون بكسلة">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          تصدير صورة PNG
+          تصدير PNG
         </button>
 
         <button class="btn btn-outline" id="btnOpenPdfSettings" style="border-color:#2563eb; color:#2563eb;" title="تخصيص شكل وعناصر وضغط الـ PDF قبل الاستخراج">
@@ -647,42 +641,24 @@
       </div>
     </div>
 
-    <!-- الحاوية المجهزة لالتقاط الصورة عالية الجودة والطباعة -->
-    <div id="captureArea">
-      <!-- ترويسة الطباعة والتصدير كصورة -->
-      <div class="print-header-bar">
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-          <div id="printLogoHolder"></div>
-          <div>
-            <h2 id="printCustomHeading" style="font-size: 12pt; font-weight: 900; margin:0;">Rental Gate — جدول الشفتات الأسبوعي الرسمي</h2>
-            <div id="printWeekDate" style="font-size: 8.5pt; font-weight: 700; color: #475569;">الأسبوع: ...</div>
-          </div>
-        </div>
-        <div style="text-align: left; font-size: 7.5pt; font-weight: 700;">
-          <div>تاريخ الاستخراج: <span id="printDateToday"></span></div>
-          <div>نظام الأوقات: 12 ساعة (ص / م)</div>
-        </div>
+    <!-- كارت جدول الشفتات الأسبوعي (المستهدف بالالتقاط كصورة PNG) -->
+    <div class="schedule-card" id="scheduleCaptureCard">
+      <div class="table-wrapper">
+        <table class="schedule-table" id="scheduleTable">
+          <thead>
+            <tr id="scheduleHeaderRow">
+              <th class="emp-header">الموظف والترتيب والنسخ</th>
+              <th class="total-header">إجمالي الأسبوع</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
       </div>
+    </div>
 
-      <!-- جدول الشفتات الأسبوعي -->
-      <div class="schedule-card">
-        <div class="table-wrapper">
-          <table class="schedule-table" id="scheduleTable">
-            <thead>
-              <tr id="scheduleHeaderRow">
-                <th class="emp-header">الموظف والترتيب والنسخ</th>
-                <th class="total-header">إجمالي الأسبوع</th>
-              </tr>
-            </thead>
-            <tbody id="scheduleBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- الملاحظة الرسمية للـ PDF والصورة -->
-      <div class="print-footer-notice" id="printFooterNoticeText">
-        ⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate
-      </div>
+    <!-- الملاحظة الرسمية للـ PDF -->
+    <div class="print-footer-notice" id="printFooterNoticeText">
+      ⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate
     </div>
 
   </main>
@@ -2239,6 +2215,43 @@
     }
 
     /* ==========================================================================
+       تصدير الجدول كصورة PNG فائقة الجودة (Ultra-HD Image Export)
+       ========================================================================== */
+
+    async function exportScheduleAsPNG() {
+      try {
+        showToast("جارٍ تجهيز والتقاط صورة الجدول عالية الدقة...");
+
+        const card = document.getElementById("scheduleCaptureCard");
+        const dates = getWeekDates(state.currentWeekStart);
+        const startStr = formatDateISO(dates[0]);
+
+        // إخفاء أزرار العمليات مؤقتاً لتخرج الصورة كتقرير رسمي نظيف
+        const actionElements = card.querySelectorAll(".no-print, .cell-actions, .empty-actions, .emp-toolbar-btns");
+        actionElements.forEach(el => el.style.visibility = "hidden");
+
+        const canvas = await html2canvas(card, {
+          scale: 2, // مضاعفة الدقة للرنين الفائق بدون بكسلة (High-DPI / Retina)
+          useCORS: true,
+          backgroundColor: document.body.classList.contains("dark-theme") ? "#18191A" : "#FFFFFF",
+          logging: false
+        });
+
+        // إعادة إظهار الأزرار بعد التقاط الصورة
+        actionElements.forEach(el => el.style.visibility = "visible");
+
+        canvas.toBlob(blob => {
+          saveAs(blob, `RentalGate_Schedule_Week_${startStr}.png`);
+          openThankYouModal();
+        }, 'image/png');
+
+      } catch (err) {
+        console.error("Export PNG Error:", err);
+        showToast("حدث خطأ أثناء تصدير الصورة", "error");
+      }
+    }
+
+    /* ==========================================================================
        تصدير Excel تفاعلي فاخر مع الفلاتر وتصميم Rental Gate الملكي
        ========================================================================== */
 
@@ -2388,49 +2401,6 @@
       }
     }
 
-    /* ==========================================================================
-       تصدير الجدول كصورة PNG فائقة الجودة
-       ========================================================================== */
-
-    async function exportScheduleAsPng() {
-      try {
-        showToast("جارٍ تجهيز وتصدير صورة PNG فائقة الدقة...");
-
-        const captureElement = document.getElementById("captureArea");
-        if (!captureElement) return;
-
-        // تفعيل وضع التصدير كصورة لإظهار الترويسة وإخفاء أزرار التحكم
-        document.body.classList.add("exporting-image");
-
-        // انتظار بسيط للتأكد من إعادة رسم المتصفح
-        await new Promise(r => setTimeout(r, 120));
-
-        const canvas = await html2canvas(captureElement, {
-          scale: 3, // دقة عالية جداً (3x Retina Grade)
-          useCORS: true,
-          backgroundColor: document.body.classList.contains("dark-theme") ? "#18191A" : "#FFFFFF",
-          logging: false
-        });
-
-        document.body.classList.remove("exporting-image");
-
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            showToast("تعذر إنشاء الصورة", "error");
-            return;
-          }
-          const startStr = formatDateISO(getStartOfWeek(state.currentWeekStart));
-          saveAs(blob, `RentalGate_Schedule_Week_${startStr}.png`);
-          openThankYouModal();
-        }, "image/png", 1.0);
-
-      } catch (err) {
-        document.body.classList.remove("exporting-image");
-        console.error("Export PNG error:", err);
-        showToast("حدث خطأ أثناء تصدير الصورة", "error");
-      }
-    }
-
     function exportSinglePagePDF() {
       applyPdfCustomizationUI();
 
@@ -2526,9 +2496,9 @@
       document.getElementById("btnOpenSwapModal").addEventListener("click", openSwapModal);
       document.getElementById("btnClearWeekSchedule").addEventListener("click", clearCurrentWeekSchedule);
 
-      // ربط تصدير الإكسيل والـ PDF وتصدير الصورة PNG
+      // ربط أزرار التصدير الثلاثة: Excel و PNG و PDF
       document.getElementById("btnExportExcel").addEventListener("click", exportExecutiveExcelSchedule);
-      document.getElementById("btnExportImage").addEventListener("click", exportScheduleAsPng);
+      document.getElementById("btnExportPNG").addEventListener("click", exportScheduleAsPNG);
       document.getElementById("btnPrintSchedule").addEventListener("click", exportSinglePagePDF);
 
       document.getElementById("searchInput").addEventListener("input", (e) => {
