@@ -156,7 +156,7 @@
     .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
     /* ==========================================================================
-       3. شريط الأدوات وعناصر التحكم السريعة
+       3. شريط الأدوات وعناصر التحكم
        ========================================================================== */
     .container {
       max-width: 1600px;
@@ -340,9 +340,7 @@
     .schedule-table th .day-date { font-size: 0.7rem; color: #cbd5e1; font-weight: 600; }
     .schedule-table th.is-today { background-color: var(--primary); }
 
-    /* ==========================================================================
-       كرت الموظف: أزرار النسخ واللصق بجانب الاسم مباشرة
-       ========================================================================== */
+    /* كرت الموظف */
     .emp-cell-content { display: flex; flex-direction: column; gap: 0.35rem; }
     
     .emp-row-top {
@@ -409,9 +407,7 @@
     .day-cell { min-height: 105px; height: 100%; background: var(--surface); position: relative; }
     .day-cell.drag-over { background-color: var(--primary-light) !important; border: 2px dashed var(--primary) !important; }
 
-    /* ==========================================================================
-       كارت الشفت المطابق بالملي لتفاصيل وألوان صورة image.png
-       ========================================================================== */
+    /* كارت الشفت */
     .shift-card {
       background: #FFFFFF;
       border: 1px solid #fca5a5;
@@ -430,7 +426,6 @@
 
     body.dark-theme .shift-card { background: #202122; border-color: #5f1e24; }
 
-    /* السطر الأول: شارة مصر الوردية + الوقت */
     .time-line-egypt {
       display: flex;
       align-items: center;
@@ -451,7 +446,6 @@
       line-height: 1.3;
     }
 
-    /* السطر الثاني: شريط توقيت السعودية بالأزرق الهادئ */
     .time-line-saudi {
       background: #f0f7ff;
       color: #0369a1;
@@ -465,7 +459,6 @@
     }
     body.dark-theme .time-line-saudi { background: #172554; color: #93c5fd; }
 
-    /* السطر الثالث: ساعات العمل بالأحمر العريض */
     .work-hours-count {
       font-size: 0.78rem;
       font-weight: 900;
@@ -475,7 +468,6 @@
       gap: 0.25rem;
     }
 
-    /* أزرار العمليات المصغرة أسفل الكارت */
     .cell-actions {
       display: flex;
       gap: 0.25rem;
@@ -503,7 +495,6 @@
     .action-btn.copy-btn { color: #2563eb; border-color: #bfdbfe; }
     .action-btn.copy-btn:hover { background: #eff6ff; }
 
-    /* كارت الأوف */
     .off-card {
       background: var(--off-bg);
       border: 1.5px dashed var(--off-border);
@@ -522,7 +513,6 @@
     .off-card.is-dragging { opacity: 0.4; }
     .off-tag { font-size: 0.825rem; font-weight: 800; color: var(--off-text); }
 
-    /* الخلية الفارغة */
     .empty-actions {
       display: flex;
       flex-direction: column;
@@ -677,7 +667,6 @@
     }
     .day-check-item input { margin-bottom: 0.2rem; }
 
-    /* بطاقات قائمة الشفتات الثابتة في نافذتها المستقلة */
     .preset-card-item {
       display: flex;
       justify-content: space-between;
@@ -726,14 +715,12 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer;
     }
 
-    /* نافذة الشكر التفاعلية */
     .thankyou-card { text-align: center; padding: 1.5rem 1rem; }
     .thankyou-icon { font-size: 2.8rem; margin-bottom: 0.4rem; animation: bounce 0.6s ease; }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .thankyou-title { font-size: 1.25rem; font-weight: 900; color: var(--primary); margin-bottom: 0.4rem; }
     .thankyou-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.1rem; }
 
-    /* التنبيهات */
     .toast-container { position: fixed; bottom: 1.25rem; left: 4.5rem; z-index: 200; display: flex; flex-direction: column; gap: 0.45rem; }
     .toast {
       background: var(--dark); color: white; padding: 0.65rem 1.15rem; border-radius: var(--radius-sm);
@@ -741,7 +728,7 @@
     }
 
     /* ==========================================================================
-       7. طباعة PDF في صفحة واحدة أفقية فقط (Single Page Guarantee up to 20 emps)
+       7. طباعة PDF في صفحة واحدة أفقية فقط (Single Page Guarantee)
        ========================================================================== */
     @media print {
       @page {
@@ -858,6 +845,12 @@
         color: #334155 !important;
         text-align: center;
       }
+
+      /* قواعد التخصيص المستلمة من نافذة إعدادات الـ PDF */
+      body.pdf-hide-saudi .time-line-saudi { display: none !important; }
+      body.pdf-hide-hours .work-hours-count { display: none !important; }
+      body.pdf-hide-totals .total-header, body.pdf-hide-totals .total-hours-cell { display: none !important; }
+      body.pdf-hide-notice .print-footer-notice { display: none !important; }
     }
 
     .print-header-bar, .print-footer-notice { display: none; }
@@ -880,7 +873,7 @@
         </div>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات 12 ساعة • نسخ ولصق سريع • A4 صفحة واحدة</p>
+          <p>إدارة الشفتات 12 ساعة • نسخ ولصق سريع • تخصيص PDF كامل</p>
         </div>
       </div>
 
@@ -906,7 +899,7 @@
       <div style="display:flex; align-items:center; gap:0.5rem;">
         <div id="printLogoHolder"></div>
         <div>
-          <h2 style="font-size: 12pt; font-weight: 900; margin:0;">Rental Gate — جدول الشفتات الأسبوعي الرسمي</h2>
+          <h2 id="printCustomHeading" style="font-size: 12pt; font-weight: 900; margin:0;">Rental Gate — جدول الشفتات الأسبوعي الرسمي</h2>
           <div id="printWeekDate" style="font-size: 8.5pt; font-weight: 700; color: #475569;">الأسبوع: ...</div>
         </div>
       </div>
@@ -937,7 +930,7 @@
           + إضافة شفت
         </button>
 
-        <!-- زر الشفتات الثابتة المستقل المضاف -->
+        <!-- زر الشفتات الثابتة المستقل -->
         <button class="btn btn-outline" id="btnOpenPresetsModal" style="border-color:#f59e0b; color:#d97706;" title="عرض وإدارة مواعيد الشفتات الثابتة">
           ⚡ الشفتات الثابتة
         </button>
@@ -962,7 +955,12 @@
           Excel
         </button>
 
-        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF في ورقة A4 أفقية واحدة فقط (حتى 20 موظفاً)">
+        <!-- زر تخصيص الـ PDF الجديد -->
+        <button class="btn btn-outline" id="btnOpenPdfSettings" style="border-color:#2563eb; color:#2563eb;" title="تخصيص شكل وعناصر الـ PDF قبل الاستخراج">
+          ⚙️ تخصيص الـ PDF
+        </button>
+
+        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF مباشر في ورقة A4 أفقية واحدة فقط (حتى 20 موظفاً)">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
           PDF صفحة واحدة
         </button>
@@ -995,7 +993,7 @@
     </div>
 
     <!-- الملاحظة الرسمية للـ PDF -->
-    <div class="print-footer-notice">
+    <div class="print-footer-notice" id="printFooterNoticeText">
       ⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate
     </div>
 
@@ -1010,7 +1008,63 @@
   </button>
 
   <!-- ==========================================================================
-       مودال 1: نافذة الشفتات الثابتة المستقلة بالكامل
+       مودال: تخصيص الـ PDF الجديد (PDF Customizer Modal)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="pdfCustomizerModalBackdrop">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header" style="border-bottom-color:#2563eb;">
+        <h3>⚙️ تخصيص وإعدادات تقرير الـ PDF</h3>
+        <button class="modal-close" onclick="closeModal('pdfCustomizerModalBackdrop')">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="form-group">
+          <label class="form-label">عنوان التقرير في أعلى ورقة الـ PDF:</label>
+          <input type="text" id="pdfTitleInput" class="form-control" value="Rental Gate — جدول الشفتات الأسبوعي الرسمي">
+        </div>
+
+        <div class="form-group" style="background:var(--surface-subtle); padding:0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border);">
+          <label class="form-label" style="margin-bottom:0.4rem;">عناصر كارت الشفت المعروضة بالـ PDF:</label>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.85rem;">
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="pdfShowSaudiTime" checked>
+              <span>إظهار شريط توقيت السعودية (SA السعودية: ...)</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="pdfShowWorkHours" checked>
+              <span>إظهار سطر ساعات العمل بالأحمر (⏱️ ... ساعات عمل)</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="pdfShowTotalHours" checked>
+              <span>إظهار عمود إجمالي ساعات الأسبوع لكل موظف</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+            <label class="form-label" style="margin:0;">الملاحظة السفلية في الـ PDF:</label>
+            <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted); display:flex; align-items:center; gap:0.25rem; cursor:pointer;">
+              <input type="checkbox" id="pdfShowNotice" checked> إظهار الملاحظة
+            </label>
+          </div>
+          <textarea id="pdfNoticeTextInput" class="form-control" rows="2" style="font-size:0.8rem;">⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate</textarea>
+        </div>
+
+        <div class="form-group" style="background:#eff6ff; padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid #bfdbfe; font-size:0.8rem; color:#1e40af;">
+          💡 <strong>ميزة الورقة الواحدة:</strong> تم ضبط أبعاد الطباعة تلقائياً لاستيعاب حتى 20 موظفاً في صفحة A4 أفقية واحدة تماماً دون ترحيل.
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('pdfCustomizerModalBackdrop')">إلغاء</button>
+        <button type="button" class="btn btn-primary" onclick="savePdfSettingsAndPrint()">حفظ وطباعة PDF الآن</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       مودال: نافذة الشفتات الثابتة المستقلة بالكامل (تبدأ فارغة ونظيفة)
        ========================================================================== -->
   <div class="modal-backdrop" id="presetsModalBackdrop">
     <div class="modal" style="max-width: 540px;">
@@ -1027,7 +1081,7 @@
 
           <div class="form-group" style="margin-bottom:0.6rem;">
             <label class="form-label">اسم الشفت الثابت:</label>
-            <input type="text" id="presetNameInput" class="form-control" required placeholder="مثال: شفت الصباح الرئيسي، شفت مسائي">
+            <input type="text" id="presetNameInput" class="form-control" required placeholder="مثال: شفت صباحي، شفت الدعم الفني">
           </div>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-bottom:0.6rem;">
@@ -1066,9 +1120,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       مودال 2: إضافة شفت عمل (بسيطة ونظيفة وخالية من الشفتات الثابتة)
-       ========================================================================== -->
+  <!-- مودال: إضافة شفت عمل -->
   <div class="modal-backdrop" id="shiftModalBackdrop">
     <div class="modal">
       <div class="modal-header">
@@ -1085,7 +1137,7 @@
             <select id="shiftEmployeeSelect" class="form-control" required></select>
           </div>
 
-          <!-- اختيار شفت ثابت جاهز اختياري لتعبئة الساعات فوراً -->
+          <!-- اختيار شفت ثابت للتعبئة السريعة إن وجد -->
           <div class="form-group" style="background:var(--surface-subtle); padding:0.5rem 0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
               <label class="form-label" style="margin:0;">تعبئة سريعة من شفت ثابت (اختياري):</label>
@@ -1312,27 +1364,31 @@
 
     const DAYS_ARABIC = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
+    // تمت إزالة الشفتات الافتراضية بالكامل، وتبدأ فارغة ليحدد المستخدم شفتاته الخاصة فقط
     const state = {
       employees: [],
       shifts: [],
       currentWeekStart: getStartOfWeek(new Date()),
       searchQuery: "",
       visibleDays: [0, 1, 2, 3, 4, 5, 6],
-      shiftPresets: [
-        { id: "p1", name: "صباحي", sH: "09", sM: "00", sP: "ص", eH: "05", eM: "00", eP: "م" },
-        { id: "p2", name: "مسائي أول", sH: "02", sM: "00", sP: "م", eH: "10", eM: "00", eP: "م" },
-        { id: "p3", name: "مسائي متأخر", sH: "05", sM: "00", sP: "م", eH: "01", eM: "00", eP: "ص" },
-        { id: "p4", name: "ليلي كامل", sH: "11", sM: "00", sP: "م", eH: "07", eM: "00", eP: "ص" }
-      ],
-      copiedEmployeeSchedule: null, // الحافظة لنسخ جدول الموظف بالكامل
-      singleCopiedShift: null,      // الحافظة لنسخ شفت فردي
-      companyLogo: null
+      shiftPresets: [], // قائمة الشفتات الثابتة فارغة
+      copiedEmployeeSchedule: null,
+      singleCopiedShift: null,
+      companyLogo: null,
+      pdfSettings: {
+        title: "Rental Gate — جدول الشفتات الأسبوعي الرسمي",
+        showSaudiTime: true,
+        showWorkHours: true,
+        showTotalHours: true,
+        showNotice: true,
+        noticeText: "⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate"
+      }
     };
 
     let draggedShiftData = null;
 
     /* ==========================================================================
-       دوال الوقت ونظام 12 ساعة الصارم وحساب مدة العمل
+       دوال الوقت بنظام 12 ساعة الصارم وحساب ساعات العمل
        ========================================================================== */
 
     function formatTime12h(time24) {
@@ -1417,7 +1473,7 @@
     }
 
     /* ==========================================================================
-       التخزين وتخصيص الألوان والشعار
+       التخزين وإعدادات الـ PDF
        ========================================================================== */
 
     function loadLocal() {
@@ -1430,11 +1486,24 @@
         const logo = localStorage.getItem("rg_company_logo");
         const pColor = localStorage.getItem("rg_color_primary");
         const dColor = localStorage.getItem("rg_color_dark");
+        const pdfSet = localStorage.getItem("rg_pdf_settings");
 
         if (emp) state.employees = JSON.parse(emp);
         if (sh) state.shifts = JSON.parse(sh);
         if (vis) state.visibleDays = JSON.parse(vis);
-        if (prs) state.shiftPresets = JSON.parse(prs);
+
+        // تحميل الشفتات الثابتة مع مسح الشفتات الأربعة الافتراضية القديمة إن وجدت
+        if (prs) {
+          const parsed = JSON.parse(prs);
+          // فلترة الشفتات الأربعة الافتراضية إن وجدت في المتصفح سابقاً
+          state.shiftPresets = parsed.filter(p => !["صباحي أساسي", "مسائي أول", "مسائي متأخر", "ليلي كامل"].includes(p.name));
+        }
+
+        if (pdfSet) {
+          state.pdfSettings = Object.assign(state.pdfSettings, JSON.parse(pdfSet));
+        }
+
+        applyPdfCustomizationUI();
 
         if (logo) {
           state.companyLogo = logo;
@@ -1465,6 +1534,7 @@
       localStorage.setItem("rg_shifts", JSON.stringify(state.shifts));
       localStorage.setItem("rg_vis_days", JSON.stringify(state.visibleDays));
       localStorage.setItem("rg_presets", JSON.stringify(state.shiftPresets));
+      localStorage.setItem("rg_pdf_settings", JSON.stringify(state.pdfSettings));
     }
 
     function toggleTheme() {
@@ -1530,6 +1600,45 @@
     }
 
     /* ==========================================================================
+       التحكم في تخصيص الـ PDF وتطبيقه
+       ========================================================================== */
+
+    function applyPdfCustomizationUI() {
+      const s = state.pdfSettings;
+      document.getElementById("printCustomHeading").textContent = s.title;
+      document.getElementById("printFooterNoticeText").textContent = s.noticeText;
+
+      document.getElementById("pdfTitleInput").value = s.title;
+      document.getElementById("pdfShowSaudiTime").checked = s.showSaudiTime;
+      document.getElementById("pdfShowWorkHours").checked = s.showWorkHours;
+      document.getElementById("pdfShowTotalHours").checked = s.showTotalHours;
+      document.getElementById("pdfShowNotice").checked = s.showNotice;
+      document.getElementById("pdfNoticeTextInput").value = s.noticeText;
+
+      // تطبيق أصناف CSS على الـ Body للتحكم في عناصر الطباعة
+      document.body.classList.toggle("pdf-hide-saudi", !s.showSaudiTime);
+      document.body.classList.toggle("pdf-hide-hours", !s.showWorkHours);
+      document.body.classList.toggle("pdf-hide-totals", !s.showTotalHours);
+      document.body.classList.toggle("pdf-hide-notice", !s.showNotice);
+    }
+
+    function savePdfSettingsAndPrint() {
+      state.pdfSettings = {
+        title: document.getElementById("pdfTitleInput").value.trim() || "Rental Gate — جدول الشفتات الأسبوعي الرسمي",
+        showSaudiTime: document.getElementById("pdfShowSaudiTime").checked,
+        showWorkHours: document.getElementById("pdfShowWorkHours").checked,
+        showTotalHours: document.getElementById("pdfShowTotalHours").checked,
+        showNotice: document.getElementById("pdfShowNotice").checked,
+        noticeText: document.getElementById("pdfNoticeTextInput").value.trim()
+      };
+
+      saveLocal();
+      applyPdfCustomizationUI();
+      closeModal("pdfCustomizerModalBackdrop");
+      exportSinglePagePDF();
+    }
+
+    /* ==========================================================================
        الربط السحابي مع Google Sheets
        ========================================================================== */
 
@@ -1587,7 +1696,7 @@
     }
 
     /* ==========================================================================
-       نسخ ولصق جدول الموظف بالكامل من كرت الاسم
+       نسخ ولصق جدول الموظف بالكامل
        ========================================================================== */
 
     function copyEmployeeSchedule(empId) {
@@ -1625,9 +1734,6 @@
       const targetEmp = state.employees.find(e => e.id === targetEmpId);
       if (!targetEmp) return;
 
-      const dates = getWeekDates(state.currentWeekStart).map(d => formatDateISO(d));
-
-      // تطبيق كل شفت من الشفتات المنسوخة
       state.copiedEmployeeSchedule.shifts.forEach(copied => {
         let existing = state.shifts.find(s => s.employeeId === targetEmpId && s.date === copied.date);
         if (existing) {
@@ -1651,7 +1757,7 @@
 
       saveLocal();
       renderSchedule();
-      showToast(`تم لصق وتطبيق جدول (${state.copiedEmployeeSchedule.sourceName}) على الموظف (${targetEmp.name}) بنجاح!`);
+      showToast(`تم تطبيق جدول (${state.copiedEmployeeSchedule.sourceName}) على الموظف (${targetEmp.name}) بنجاح!`);
     }
 
     /* نسخ شفت فردي */
@@ -1697,7 +1803,7 @@
     }
 
     /* ==========================================================================
-       إدارة الشفتات الثابتة المستقلة (إضافة، تعديل، حذف)
+       إدارة الشفتات الثابتة المستقلة (تبدأ فارغة ونظيفة)
        ========================================================================== */
 
     function populatePresetHoursSelectors() {
@@ -1718,7 +1824,10 @@
       container.innerHTML = "";
 
       if (state.shiftPresets.length === 0) {
-        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:1rem;">لا توجد شفتات ثابتة محفوظة بعد</p>`;
+        container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding:1.25rem; background:var(--surface-subtle); border-radius:6px; border:1px dashed var(--border);">
+          لا توجد شفتات ثابتة محفوظة بعد.<br>أضف شفتك الثابت الأول من النموذج بالأعلى!
+        </div>`;
+        updateQuickPresetsDropdown();
         return;
       }
 
@@ -1739,7 +1848,6 @@
         container.appendChild(item);
       });
 
-      // تحديث قائمة الشفتات في نافذة إضافة الشفت العادية
       updateQuickPresetsDropdown();
     }
 
@@ -2263,7 +2371,7 @@
     }
 
     /* ==========================================================================
-       رسم الجدول وتوليد الكروت وأزرار النسخ واللصق للموظف
+       رسم الجدول وتوليد الكروت
        ========================================================================== */
 
     function getWeekDates(startDate) {
@@ -2349,7 +2457,6 @@
         const tr = document.createElement("tr");
         let empTotalHours = 0;
 
-        // حالة زر لصق الجدول
         const isPasteReady = state.copiedEmployeeSchedule !== null;
 
         let rowHtml = `
@@ -2358,7 +2465,6 @@
               <div class="emp-row-top">
                 <span class="emp-title" title="${emp.name}">${emp.name}</span>
                 <div class="emp-toolbar-btns no-print">
-                  <!-- أزرار النسخ واللصق على كرت الموظف بجانب الاسم مباشرة -->
                   <button class="emp-tool-btn btn-copy-emp" onclick="copyEmployeeSchedule('${emp.id}')" title="نسخ كامل جدول (${emp.name}) لهذا الأسبوع">📋 نسخ</button>
                   <button class="emp-tool-btn btn-paste-emp ${isPasteReady ? 'glow' : ''}" onclick="pasteEmployeeSchedule('${emp.id}')" title="لصق الجدول المنسوخ على (${emp.name})">📥 لصق</button>
                   <button class="emp-tool-btn" title="تحريك لأعلى" onclick="moveEmployeeOrder('${emp.id}', 'up')">▲</button>
@@ -2462,7 +2568,7 @@
     }
 
     /* ==========================================================================
-       التصدير للـ Excel والـ PDF في ورقة واحدة
+       التصدير للـ Excel والـ PDF
        ========================================================================== */
 
     function exportWeeklyMatrixExcel() {
@@ -2516,6 +2622,8 @@
     }
 
     function exportSinglePagePDF() {
+      applyPdfCustomizationUI();
+
       const count = state.employees.length;
       const table = document.getElementById("scheduleTable");
 
@@ -2570,6 +2678,12 @@
       document.getElementById("btnOpenPresetsModal").addEventListener("click", () => {
         renderPresetsModalList();
         openModal("presetsModalBackdrop");
+      });
+
+      // زر تخصيص الـ PDF
+      document.getElementById("btnOpenPdfSettings").addEventListener("click", () => {
+        applyPdfCustomizationUI();
+        openModal("pdfCustomizerModalBackdrop");
       });
 
       // زر الترس العائم للإعدادات
