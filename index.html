@@ -16,6 +16,11 @@
 
   <!-- مكتبة ExcelJS لتصدير ملف Excel التفاعلي -->
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <!-- مكتبة React + Recharts لرسم كارت الملخص الإحصائي الأسبوعي التفاعلي -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/recharts@2.12.7/umd/Recharts.min.js"></script>
 
   <style>
     /* ==========================================================================
@@ -450,6 +455,282 @@
     .day-chip.active {
       background: var(--primary);
       color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       3b. كارت الملخص الإحصائي الأسبوعي (Recharts Weekly Analytics Card)
+       ========================================================================== */
+    .stats-summary-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 0.9rem;
+      overflow: hidden;
+    }
+
+    .stats-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.72rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-subtle);
+      flex-wrap: wrap;
+    }
+
+    .stats-card-header.is-collapsed {
+      border-bottom-color: transparent;
+    }
+
+    .stats-header-titles {
+      display: flex;
+      align-items: baseline;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .stats-header-titles h2 {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .stats-header-meta {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.15fr 1.2fr;
+      align-items: stretch;
+    }
+
+    .stats-zone {
+      padding: 0.85rem 1rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+
+    .stats-zone + .stats-zone {
+      border-right: 1px solid var(--border);
+    }
+
+    .stats-zone-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stats-zone-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stats-zone-sub {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .stats-kpi-donut-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stats-kpi-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stats-kpi-item + .stats-kpi-item {
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stats-kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .stats-kpi-value-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.32rem;
+    }
+
+    .stats-kpi-number {
+      font-size: 1.55rem;
+      line-height: 1.15;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .stats-kpi-number.accent {
+      color: var(--primary);
+    }
+
+    .stats-kpi-unit {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .stats-kpi-detail {
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+      line-height: 1.45;
+    }
+
+    .stats-donut-box {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      flex-shrink: 0;
+    }
+
+    .stats-donut-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .stats-donut-center .pct {
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .stats-donut-center .lbl {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .recharts-host {
+      width: 100%;
+      height: 158px;
+      min-width: 0;
+      direction: ltr;
+    }
+
+    .stats-empty-chart {
+      height: 158px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--surface-subtle);
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--border);
+      padding: 0.75rem;
+    }
+
+    .stats-inline-foot {
+      font-size: 0.71rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      min-height: 18px;
+    }
+
+    .stats-legend-swatch {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .stats-legend-line {
+      display: inline-block;
+      width: 12px;
+      height: 3px;
+      border-radius: 2px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .rg-recharts-tooltip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.65rem;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.14);
+      direction: rtl;
+      text-align: right;
+      font-size: 0.74rem;
+      color: var(--text);
+      min-width: 150px;
+    }
+
+    .rg-recharts-tooltip-title {
+      font-weight: 800;
+      font-size: 0.77rem;
+      margin-bottom: 0.25rem;
+      padding-bottom: 0.22rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .rg-recharts-tooltip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .rg-recharts-tooltip-row span:first-child {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1120px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-zone + .stats-zone {
+        border-right: none;
+        border-top: 1px solid var(--border);
+      }
     }
 
     /* ==========================================================================
@@ -1466,6 +1747,29 @@
       </div>
     </div>
 
+    <!-- كارت الملخص الإحصائي الأسبوعي التفاعلي (Recharts) -->
+    <section class="stats-summary-card no-print" id="weeklyStatsCard" aria-label="الملخص الإحصائي الأسبوعي">
+      <div class="stats-card-header" id="weeklyStatsHeader">
+        <div class="stats-header-titles">
+          <h2>الملخص الإحصائي للأسبوع</h2>
+          <span aria-hidden="true" style="color:var(--text-muted);">·</span>
+          <span class="stats-header-meta tabular-nums" id="weeklyStatsMetaText">جارٍ حساب مؤشرات الفريق...</span>
+        </div>
+        <button
+          type="button"
+          class="btn btn-outline btn-sm"
+          id="btnToggleStatsCard"
+          aria-expanded="true"
+          aria-controls="weeklyStatsBody"
+        >
+          <span id="btnToggleStatsText">إخفاء الملخص</span>
+        </button>
+      </div>
+      <div id="weeklyStatsBody">
+        <div id="weeklyStatsMount"></div>
+      </div>
+    </section>
+
     <!-- كارت جدول الشفتات الأسبوعي -->
     <div class="schedule-card" id="scheduleCaptureCard">
       <div class="table-wrapper">
@@ -2128,6 +2432,179 @@
       };
     }
 
+    function computeWeeklySummaryStats(params) {
+      const employees = Array.isArray(params && params.employees) ? params.employees : [];
+      const shifts = Array.isArray(params && params.shifts) ? params.shifts : [];
+      const weekDates = Array.isArray(params && params.weekDates) ? params.weekDates : [];
+      const visibleDays = Array.isArray(params && params.visibleDays) ? params.visibleDays : [0, 1, 2, 3, 4, 5, 6];
+      const shiftPresets = Array.isArray(params && params.shiftPresets) ? params.shiftPresets : [];
+
+      const activeDayIndices = [0, 1, 2, 3, 4, 5, 6].filter(idx => visibleDays.includes(idx) && weekDates[idx]);
+      const employeeCount = employees.length;
+      const visibleDayCount = activeDayIndices.length;
+      const totalSlots = employeeCount * visibleDayCount;
+
+      const presetMap = new Map();
+      shiftPresets.forEach(p => {
+        if (!p || !p.sH || !p.eH) return;
+        const s24 = convert12hTo24h(p.sH, p.sM || "00", p.sP || "ص");
+        const e24 = convert12hTo24h(p.eH, p.eM || "00", p.eP || "م");
+        if (s24 && e24 && !presetMap.has(`${s24}-${e24}`)) {
+          presetMap.set(`${s24}-${e24}`, String(p.name || "").trim());
+        }
+      });
+
+      const empIdsSet = new Set(employees.map(e => String(e.id)));
+      const shiftLookup = new Map();
+      shifts.forEach(s => {
+        if (!s || !empIdsSet.has(String(s.employeeId))) return;
+        shiftLookup.set(`${s.employeeId}__${s.date}`, s);
+      });
+
+      let totalWorkHours = 0;
+      let activeShiftCount = 0;
+      let offShiftCount = 0;
+      let unassignedSlotCount = 0;
+
+      const shiftBuckets = new Map();
+
+      const dailyBreakdown = activeDayIndices.map(dayIdx => {
+        const d = weekDates[dayIdx];
+        const dateStr = formatDateISO(d);
+        let dayActive = 0;
+        let dayOff = 0;
+        let dayUnassigned = 0;
+        let dayHours = 0;
+
+        employees.forEach(emp => {
+          const shift = shiftLookup.get(`${emp.id}__${dateStr}`);
+          if (shift && isShiftOff(shift)) {
+            dayOff += 1;
+            offShiftCount += 1;
+          } else if (shift && hasValidShiftTimes(shift)) {
+            const s24 = normalizeTime24(shift.startTime);
+            const e24 = normalizeTime24(shift.endTime);
+            const dur = getWorkDuration(s24, e24).hours;
+            dayActive += 1;
+            activeShiftCount += 1;
+            dayHours += dur;
+            totalWorkHours += dur;
+
+            const key = `${s24}-${e24}`;
+            let bucket = shiftBuckets.get(key);
+            if (!bucket) {
+              const timeRange = `${formatTime12h(s24)} - ${formatTime12h(e24)}`;
+              const bidiSafeShort = `شفت ${formatTime12h(s24)} \u200F-\u200F ${formatTime12h(e24)}`;
+              const rawPreset = presetMap.get(key) || "";
+              const cleanPreset = rawPreset.replace(/\s*\(.*?\)\s*/g, "").trim();
+              bucket = {
+                key,
+                startTime: s24,
+                endTime: e24,
+                timeRange,
+                presetName: cleanPreset,
+                shortLabel: cleanPreset || bidiSafeShort,
+                fullLabel: cleanPreset ? `${cleanPreset} (${timeRange})` : timeRange,
+                employeeIds: new Set(),
+                shiftCount: 0,
+                totalHours: 0
+              };
+              shiftBuckets.set(key, bucket);
+            }
+            bucket.employeeIds.add(String(emp.id));
+            bucket.shiftCount += 1;
+            bucket.totalHours += dur;
+          } else {
+            dayUnassigned += 1;
+            unassignedSlotCount += 1;
+          }
+        });
+
+        const dayCoveragePct = employeeCount > 0 ? Math.round((dayActive / employeeCount) * 100) : 0;
+
+        return {
+          dayIdx,
+          dayName: DAYS_ARABIC[dayIdx],
+          dateStr,
+          shortDate: `${d.getDate()}/${d.getMonth() + 1}`,
+          activeEmployees: dayActive,
+          offEmployees: dayOff,
+          unassignedEmployees: dayUnassigned,
+          hours: Number(dayHours.toFixed(2)),
+          coveragePct: dayCoveragePct
+        };
+      });
+
+      const allBuckets = Array.from(shiftBuckets.values()).sort((a, b) => {
+        if (b.employeeIds.size !== a.employeeIds.size) return b.employeeIds.size - a.employeeIds.size;
+        if (b.shiftCount !== a.shiftCount) return b.shiftCount - a.shiftCount;
+        return a.startTime.localeCompare(b.startTime);
+      });
+
+      // فك تشابه الأسماء المختصرة إن وُجد شفتان بنفس الاسم المبدئي
+      const labelCounts = new Map();
+      allBuckets.forEach(b => labelCounts.set(b.shortLabel, (labelCounts.get(b.shortLabel) || 0) + 1));
+
+      const shiftsDistribution = allBuckets.map(b => ({
+        key: b.key,
+        shortLabel: (labelCounts.get(b.shortLabel) || 0) > 1 ? b.timeRange : b.shortLabel,
+        fullLabel: b.fullLabel,
+        timeRange: b.timeRange,
+        employeeCount: b.employeeIds.size,
+        shiftCount: b.shiftCount,
+        avgDailyEmployees: visibleDayCount > 0 ? Number((b.shiftCount / visibleDayCount).toFixed(1)) : 0,
+        totalHours: Number(b.totalHours.toFixed(1))
+      }));
+
+      let shiftsChartData = shiftsDistribution;
+      if (shiftsDistribution.length > 5) {
+        const head = shiftsDistribution.slice(0, 4);
+        const tailBuckets = allBuckets.slice(4);
+        const tailEmpUnion = new Set();
+        let tailShifts = 0;
+        let tailHours = 0;
+        tailBuckets.forEach(tb => {
+          tb.employeeIds.forEach(id => tailEmpUnion.add(id));
+          tailShifts += tb.shiftCount;
+          tailHours += tb.totalHours;
+        });
+        shiftsChartData = head.concat([{
+          key: "other_shifts",
+          shortLabel: "شفتات أخرى",
+          fullLabel: `شفتات أخرى (${tailBuckets.length} فترات)`,
+          timeRange: `${tailBuckets.length} فترات متنوعة`,
+          employeeCount: tailEmpUnion.size,
+          shiftCount: tailShifts,
+          avgDailyEmployees: visibleDayCount > 0 ? Number((tailShifts / visibleDayCount).toFixed(1)) : 0,
+          totalHours: Number(tailHours.toFixed(1))
+        }]);
+      }
+
+      const roundedTotalHours = Number(totalWorkHours.toFixed(2));
+      const avgHoursPerEmployee = employeeCount > 0 ? Number((roundedTotalHours / employeeCount).toFixed(1)) : 0;
+      const avgDailyHours = visibleDayCount > 0 ? Number((roundedTotalHours / visibleDayCount).toFixed(1)) : 0;
+      const coveragePct = totalSlots > 0 ? Math.round((activeShiftCount / totalSlots) * 100) : 0;
+      const coveredDaysCount = dailyBreakdown.filter(d => d.activeEmployees > 0).length;
+
+      return {
+        employeeCount,
+        visibleDayCount,
+        totalSlots,
+        totalWorkHours: roundedTotalHours,
+        avgHoursPerEmployee,
+        avgDailyHours,
+        activeShiftCount,
+        offShiftCount,
+        unassignedSlotCount,
+        coveragePct,
+        coveredDaysCount,
+        totalDistinctShifts: shiftsDistribution.length,
+        shiftsDistribution,
+        shiftsChartData,
+        dailyBreakdown
+      };
+    }
+
     // إتاحة الدوال النقية للاختبارات الآلية إن وُجدت
     if (typeof window !== "undefined") {
       window.__RG_LOGIC__ = {
@@ -2138,7 +2615,8 @@
         isEgyptDST,
         convertToSaudiTime,
         getWorkDuration,
-        computePngLayoutMetrics
+        computePngLayoutMetrics,
+        computeWeeklySummaryStats
       };
     }
 
@@ -2174,11 +2652,13 @@
         showTotalHours: true,
         showNotice: true
       },
-      lastPngResult: null
+      lastPngResult: null,
+      statsCollapsed: false
     };
 
     let draggedShiftData = null;
     let pendingConfirmCallback = null;
+    let weeklyStatsReactRoot = null;
 
     function createInitialSeedShifts(weekStart) {
       const dates = getWeekDates(weekStart).map(formatDateISO);
@@ -3097,6 +3577,7 @@
       localStorage.setItem("rg_theme", isDark ? "dark" : "light");
       state.pngOptions.theme = isDark ? "dark" : "light";
       updateThemeButton(isDark);
+      renderWeeklyStats();
     }
 
     function updateThemeButton(isDark) {
@@ -3112,6 +3593,7 @@
       document.getElementById("primaryColorInput").value = color;
       document.getElementById("primaryColorHex").textContent = color;
       localStorage.setItem("rg_color_primary", color);
+      renderWeeklyStats();
     }
 
     function setPrimaryColor(color) {
@@ -3125,6 +3607,7 @@
       document.getElementById("darkColorInput").value = color;
       document.getElementById("darkColorHex").textContent = color;
       localStorage.setItem("rg_color_dark", color);
+      renderWeeklyStats();
     }
 
     function resetThemeColors() {
@@ -3398,6 +3881,7 @@
       saveLocal();
       cancelEditPreset();
       renderPresetsModalList();
+      renderWeeklyStats();
     }
 
     function editPresetInModal(id) {
@@ -3431,6 +3915,7 @@
         state.shiftPresets = state.shiftPresets.filter(x => x.id !== id);
         saveLocal();
         renderPresetsModalList();
+        renderWeeklyStats();
         showToast("تم حذف الشفت الثابت");
       });
     }
@@ -3912,6 +4397,9 @@
       const tbody = document.getElementById("scheduleBody");
       tbody.innerHTML = "";
 
+      /* رسم كارت الملخص الإحصائي الأسبوعي (Recharts) */
+      renderWeeklyStats();
+
       const filtered = getFilteredEmployees();
       if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="${state.visibleDays.length + 2}" style="text-align:center; padding:2.2rem; color:var(--text-muted); font-weight:700;">لا يوجد موظفون مطابقون للبحث حالياً.</td></tr>`;
@@ -4030,6 +4518,430 @@
     }
 
     /* --------------------------------------------------------------------------
+       6b. محرك كارت الملخص الإحصائي الأسبوعي باستخدام مكتبة Recharts
+       -------------------------------------------------------------------------- */
+    function toggleWeeklyStatsCard() {
+      state.statsCollapsed = !state.statsCollapsed;
+      const bodyEl = document.getElementById("weeklyStatsBody");
+      const headerEl = document.getElementById("weeklyStatsHeader");
+      const btnEl = document.getElementById("btnToggleStatsCard");
+      const textEl = document.getElementById("btnToggleStatsText");
+      if (!bodyEl || !btnEl || !textEl || !headerEl) return;
+
+      bodyEl.style.display = state.statsCollapsed ? "none" : "block";
+      headerEl.classList.toggle("is-collapsed", state.statsCollapsed);
+      btnEl.setAttribute("aria-expanded", String(!state.statsCollapsed));
+      textEl.textContent = state.statsCollapsed ? "عرض الملخص" : "إخفاء الملخص";
+
+      if (!state.statsCollapsed) {
+        renderWeeklyStats();
+      }
+    }
+
+    function renderWeeklyStats() {
+      if (typeof document === "undefined") return;
+      const mountEl = document.getElementById("weeklyStatsMount");
+      const metaEl = document.getElementById("weeklyStatsMetaText");
+      if (!mountEl) return;
+
+      const weekDates = getWeekDates(state.currentWeekStart);
+      const filteredEmployees = getFilteredEmployees();
+      const stats = computeWeeklySummaryStats({
+        employees: filteredEmployees,
+        shifts: state.shifts,
+        weekDates,
+        visibleDays: state.visibleDays,
+        shiftPresets: state.shiftPresets
+      });
+
+      if (metaEl) {
+        const searchHint = state.searchQuery.trim() ? " (حسب البحث الحالي)" : "";
+        metaEl.textContent = `${stats.employeeCount} موظفين${searchHint} · ${stats.visibleDayCount} أيام معروضة · ${stats.activeShiftCount} شفت فعلي`;
+      }
+
+      if (state.statsCollapsed) return;
+
+      const isDark = document.body.classList.contains("dark-theme");
+      const primaryCol = state.primaryColor || "#D7192D";
+      const indigoCol = isDark ? "#818CF8" : "#4F46E5";
+      const hoursBarCol = isDark ? "#4F46E5" : "#6366F1";
+      const surfaceCol = isDark ? "#1C1E22" : "#FFFFFF";
+      const borderCol = isDark ? "#343840" : "#E2E8F0";
+      const gridCol = isDark ? "#2D3139" : "#E2E8F0";
+      const textCol = isDark ? "#F1F5F9" : "#0F172A";
+      const textMutedCol = isDark ? "#94A3B8" : "#64748B";
+      const slateSliceCol = isDark ? "#64748B" : "#94A3B8";
+      const emptySliceCol = isDark ? "#2A2E36" : "#E2E8F0";
+      const hoverCursorCol = isDark ? "rgba(255,255,255,0.05)" : "rgba(15,23,42,0.04)";
+      const barPalette = [primaryCol, "#4F46E5", "#0284C7", "#0D9488", "#D97706"];
+
+      // التحقق من توفر React و Recharts، مع دعم احتياطي في حال عدم الاتصال بالإنترنت
+      if (!window.React || !window.ReactDOM || !window.Recharts) {
+        mountEl.innerHTML = `
+          <div class="stats-grid tabular-nums">
+            <div class="stats-zone">
+              <div class="stats-kpi-label">إجمالي ساعات العمل للفريق</div>
+              <div class="stats-kpi-value-row"><span class="stats-kpi-number">${stats.totalWorkHours}</span><span class="stats-kpi-unit">ساعة</span></div>
+              <div class="stats-kpi-detail">متوسط ${stats.avgHoursPerEmployee} س/موظف · نسبة التغطية ${stats.coveragePct}%</div>
+            </div>
+            <div class="stats-zone">
+              <div class="stats-zone-title">عدد الموظفين في كل شفت</div>
+              <div class="stats-kpi-detail">${stats.shiftsDistribution.map(s => `${escapeHtml(s.fullLabel)}: ${s.employeeCount} موظف`).join(" · ") || "لا توجد شفتات مسجلة"}</div>
+            </div>
+            <div class="stats-zone">
+              <div class="stats-zone-title">نسبة التغطية الأسبوعية</div>
+              <div class="stats-kpi-value-row"><span class="stats-kpi-number accent">${stats.coveragePct}%</span></div>
+              <div class="stats-kpi-detail">${stats.coveredDaysCount}/${stats.visibleDayCount} أيام مغطاة · ${stats.offShiftCount} أوف</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const h = window.React.createElement;
+      const {
+        ResponsiveContainer,
+        PieChart,
+        Pie,
+        Cell,
+        BarChart,
+        Bar,
+        LabelList,
+        ComposedChart,
+        Line,
+        XAxis,
+        YAxis,
+        CartesianGrid,
+        Tooltip
+      } = window.Recharts;
+
+      if (!weeklyStatsReactRoot) {
+        weeklyStatsReactRoot = window.ReactDOM.createRoot(mountEl);
+      }
+
+      const rawDonutSlices = [
+        { name: "شفتات عمل فعلية", value: stats.activeShiftCount, color: primaryCol },
+        { name: "أيام أوف وراحة", value: stats.offShiftCount, color: slateSliceCol },
+        { name: "غير مجدول", value: stats.unassignedSlotCount, color: emptySliceCol }
+      ].filter(s => s.value > 0);
+
+      const donutData = rawDonutSlices.length > 0
+        ? rawDonutSlices
+        : [{ name: "لا توجد خانات", value: 1, color: emptySliceCol, isPlaceholder: true }];
+
+      const DonutTooltip = (props) => {
+        if (!props.active || !props.payload || !props.payload.length) return null;
+        const item = props.payload[0].payload;
+        if (item.isPlaceholder) return null;
+        const pct = stats.totalSlots > 0 ? Math.round((item.value / stats.totalSlots) * 100) : 0;
+        return h("div", { className: "rg-recharts-tooltip tabular-nums" },
+          h("div", { className: "rg-recharts-tooltip-title" }, item.name),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "العدد:"),
+            h("span", null, `${item.value} من ${stats.totalSlots}`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "النسبة:"),
+            h("span", null, `${pct}%`)
+          )
+        );
+      };
+
+      const ShiftBarTooltip = (props) => {
+        if (!props.active || !props.payload || !props.payload.length) return null;
+        const d = props.payload[0].payload;
+        return h("div", { className: "rg-recharts-tooltip tabular-nums" },
+          h("div", { className: "rg-recharts-tooltip-title" }, d.fullLabel),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "عدد الموظفين بالشفت:"),
+            h("span", null, `${d.employeeCount} موظف`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "إجمالي النوبات بالأسبوع:"),
+            h("span", null, `${d.shiftCount} شفت`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "المتوسط اليومي:"),
+            h("span", null, `${d.avgDailyEmployees} موظف/يوم`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "إجمالي الساعات:"),
+            h("span", null, `${d.totalHours} ساعة`)
+          )
+        );
+      };
+
+      const DailyComposedTooltip = (props) => {
+        if (!props.active || !props.payload || !props.payload.length) return null;
+        const d = props.payload[0].payload;
+        return h("div", { className: "rg-recharts-tooltip tabular-nums" },
+          h("div", { className: "rg-recharts-tooltip-title" }, `${d.dayName} (${d.shortDate})`),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "نسبة التغطية:"),
+            h("span", { style: { color: primaryCol } }, `${d.coveragePct}%`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "ساعات العمل:"),
+            h("span", null, `${d.hours} ساعة`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "موظفون على رأس العمل:"),
+            h("span", null, `${d.activeEmployees} من ${stats.employeeCount}`)
+          ),
+          h("div", { className: "rg-recharts-tooltip-row" },
+            h("span", null, "أوف / غير مجدول:"),
+            h("span", null, `${d.offEmployees} أوف · ${d.unassignedEmployees} شاغر`)
+          )
+        );
+      };
+
+      // ترتيب الأيام عكسياً داخل إحداثيات SVG ليكون (الأحد) يميناً و(السبت) يساراً متطابقاً مع أعمدة الجدول أسفله
+      const dailyReversed = stats.dailyBreakdown.slice().reverse();
+      const maxEmpAxis = Math.max(stats.employeeCount + 1, 4);
+
+      const formatShiftPeriodsCount = (n) => {
+        if (n <= 0) return "لا توجد شفتات نشطة";
+        if (n === 1) return "فترة شفت واحدة";
+        if (n === 2) return "فترتا شفت";
+        if (n <= 10) return `${n} فترات شفت`;
+        return `${n} فترة شفت`;
+      };
+
+      const renderRtlXAxisTick = (tickProps) => {
+        const { x, y, payload } = tickProps;
+        const label = payload && payload.value ? String(payload.value) : "";
+        return h("text", {
+          x,
+          y: Number(y) + 12,
+          textAnchor: "middle",
+          direction: "rtl",
+          fill: textMutedCol,
+          fontSize: 11,
+          fontWeight: 700,
+          fontFamily: "'Cairo', sans-serif"
+        }, `\u200F${label}`);
+      };
+
+      const renderBarEmpLabel = (lblProps) => {
+        const { x, y, width, value } = lblProps;
+        if (value === undefined || value === null) return null;
+        const num = Number(value);
+        const unit = num >= 3 && num <= 10 ? "موظفين" : "موظف";
+        return h("text", {
+          x: Number(x) + Number(width) / 2,
+          y: Number(y) - 7,
+          textAnchor: "middle",
+          direction: "rtl",
+          fill: textCol,
+          fontSize: 11.5,
+          fontWeight: 800,
+          fontFamily: "'Cairo', sans-serif"
+        }, `\u200F${num} ${unit}`);
+      };
+
+      const shiftsFootNodes = [];
+      if (stats.shiftsChartData.length > 0) {
+        stats.shiftsChartData.slice(0, 3).forEach((s, idx) => {
+          if (idx > 0) {
+            shiftsFootNodes.push(h("span", { key: "sep_" + idx, "aria-hidden": "true" }, "·"));
+          }
+          const empWord = s.employeeCount >= 3 && s.employeeCount <= 10 ? "موظفين" : "موظف";
+          shiftsFootNodes.push(
+            h("span", { key: s.key }, `${s.timeRange}: ${s.employeeCount} ${empWord} (${s.shiftCount} شفت)`)
+          );
+        });
+      } else {
+        shiftsFootNodes.push(h("span", { key: "empty_foot" }, "أضف شفتات عمل لعرض توزيع الموظفين على كل فترة"));
+      }
+
+      const dashboardTree = h("div", { className: "stats-grid tabular-nums" },
+        // القسم الأول (يمين): إجمالي ساعات العمل للفريق + نسبة التغطية (Donut Recharts)
+        h("div", { className: "stats-zone" },
+          h("div", { className: "stats-kpi-donut-row" },
+            h("div", { className: "stats-kpi-stack" },
+              h("div", { className: "stats-kpi-item" },
+                h("div", { className: "stats-kpi-label" }, "إجمالي ساعات العمل للفريق"),
+                h("div", { className: "stats-kpi-value-row" },
+                  h("span", { className: "stats-kpi-number", id: "statTotalTeamHours" }, stats.totalWorkHours),
+                  h("span", { className: "stats-kpi-unit" }, "ساعة عمل")
+                ),
+                h("div", { className: "stats-kpi-detail" },
+                  `متوسط ${stats.avgHoursPerEmployee} س/موظف · ${stats.activeShiftCount} شفت عمل`
+                )
+              ),
+              h("div", { className: "stats-kpi-item" },
+                h("div", { className: "stats-kpi-label" }, "نسبة التغطية التشغيلية"),
+                h("div", { className: "stats-kpi-value-row" },
+                  h("span", { className: "stats-kpi-number accent", id: "statCoveragePct" }, `${stats.coveragePct}%`),
+                  h("span", { className: "stats-kpi-unit" }, `(${stats.coveredDaysCount}/${stats.visibleDayCount} أيام)`)
+                ),
+                h("div", { className: "stats-kpi-detail" },
+                  `${stats.offShiftCount} أوف وراحة · ${stats.unassignedSlotCount} غير مجدول`
+                )
+              )
+            ),
+            h("div", { className: "stats-donut-box", dir: "ltr" },
+              h(ResponsiveContainer, { width: "100%", height: 140 },
+                h(PieChart, null,
+                  h(Pie, {
+                    data: donutData,
+                    dataKey: "value",
+                    nameKey: "name",
+                    cx: "50%",
+                    cy: "50%",
+                    innerRadius: 43,
+                    outerRadius: 61,
+                    paddingAngle: donutData.length > 1 ? 2 : 0,
+                    startAngle: 90,
+                    endAngle: -270,
+                    stroke: "none",
+                    isAnimationActive: false
+                  },
+                    donutData.map((entry, idx) => h(Cell, { key: "slice_" + idx, fill: entry.color }))
+                  ),
+                  h(Tooltip, { content: DonutTooltip })
+                )
+              ),
+              h("div", { className: "stats-donut-center" },
+                h("span", { className: "pct" }, `${stats.coveragePct}%`),
+                h("span", { className: "lbl" }, "نسبة التغطية")
+              )
+            )
+          )
+        ),
+
+        // القسم الثاني (وسط): عدد الموظفين في كل شفت (Recharts BarChart)
+        h("div", { className: "stats-zone" },
+          h("div", { className: "stats-zone-head" },
+            h("span", { className: "stats-zone-title" }, "عدد الموظفين في كل شفت"),
+            h("span", { className: "stats-zone-sub" }, formatShiftPeriodsCount(stats.totalDistinctShifts))
+          ),
+          stats.shiftsChartData.length === 0
+            ? h("div", { className: "stats-empty-chart" }, "لا توجد شفتات عمل مسجلة في هذا الأسبوع بعد")
+            : h("div", { className: "recharts-host", dir: "ltr" },
+                h(ResponsiveContainer, { width: "100%", height: 158 },
+                  h(BarChart, {
+                    data: stats.shiftsChartData,
+                    margin: { top: 24, right: 10, left: 2, bottom: 4 }
+                  },
+                    h(CartesianGrid, { strokeDasharray: "3 3", vertical: false, stroke: gridCol }),
+                    h(XAxis, {
+                      dataKey: "shortLabel",
+                      interval: 0,
+                      axisLine: { stroke: borderCol },
+                      tickLine: false,
+                      tick: renderRtlXAxisTick
+                    }),
+                    h(YAxis, {
+                      allowDecimals: false,
+                      domain: [0, maxEmpAxis],
+                      axisLine: false,
+                      tickLine: false,
+                      width: 26,
+                      tick: { fill: textMutedCol, fontSize: 10, fontFamily: "'Cairo', sans-serif" }
+                    }),
+                    h(Tooltip, { cursor: { fill: hoverCursorCol }, content: ShiftBarTooltip }),
+                    h(Bar, {
+                      dataKey: "employeeCount",
+                      name: "عدد الموظفين",
+                      radius: [6, 6, 0, 0],
+                      maxBarSize: 44,
+                      isAnimationActive: false
+                    },
+                      stats.shiftsChartData.map((entry, idx) =>
+                        h(Cell, { key: "bar_" + entry.key, fill: barPalette[idx % barPalette.length] })
+                      ),
+                      h(LabelList, {
+                        dataKey: "employeeCount",
+                        content: renderBarEmpLabel
+                      })
+                    )
+                  )
+                )
+              ),
+          h("div", { className: "stats-inline-foot" }, shiftsFootNodes)
+        ),
+
+        // القسم الثالث (يسار): التغطية وساعات العمل اليومية (Recharts ComposedChart)
+        h("div", { className: "stats-zone" },
+          h("div", { className: "stats-zone-head" },
+            h("span", { className: "stats-zone-title" }, "التغطية وساعات العمل يومياً"),
+            h("span", { className: "stats-zone-sub" }, `متوسط ${stats.avgDailyHours} ساعة/يوم`)
+          ),
+          h("div", { className: "recharts-host", dir: "ltr" },
+            h(ResponsiveContainer, { width: "100%", height: 158 },
+              h(ComposedChart, {
+                data: dailyReversed,
+                margin: { top: 16, right: 4, left: 2, bottom: 4 }
+              },
+                h(CartesianGrid, { strokeDasharray: "3 3", vertical: false, stroke: gridCol }),
+                h(XAxis, {
+                  dataKey: "dayName",
+                  interval: 0,
+                  axisLine: { stroke: borderCol },
+                  tickLine: false,
+                  tick: renderRtlXAxisTick
+                }),
+                h(YAxis, {
+                  yAxisId: "hours",
+                  allowDecimals: false,
+                  axisLine: false,
+                  tickLine: false,
+                  width: 28,
+                  tick: { fill: textMutedCol, fontSize: 10, fontFamily: "'Cairo', sans-serif" }
+                }),
+                h(YAxis, {
+                  yAxisId: "pct",
+                  orientation: "right",
+                  domain: [0, 100],
+                  tickFormatter: (v) => `${v}%`,
+                  axisLine: false,
+                  tickLine: false,
+                  width: 38,
+                  tick: { fill: primaryCol, fontSize: 10, fontWeight: 700, fontFamily: "'Cairo', sans-serif" }
+                }),
+                h(Tooltip, { cursor: { fill: hoverCursorCol }, content: DailyComposedTooltip }),
+                h(Bar, {
+                  yAxisId: "hours",
+                  dataKey: "hours",
+                  name: "ساعات العمل",
+                  fill: hoursBarCol,
+                  radius: [5, 5, 0, 0],
+                  maxBarSize: 24,
+                  isAnimationActive: false
+                }),
+                h(Line, {
+                  yAxisId: "pct",
+                  type: "monotone",
+                  dataKey: "coveragePct",
+                  name: "نسبة التغطية %",
+                  stroke: primaryCol,
+                  strokeWidth: 2.4,
+                  dot: { r: 3.5, fill: primaryCol, stroke: surfaceCol, strokeWidth: 1.5 },
+                  activeDot: { r: 5 },
+                  isAnimationActive: false
+                })
+              )
+            )
+          ),
+          h("div", { className: "stats-inline-foot" },
+            h("span", null,
+              h("span", { className: "stats-legend-swatch", style: { background: hoursBarCol } }),
+              "ساعات العمل اليومية"
+            ),
+            h("span", { "aria-hidden": "true" }, "·"),
+            h("span", null,
+              h("span", { className: "stats-legend-line", style: { background: primaryCol } }),
+              "نسبة التغطية اليومية (%)"
+            )
+          )
+        )
+      );
+
+      weeklyStatsReactRoot.render(dashboardTree);
+    }
+
+    /* --------------------------------------------------------------------------
        7. التهيئة وربط الأحداث عند التحميل
        -------------------------------------------------------------------------- */
     document.addEventListener("DOMContentLoaded", () => {
@@ -4040,6 +4952,7 @@
       renderSchedule();
       syncFetchCloud();
 
+      document.getElementById("btnToggleStatsCard").addEventListener("click", toggleWeeklyStatsCard);
       document.getElementById("btnThemeToggle").addEventListener("click", toggleTheme);
       document.getElementById("btnOpenSettingsDesktop").addEventListener("click", () => openModal("settingsModalBackdrop"));
       document.getElementById("btnOpenSettingsMobile").addEventListener("click", () => openModal("settingsModalBackdrop"));
