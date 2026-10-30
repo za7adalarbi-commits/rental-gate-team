@@ -34,6 +34,7 @@
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
       --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
       --font: 'Cairo', system-ui, -apple-system, sans-serif;
+      --pdf-scale: 1;
     }
 
     body.dark-theme {
@@ -407,7 +408,7 @@
     .day-cell { min-height: 105px; height: 100%; background: var(--surface); position: relative; }
     .day-cell.drag-over { background-color: var(--primary-light) !important; border: 2px dashed var(--primary) !important; }
 
-    /* كارت الشفت */
+    /* كارت الشفت المطابق للصورة تماماً */
     .shift-card {
       background: #FFFFFF;
       border: 1px solid #fca5a5;
@@ -728,7 +729,7 @@
     }
 
     /* ==========================================================================
-       7. طباعة PDF في صفحة واحدة أفقية فقط (Single Page Guarantee)
+       7. طباعة PDF بميزة تخصيص ضغط الموظفين (Dynamic Scale Engine)
        ========================================================================== */
     @media print {
       @page {
@@ -771,6 +772,7 @@
         width: 100% !important;
         border: 1px solid #475569 !important;
         table-layout: fixed;
+        zoom: var(--pdf-scale);
       }
 
       .schedule-table th, .schedule-table td {
@@ -846,7 +848,7 @@
         text-align: center;
       }
 
-      /* قواعد التخصيص المستلمة من نافذة إعدادات الـ PDF */
+      /* قواعد التخصيص */
       body.pdf-hide-saudi .time-line-saudi { display: none !important; }
       body.pdf-hide-hours .work-hours-count { display: none !important; }
       body.pdf-hide-totals .total-header, body.pdf-hide-totals .total-hours-cell { display: none !important; }
@@ -873,7 +875,7 @@
         </div>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات 12 ساعة • نسخ ولصق سريع • تخصيص PDF كامل</p>
+          <p>إدارة الشفتات 12 ساعة • تحكم ضغط الـ PDF للموظفين • شفتات حرة</p>
         </div>
       </div>
 
@@ -930,7 +932,6 @@
           + إضافة شفت
         </button>
 
-        <!-- زر الشفتات الثابتة المستقل -->
         <button class="btn btn-outline" id="btnOpenPresetsModal" style="border-color:#f59e0b; color:#d97706;" title="عرض وإدارة مواعيد الشفتات الثابتة">
           ⚡ الشفتات الثابتة
         </button>
@@ -955,12 +956,12 @@
           Excel
         </button>
 
-        <!-- زر تخصيص الـ PDF الجديد -->
-        <button class="btn btn-outline" id="btnOpenPdfSettings" style="border-color:#2563eb; color:#2563eb;" title="تخصيص شكل وعناصر الـ PDF قبل الاستخراج">
+        <!-- زر تخصيص الـ PDF وتخصيص عدد ضغط الموظفين -->
+        <button class="btn btn-outline" id="btnOpenPdfSettings" style="border-color:#2563eb; color:#2563eb;" title="تخصيص شكل وعناصر وضغط الـ PDF قبل الاستخراج">
           ⚙️ تخصيص الـ PDF
         </button>
 
-        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF مباشر في ورقة A4 أفقية واحدة فقط (حتى 20 موظفاً)">
+        <button class="btn btn-outline" id="btnPrintSchedule" title="استخراج PDF مباشر في ورقة A4 أفقية واحدة فقط">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
           PDF صفحة واحدة
         </button>
@@ -1008,19 +1009,43 @@
   </button>
 
   <!-- ==========================================================================
-       مودال: تخصيص الـ PDF الجديد (PDF Customizer Modal)
+       مودال: تخصيص الـ PDF وتخصيص عدد ضغط الموظفين
        ========================================================================== -->
   <div class="modal-backdrop" id="pdfCustomizerModalBackdrop">
-    <div class="modal" style="max-width: 520px;">
+    <div class="modal" style="max-width: 530px;">
       <div class="modal-header" style="border-bottom-color:#2563eb;">
-        <h3>⚙️ تخصيص وإعدادات تقرير الـ PDF</h3>
+        <h3>⚙️ تخصيص الـ PDF وإعدادات ضغط الموظفين</h3>
         <button class="modal-close" onclick="closeModal('pdfCustomizerModalBackdrop')">&times;</button>
       </div>
       <div class="modal-body">
         
         <div class="form-group">
-          <label class="form-label">عنوان التقرير في أعلى ورقة الـ PDF:</label>
+          <label class="form-label">عنوان التقرير في أعلى الـ PDF:</label>
           <input type="text" id="pdfTitleInput" class="form-control" value="Rental Gate — جدول الشفتات الأسبوعي الرسمي">
+        </div>
+
+        <!-- ميزة تخصيص عدد وضغط الموظفين المطلوبة -->
+        <div class="form-group" style="background:#f0f9ff; padding:0.85rem; border-radius:var(--radius-sm); border:1.5px solid #bae6fd;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <label class="form-label" style="margin:0; color:#0369a1; font-weight:800;">🔍 تخصيص نسبة ضغط الجدول بالموظفين:</label>
+            <span id="scalePercentageLabel" style="font-weight:900; color:#0284c7; font-size:0.9rem;">100%</span>
+          </div>
+          
+          <input type="range" id="pdfScaleSlider" min="50" max="100" value="100" step="2" style="width:100%; cursor:pointer;" oninput="updatePdfScaleLabel(this.value)">
+
+          <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#64748b; margin-top:0.25rem;">
+            <span>أقصى ضغط لـ 20 موظفاً (50%)</span>
+            <span>متوسط لـ 12 موظفاً (75%)</span>
+            <span>حجم عادي (100%)</span>
+          </div>
+
+          <div style="margin-top:0.6rem; display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
+            <span style="font-size:0.75rem; font-weight:700; color:#0c4a6e;">تحديد ضغط مسبق لعدد الموظفين:</span>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(100)">حتى 6 موظفين</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(80)">حتى 12 موظفاً</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(65)">حتى 16 موظفاً</button>
+            <button type="button" class="btn btn-outline btn-sm" style="padding:1px 6px; font-size:0.7rem;" onclick="setPresetCompression(52)">حتى 20 موظفاً (ورقة واحدة)</button>
+          </div>
         </div>
 
         <div class="form-group" style="background:var(--surface-subtle); padding:0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border);">
@@ -1051,10 +1076,6 @@
           <textarea id="pdfNoticeTextInput" class="form-control" rows="2" style="font-size:0.8rem;">⚠️ ملاحظة هامة: مواعيد الشفتات قابلة للتغيير والتعديل وفقاً لمتطلبات وضغط العمل التشغيلي — إدارة Rental Gate</textarea>
         </div>
 
-        <div class="form-group" style="background:#eff6ff; padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid #bfdbfe; font-size:0.8rem; color:#1e40af;">
-          💡 <strong>ميزة الورقة الواحدة:</strong> تم ضبط أبعاد الطباعة تلقائياً لاستيعاب حتى 20 موظفاً في صفحة A4 أفقية واحدة تماماً دون ترحيل.
-        </div>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" onclick="closeModal('pdfCustomizerModalBackdrop')">إلغاء</button>
@@ -1063,9 +1084,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       مودال: نافذة الشفتات الثابتة المستقلة بالكامل (تبدأ فارغة ونظيفة)
-       ========================================================================== -->
+  <!-- مودال: الشفتات الثابتة المستقلة (فارغة ونظيفة بالكامل) -->
   <div class="modal-backdrop" id="presetsModalBackdrop">
     <div class="modal" style="max-width: 540px;">
       <div class="modal-header" style="border-bottom-color:#f59e0b;">
@@ -1074,14 +1093,13 @@
       </div>
       <div class="modal-body">
         
-        <!-- نموذج إضافة شفت ثابت جديد -->
         <form id="presetForm" onsubmit="handleSavePreset(event)" style="background: var(--surface-subtle); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1rem;">
           <input type="hidden" id="editPresetId" value="">
           <h4 id="presetFormHeading" style="font-size:0.875rem; font-weight:800; margin-bottom:0.6rem; color:var(--text);">+ إضافة شفت ثابت جديد</h4>
 
           <div class="form-group" style="margin-bottom:0.6rem;">
             <label class="form-label">اسم الشفت الثابت:</label>
-            <input type="text" id="presetNameInput" class="form-control" required placeholder="مثال: شفت صباحي، شفت الدعم الفني">
+            <input type="text" id="presetNameInput" class="form-control" required placeholder="مثال: شفت الصباح، شفت مسائي، شفت حراسة">
           </div>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-bottom:0.6rem;">
@@ -1137,7 +1155,6 @@
             <select id="shiftEmployeeSelect" class="form-control" required></select>
           </div>
 
-          <!-- اختيار شفت ثابت للتعبئة السريعة إن وجد -->
           <div class="form-group" style="background:var(--surface-subtle); padding:0.5rem 0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
               <label class="form-label" style="margin:0;">تعبئة سريعة من شفت ثابت (اختياري):</label>
@@ -1254,7 +1271,7 @@
     </div>
   </div>
 
-  <!-- مودال تبديل الشفتات بين موظفين -->
+  <!-- مودال تبديل الشفتات -->
   <div class="modal-backdrop" id="swapModalBackdrop">
     <div class="modal">
       <div class="modal-header">
@@ -1364,19 +1381,19 @@
 
     const DAYS_ARABIC = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-    // تمت إزالة الشفتات الافتراضية بالكامل، وتبدأ فارغة ليحدد المستخدم شفتاته الخاصة فقط
     const state = {
       employees: [],
       shifts: [],
       currentWeekStart: getStartOfWeek(new Date()),
       searchQuery: "",
       visibleDays: [0, 1, 2, 3, 4, 5, 6],
-      shiftPresets: [], // قائمة الشفتات الثابتة فارغة
+      shiftPresets: [], // تبدأ فارغة تماماً
       copiedEmployeeSchedule: null,
       singleCopiedShift: null,
       companyLogo: null,
       pdfSettings: {
         title: "Rental Gate — جدول الشفتات الأسبوعي الرسمي",
+        scale: 100, // نسبة الضغط المخصصة بالموظفين (100% عادي)
         showSaudiTime: true,
         showWorkHours: true,
         showTotalHours: true,
@@ -1388,7 +1405,7 @@
     let draggedShiftData = null;
 
     /* ==========================================================================
-       دوال الوقت بنظام 12 ساعة الصارم وحساب ساعات العمل
+       دوال الوقت بنظام 12 ساعة وحساب مدة العمل
        ========================================================================== */
 
     function formatTime12h(time24) {
@@ -1492,10 +1509,8 @@
         if (sh) state.shifts = JSON.parse(sh);
         if (vis) state.visibleDays = JSON.parse(vis);
 
-        // تحميل الشفتات الثابتة مع مسح الشفتات الأربعة الافتراضية القديمة إن وجدت
         if (prs) {
           const parsed = JSON.parse(prs);
-          // فلترة الشفتات الأربعة الافتراضية إن وجدت في المتصفح سابقاً
           state.shiftPresets = parsed.filter(p => !["صباحي أساسي", "مسائي أول", "مسائي متأخر", "ليلي كامل"].includes(p.name));
         }
 
@@ -1600,8 +1615,17 @@
     }
 
     /* ==========================================================================
-       التحكم في تخصيص الـ PDF وتطبيقه
+       التحكم في نسبة ضغط الـ PDF بالموظفين
        ========================================================================== */
+
+    function updatePdfScaleLabel(val) {
+      document.getElementById("scalePercentageLabel").textContent = val + "%";
+    }
+
+    function setPresetCompression(val) {
+      document.getElementById("pdfScaleSlider").value = val;
+      updatePdfScaleLabel(val);
+    }
 
     function applyPdfCustomizationUI() {
       const s = state.pdfSettings;
@@ -1609,13 +1633,19 @@
       document.getElementById("printFooterNoticeText").textContent = s.noticeText;
 
       document.getElementById("pdfTitleInput").value = s.title;
+      document.getElementById("pdfScaleSlider").value = s.scale || 100;
+      updatePdfScaleLabel(s.scale || 100);
+
       document.getElementById("pdfShowSaudiTime").checked = s.showSaudiTime;
       document.getElementById("pdfShowWorkHours").checked = s.showWorkHours;
       document.getElementById("pdfShowTotalHours").checked = s.showTotalHours;
       document.getElementById("pdfShowNotice").checked = s.showNotice;
       document.getElementById("pdfNoticeTextInput").value = s.noticeText;
 
-      // تطبيق أصناف CSS على الـ Body للتحكم في عناصر الطباعة
+      // تطبيق مقياس الضغط على متغير CSS
+      const decimalScale = (s.scale || 100) / 100;
+      document.documentElement.style.setProperty("--pdf-scale", decimalScale);
+
       document.body.classList.toggle("pdf-hide-saudi", !s.showSaudiTime);
       document.body.classList.toggle("pdf-hide-hours", !s.showWorkHours);
       document.body.classList.toggle("pdf-hide-totals", !s.showTotalHours);
@@ -1625,6 +1655,7 @@
     function savePdfSettingsAndPrint() {
       state.pdfSettings = {
         title: document.getElementById("pdfTitleInput").value.trim() || "Rental Gate — جدول الشفتات الأسبوعي الرسمي",
+        scale: parseInt(document.getElementById("pdfScaleSlider").value, 10) || 100,
         showSaudiTime: document.getElementById("pdfShowSaudiTime").checked,
         showWorkHours: document.getElementById("pdfShowWorkHours").checked,
         showTotalHours: document.getElementById("pdfShowTotalHours").checked,
@@ -1760,7 +1791,6 @@
       showToast(`تم تطبيق جدول (${state.copiedEmployeeSchedule.sourceName}) على الموظف (${targetEmp.name}) بنجاح!`);
     }
 
-    /* نسخ شفت فردي */
     function copySingleShift(shiftId) {
       const shift = state.shifts.find(s => s.id === shiftId);
       if (!shift) return;
@@ -1803,7 +1833,7 @@
     }
 
     /* ==========================================================================
-       إدارة الشفتات الثابتة المستقلة (تبدأ فارغة ونظيفة)
+       إدارة الشفتات الثابتة المستقلة (فارغة ونظيفة)
        ========================================================================== */
 
     function populatePresetHoursSelectors() {
@@ -2624,13 +2654,14 @@
     function exportSinglePagePDF() {
       applyPdfCustomizationUI();
 
+      // تطبيق ضغط إضافي على الخط إذا زاد عدد الموظفين بشكل كبير
       const count = state.employees.length;
       const table = document.getElementById("scheduleTable");
 
-      if (count > 14) {
-        table.style.setProperty("font-size", "6.5pt", "important");
-      } else if (count > 8) {
-        table.style.setProperty("font-size", "7.5pt", "important");
+      if (count > 16) {
+        table.style.setProperty("font-size", "6.2pt", "important");
+      } else if (count > 10) {
+        table.style.setProperty("font-size", "7.2pt", "important");
       }
 
       window.print();
