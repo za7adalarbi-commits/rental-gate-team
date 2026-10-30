@@ -7,6 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- مكتبات ExcelJS و FileSaver لإنشاء وتصدير ملف Excel حقيقي بالتنسيق والفلاتر والألوان -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
   <style>
     /* ==========================================================================
        1. المتغيرات والسمات الديناميكية (Design System & Theme)
@@ -32,7 +37,6 @@
       --radius-md: 10px;
       --radius-lg: 14px;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
       --font: 'Cairo', system-ui, -apple-system, sans-serif;
       --pdf-scale: 1;
     }
@@ -89,11 +93,7 @@
       flex-wrap: wrap;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
 
     .brand-logo-container {
       width: 44px;
@@ -107,19 +107,13 @@
       flex-shrink: 0;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-
     .brand-logo-container img { width: 100%; height: 100%; object-fit: cover; }
     .brand-logo-fallback { color: white; font-weight: 900; font-size: 1.15rem; }
 
     .brand-text h1 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; }
     .brand-text p { font-size: 0.72rem; color: #cbd5e1; }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
+    .header-right { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 
     .theme-toggle-btn {
       background: rgba(255,255,255,0.12);
@@ -157,7 +151,7 @@
     .sync-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
     /* ==========================================================================
-       3. شريط الأدوات وعناصر التحكم
+       3. شريط الأدوات والعمليات
        ========================================================================== */
     .container {
       max-width: 1600px;
@@ -181,45 +175,22 @@
       gap: 0.85rem;
     }
 
-    .week-nav {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
+    .week-nav { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
     .week-display {
-      font-weight: 800;
-      font-size: 0.95rem;
-      background: var(--surface-subtle);
-      padding: 0.4rem 0.85rem;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
+      font-weight: 800; font-size: 0.95rem;
+      background: var(--surface-subtle); padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--border);
       color: var(--text);
     }
 
-    .actions-cluster {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      flex-wrap: wrap;
-    }
+    .actions-cluster { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      font-size: 0.825rem;
-      font-weight: 700;
-      padding: 0.45rem 0.85rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.4rem; font-size: 0.825rem; font-weight: 700;
+      padding: 0.45rem 0.85rem; border-radius: var(--radius-sm);
+      border: 1px solid transparent; cursor: pointer; transition: all 0.2s; white-space: nowrap;
     }
-
     .btn svg { width: 16px; height: 16px; }
     .btn-primary { background: var(--primary); color: white; }
     .btn-primary:hover { background: var(--primary-hover); }
@@ -229,53 +200,33 @@
     .btn-outline:hover { background: var(--surface-subtle); border-color: #cbd5e1; }
     .btn-danger-outline { background: var(--surface); border-color: #fca5a5; color: #dc2626; }
     .btn-danger-outline:hover { background: #fee2e2; }
+    .btn-excel { background: #107C41; color: white; border-color: #0b5c30; }
+    .btn-excel:hover { background: #0c6736; }
     .btn-sm { padding: 0.22rem 0.5rem; font-size: 0.725rem; }
 
     /* فلترة وبحث وتحديد الأيام */
     .filter-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 0.85rem;
-      flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; margin-bottom: 0.85rem; flex-wrap: wrap;
     }
-
     .search-input {
-      flex: 1;
-      min-width: 220px;
-      max-width: 320px;
-      padding: 0.45rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      background: var(--surface);
-      color: var(--text);
+      flex: 1; min-width: 220px; max-width: 320px;
+      padding: 0.45rem 0.75rem; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.85rem;
+      background: var(--surface); color: var(--text);
     }
     .search-input:focus { outline: none; border-color: var(--primary); }
 
     .days-visibility-toggle {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: var(--surface);
-      padding: 0.3rem 0.55rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      font-size: 0.775rem;
-      font-weight: 700;
-      overflow-x: auto;
+      display: flex; align-items: center; gap: 0.35rem;
+      background: var(--surface); padding: 0.3rem 0.55rem;
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      font-size: 0.775rem; font-weight: 700; overflow-x: auto;
     }
-
     .day-chip {
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--surface-subtle);
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      white-space: nowrap;
+      padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface-subtle);
+      color: var(--text-muted); font-size: 0.72rem; white-space: nowrap;
     }
     .day-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
@@ -283,59 +234,27 @@
        4. جدول الشفتات الأسبوعي
        ========================================================================== */
     .schedule-card {
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
+      background: var(--surface); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden;
     }
-
-    .table-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
     .schedule-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: right;
-      min-width: 1100px;
+      width: 100%; border-collapse: collapse; text-align: right; min-width: 1100px;
     }
-
-    .schedule-table th, 
-    .schedule-table td {
-      border: 1px solid var(--border);
-      padding: 0.55rem 0.45rem;
-      vertical-align: top;
+    .schedule-table th, .schedule-table td {
+      border: 1px solid var(--border); padding: 0.55rem 0.45rem; vertical-align: top;
     }
-
     .schedule-table th {
-      background-color: var(--dark);
-      color: white;
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-align: center;
+      background-color: var(--dark); color: white; font-weight: 800; font-size: 0.85rem; text-align: center;
     }
-
     .schedule-table th.emp-header {
-      width: 235px;
-      text-align: right;
-      padding-right: 0.85rem;
-      background-color: #1a1a1a;
-      position: sticky;
-      right: 0;
-      z-index: 5;
+      width: 235px; text-align: right; padding-right: 0.85rem;
+      background-color: #1a1a1a; position: sticky; right: 0; z-index: 5;
     }
-
     .schedule-table td.emp-cell-sticky {
-      position: sticky;
-      right: 0;
-      background: var(--surface);
-      z-index: 4;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.04);
+      position: sticky; right: 0; background: var(--surface); z-index: 4; box-shadow: -2px 0 5px rgba(0,0,0,0.04);
     }
-
     .schedule-table th.total-header { width: 115px; background-color: #1a1a1a; }
     .schedule-table th .day-name { display: block; font-size: 0.9rem; font-weight: 800; }
     .schedule-table th .day-date { font-size: 0.7rem; color: #cbd5e1; font-weight: 600; }
@@ -343,55 +262,19 @@
 
     /* كرت الموظف */
     .emp-cell-content { display: flex; flex-direction: column; gap: 0.35rem; }
-    
-    .emp-row-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.35rem;
-    }
+    .emp-row-top { display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; }
+    .emp-title { font-weight: 800; color: var(--text); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .emp-title {
-      font-weight: 800;
-      color: var(--text);
-      font-size: 0.9rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .emp-toolbar-btns {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      flex-shrink: 0;
-    }
-
+    .emp-toolbar-btns { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
     .emp-tool-btn {
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.7rem;
-      padding: 2px 5px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
+      background: var(--surface-subtle); border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer; font-size: 0.7rem; padding: 2px 5px;
+      border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;
     }
     .emp-tool-btn:hover { background: var(--border); color: var(--text); }
-    
     .emp-tool-btn.btn-copy-emp { color: #2563eb; border-color: #bfdbfe; background: #eff6ff; }
-    .emp-tool-btn.btn-copy-emp:hover { background: #dbeafe; }
-
     .emp-tool-btn.btn-paste-emp { color: #059669; border-color: #a7f3d0; background: #ecfdf5; }
-    .emp-tool-btn.btn-paste-emp:hover { background: #d1fae5; }
-    .emp-tool-btn.btn-paste-emp.glow {
-      animation: pulseGreen 1.3s infinite;
-      border-color: #10B981;
-      font-weight: 800;
-    }
+    .emp-tool-btn.btn-paste-emp.glow { animation: pulseGreen 1.3s infinite; border-color: #10B981; font-weight: 800; }
     @keyframes pulseGreen {
       0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
       50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.4); }
@@ -408,87 +291,34 @@
     .day-cell { min-height: 105px; height: 100%; background: var(--surface); position: relative; }
     .day-cell.drag-over { background-color: var(--primary-light) !important; border: 2px dashed var(--primary) !important; }
 
-    /* كارت الشفت المطابق للصورة تماماً */
+    /* كارت الشفت */
     .shift-card {
-      background: #FFFFFF;
-      border: 1px solid #fca5a5;
-      border-right: 4px solid var(--primary);
-      border-radius: 6px;
-      padding: 0.4rem 0.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      cursor: grab;
-      user-select: none;
+      background: #FFFFFF; border: 1px solid #fca5a5; border-right: 4px solid var(--primary);
+      border-radius: 6px; padding: 0.4rem 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column; gap: 0.3rem; cursor: grab; user-select: none;
     }
     .shift-card:active { cursor: grabbing; }
     .shift-card.is-dragging { opacity: 0.4; }
-
     body.dark-theme .shift-card { background: #202122; border-color: #5f1e24; }
 
-    .time-line-egypt {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: #0f172a;
-    }
+    .time-line-egypt { display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; font-weight: 800; color: #0f172a; }
     body.dark-theme .time-line-egypt { color: #f1f5f9; }
-
-    .flag-pill-egypt {
-      background: #fee2e2;
-      color: #991b1b;
-      font-size: 0.68rem;
-      font-weight: 800;
-      padding: 0.05rem 0.35rem;
-      border-radius: 4px;
-      line-height: 1.3;
-    }
-
+    .flag-pill-egypt { background: #fee2e2; color: #991b1b; font-size: 0.68rem; font-weight: 800; padding: 0.05rem 0.35rem; border-radius: 4px; }
+    
     .time-line-saudi {
-      background: #f0f7ff;
-      color: #0369a1;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.15rem 0.35rem;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
+      background: #f0f7ff; color: #0369a1; font-size: 0.72rem; font-weight: 700;
+      padding: 0.15rem 0.35rem; border-radius: 4px; display: flex; align-items: center; gap: 0.3rem;
     }
     body.dark-theme .time-line-saudi { background: #172554; color: #93c5fd; }
 
-    .work-hours-count {
-      font-size: 0.78rem;
-      font-weight: 900;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
+    .work-hours-count { font-size: 0.78rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.25rem; }
 
-    .cell-actions {
-      display: flex;
-      gap: 0.25rem;
-      margin-top: 0.2rem;
-      justify-content: flex-end;
-      border-top: 1px dashed #cbd5e1;
-      padding-top: 0.25rem;
-      flex-wrap: wrap;
-    }
+    .cell-actions { display: flex; gap: 0.25rem; margin-top: 0.2rem; justify-content: flex-end; border-top: 1px dashed #cbd5e1; padding-top: 0.25rem; flex-wrap: wrap; }
     body.dark-theme .cell-actions { border-top-color: #475569; }
 
     .action-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--text-muted);
+      background: var(--surface); border: 1px solid var(--border); padding: 0.15rem 0.4rem;
+      border-radius: 4px; font-size: 0.68rem; font-weight: 700; cursor: pointer; color: var(--text-muted);
     }
     .action-btn:hover { background: var(--surface-subtle); color: var(--text); }
     .action-btn.off-btn { color: #dc2626; border-color: #fca5a5; }
@@ -497,73 +327,28 @@
     .action-btn.copy-btn:hover { background: #eff6ff; }
 
     .off-card {
-      background: var(--off-bg);
-      border: 1.5px dashed var(--off-border);
-      border-radius: 6px;
-      padding: 0.6rem 0.4rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      cursor: grab;
-      user-select: none;
+      background: var(--off-bg); border: 1.5px dashed var(--off-border); border-radius: 6px;
+      padding: 0.6rem 0.4rem; text-align: center; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.3rem; cursor: grab; user-select: none;
     }
-    .off-card:active { cursor: grabbing; }
-    .off-card.is-dragging { opacity: 0.4; }
     .off-tag { font-size: 0.825rem; font-weight: 800; color: var(--off-text); }
 
-    .empty-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      height: 100%;
-      justify-content: center;
-    }
+    .empty-actions { display: flex; flex-direction: column; gap: 0.3rem; height: 100%; justify-content: center; }
     .add-shift-btn {
-      width: 100%;
-      padding: 0.3rem;
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--primary);
-      cursor: pointer;
+      width: 100%; padding: 0.3rem; background: var(--surface); border: 1px dashed var(--border);
+      border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--primary); cursor: pointer;
     }
     .add-shift-btn:hover { background: var(--primary-light); border-color: var(--primary); }
-
     .quick-off-btn {
-      width: 100%;
-      padding: 0.25rem;
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--off-text);
-      cursor: pointer;
+      width: 100%; padding: 0.25rem; background: var(--surface-subtle); border: 1px solid var(--border);
+      border-radius: 4px; font-size: 0.68rem; font-weight: 700; color: var(--off-text); cursor: pointer;
     }
-    .quick-off-btn:hover { background: var(--border); }
-
     .paste-day-btn {
-      width: 100%;
-      padding: 0.3rem;
-      background: #eff6ff;
-      border: 1.5px dashed #3b82f6;
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #1d4ed8;
-      cursor: pointer;
+      width: 100%; padding: 0.3rem; background: #eff6ff; border: 1.5px dashed #3b82f6;
+      border-radius: 4px; font-size: 0.72rem; font-weight: 800; color: #1d4ed8; cursor: pointer;
     }
 
-    .total-hours-cell {
-      text-align: center;
-      vertical-align: middle !important;
-      background: var(--surface-subtle);
-    }
+    .total-hours-cell { text-align: center; vertical-align: middle !important; background: var(--surface-subtle); }
     .total-hours-cell .val { font-size: 1.1rem; font-weight: 900; color: var(--text); }
     .total-hours-cell .sub { font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
 
@@ -571,54 +356,28 @@
        5. النوافذ المنبثقة (Modals)
        ========================================================================== */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(2px);
-      z-index: 110;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(2px);
+      z-index: 110; display: flex; align-items: center; justify-content: center; padding: 0.85rem;
+      opacity: 0; visibility: hidden; transition: all 0.2s ease;
     }
     .modal-backdrop.active { opacity: 1; visibility: visible; }
 
     .modal {
-      background: var(--surface);
-      color: var(--text);
-      width: 100%;
-      max-width: 580px;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--surface); color: var(--text); width: 100%; max-width: 580px;
+      border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+      max-height: 90vh; display: flex; flex-direction: column;
     }
 
     .modal-header {
-      padding: 0.85rem 1.15rem;
-      background: var(--dark);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 3.5px solid var(--primary);
+      padding: 0.85rem 1.15rem; background: var(--dark); color: white;
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 3.5px solid var(--primary);
     }
     .modal-header h3 { font-size: 1rem; font-weight: 800; }
     .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-
     .modal-body { padding: 1.15rem; overflow-y: auto; flex: 1; }
     .modal-footer {
-      padding: 0.75rem 1.15rem;
-      background: var(--surface-subtle);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.5rem;
+      padding: 0.75rem 1.15rem; background: var(--surface-subtle); border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end; gap: 0.5rem;
     }
 
     .form-group { margin-bottom: 0.95rem; }
@@ -627,36 +386,18 @@
     .form-control:focus { outline: none; border-color: var(--primary); }
 
     .time-picker-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.45rem;
-      background: var(--surface-subtle);
-      padding: 0.55rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.45rem;
+      background: var(--surface-subtle); padding: 0.55rem; border-radius: var(--radius-sm); border: 1px solid var(--border);
     }
     .time-picker-grid select {
-      padding: 0.4rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-align: center;
-      background: var(--surface);
-      color: var(--text);
+      padding: 0.4rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 0.85rem; font-weight: 700; text-align: center; background: var(--surface); color: var(--text);
     }
 
     .preview-box {
-      margin-top: 0.55rem;
-      padding: 0.55rem 0.75rem;
-      border-radius: var(--radius-sm);
-      background: var(--primary-light);
-      border: 1px solid var(--primary-border);
-      font-size: 0.825rem;
-      color: #991b1b;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
+      margin-top: 0.55rem; padding: 0.55rem 0.75rem; border-radius: var(--radius-sm);
+      background: var(--primary-light); border: 1px solid var(--primary-border); font-size: 0.825rem;
+      color: #991b1b; display: flex; flex-direction: column; gap: 0.2rem;
     }
     body.dark-theme .preview-box { color: #fca5a5; }
 
@@ -669,52 +410,29 @@
     .day-check-item input { margin-bottom: 0.2rem; }
 
     .preset-card-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 0.6rem 0.85rem;
-      border-radius: var(--radius-sm);
-      margin-bottom: 0.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-sm); margin-bottom: 0.5rem;
     }
     .preset-card-info h4 { font-size: 0.875rem; font-weight: 800; color: var(--text); }
     .preset-card-info p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
 
-    /* جدول إدارة الموظفين */
     .emp-mgmt-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.825rem; }
     .emp-mgmt-table th, .emp-mgmt-table td { border: 1px solid var(--border); padding: 0.5rem; text-align: right; }
     .emp-mgmt-table th { background: var(--surface-subtle); font-weight: 800; }
 
-    /* ==========================================================================
-       6. الترس العائم ونافذة الألوان والشعار
-       ========================================================================== */
+    /* الترس العائم */
     .floating-gear-btn {
-      position: fixed;
-      bottom: 1.25rem;
-      left: 1.25rem;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: var(--dark);
-      color: white;
-      border: 2px solid var(--primary);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      transition: transform 0.2s;
+      position: fixed; bottom: 1.25rem; left: 1.25rem; width: 46px; height: 46px;
+      border-radius: 50%; background: var(--dark); color: white; border: 2px solid var(--primary);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; z-index: 100; transition: transform 0.2s;
     }
     .floating-gear-btn:hover { transform: scale(1.1) rotate(45deg); }
     .floating-gear-btn svg { width: 22px; height: 22px; }
 
     .color-swatches { display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap; }
-    .color-swatch-btn {
-      width: 28px; height: 28px; border-radius: 50%; border: 2px solid white;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer;
-    }
+    .color-swatch-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.25); cursor: pointer; }
 
     .thankyou-card { text-align: center; padding: 1.5rem 1rem; }
     .thankyou-icon { font-size: 2.8rem; margin-bottom: 0.4rem; animation: bounce 0.6s ease; }
@@ -729,126 +447,57 @@
     }
 
     /* ==========================================================================
-       7. طباعة PDF بميزة تخصيص ضغط الموظفين (Dynamic Scale Engine)
+       6. طباعة PDF بميزة تخصيص ضغط الموظفين في صفحة واحدة
        ========================================================================== */
     @media print {
-      @page {
-        size: A4 landscape;
-        margin: 3mm 4mm 3mm 4mm;
-      }
+      @page { size: A4 landscape; margin: 3mm 4mm 3mm 4mm; }
 
       html, body {
-        background: white !important;
-        color: black !important;
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+        background: white !important; color: black !important; width: 100% !important;
+        height: 100% !important; margin: 0 !important; padding: 0 !important;
+        -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
       }
 
       .header, .top-toolbar, .filter-bar, .floating-gear-btn,
-      .modal-backdrop, .cell-actions, .empty-actions, .emp-toolbar-btns, .no-print {
-        display: none !important;
-      }
+      .modal-backdrop, .cell-actions, .empty-actions, .emp-toolbar-btns, .no-print { display: none !important; }
 
       .container { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
       .schedule-card { border: none !important; box-shadow: none !important; }
 
       .print-header-bar {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid var(--primary);
-        padding-bottom: 4px;
-        margin-bottom: 4px;
+        display: flex !important; justify-content: space-between; align-items: center;
+        border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin-bottom: 4px;
       }
-
       .print-header-bar img { max-height: 32px; max-width: 100px; object-fit: contain; }
 
       .schedule-table {
-        min-width: 100% !important;
-        width: 100% !important;
-        border: 1px solid #475569 !important;
-        table-layout: fixed;
-        zoom: var(--pdf-scale);
+        min-width: 100% !important; width: 100% !important; border: 1px solid #475569 !important;
+        table-layout: fixed; zoom: var(--pdf-scale);
       }
-
-      .schedule-table th, .schedule-table td {
-        border: 1px solid #94a3b8 !important;
-        padding: 2px 2px !important;
-        line-height: 1.1 !important;
-      }
-
-      .schedule-table th {
-        background-color: #1e293b !important;
-        color: white !important;
-        font-size: 7.5pt !important;
-        font-weight: 900 !important;
-      }
-
+      .schedule-table th, .schedule-table td { border: 1px solid #94a3b8 !important; padding: 2px 2px !important; line-height: 1.1 !important; }
+      .schedule-table th { background-color: #1e293b !important; color: white !important; font-size: 7.5pt !important; font-weight: 900 !important; }
       .emp-title { font-size: 8pt !important; font-weight: 900 !important; }
 
       .shift-card {
-        border: 1px solid #fca5a5 !important;
-        border-right: 3px solid #D7192D !important;
-        border-radius: 4px !important;
-        padding: 2px 3px !important;
-        background: #ffffff !important;
-        box-shadow: none !important;
-        gap: 1.5px !important;
+        border: 1px solid #fca5a5 !important; border-right: 3px solid #D7192D !important;
+        border-radius: 4px !important; padding: 2px 3px !important; background: #ffffff !important;
+        box-shadow: none !important; gap: 1.5px !important;
       }
+      .time-line-egypt { font-size: 7.5pt !important; font-weight: 900 !important; color: #000000 !important; }
+      .flag-pill-egypt { background: #fee2e2 !important; color: #991b1b !important; font-size: 6.5pt !important; padding: 0 3px !important; }
+      .time-line-saudi { font-size: 6.5pt !important; background: #f0f7ff !important; color: #0369a1 !important; padding: 1px 3px !important; }
+      .work-hours-count { font-size: 6.8pt !important; font-weight: 900 !important; color: #D7192D !important; }
 
-      .time-line-egypt {
-        font-size: 7.5pt !important;
-        font-weight: 900 !important;
-        color: #000000 !important;
-      }
-
-      .flag-pill-egypt {
-        background: #fee2e2 !important;
-        color: #991b1b !important;
-        font-size: 6.5pt !important;
-        padding: 0 3px !important;
-      }
-
-      .time-line-saudi {
-        font-size: 6.5pt !important;
-        background: #f0f7ff !important;
-        color: #0369a1 !important;
-        padding: 1px 3px !important;
-      }
-
-      .work-hours-count {
-        font-size: 6.8pt !important;
-        font-weight: 900 !important;
-        color: #D7192D !important;
-      }
-
-      .off-card {
-        background: #f1f5f9 !important;
-        border: 1px dashed #94a3b8 !important;
-        padding: 2px !important;
-      }
+      .off-card { background: #f1f5f9 !important; border: 1px dashed #94a3b8 !important; padding: 2px !important; }
       .off-tag { font-size: 7.5pt !important; font-weight: 900 !important; color: #334155 !important; }
-
       .total-hours-cell .val { font-size: 9pt !important; font-weight: 900 !important; }
       .total-hours-cell .sub { font-size: 6pt !important; }
 
       .print-footer-notice {
-        display: block !important;
-        margin-top: 4px;
-        padding: 3px 6px;
-        border: 1px solid #cbd5e1;
-        background: #f8fafc;
-        font-size: 7pt !important;
-        font-weight: 800 !important;
-        color: #334155 !important;
-        text-align: center;
+        display: block !important; margin-top: 4px; padding: 3px 6px; border: 1px solid #cbd5e1;
+        background: #f8fafc; font-size: 7pt !important; font-weight: 800 !important; color: #334155 !important; text-align: center;
       }
 
-      /* قواعد التخصيص */
       body.pdf-hide-saudi .time-line-saudi { display: none !important; }
       body.pdf-hide-hours .work-hours-count { display: none !important; }
       body.pdf-hide-totals .total-header, body.pdf-hide-totals .total-hours-cell { display: none !important; }
@@ -875,7 +524,7 @@
         </div>
         <div class="brand-text">
           <h1>منظّم جداول التيم — Rental Gate</h1>
-          <p>إدارة الشفتات 12 ساعة • تحكم ضغط الـ PDF للموظفين • شفتات حرة</p>
+          <p>إدارة الشفتات 12 ساعة • تصدير Excel بفلاتر وتصميم رسمي • A4 صفحة واحدة</p>
         </div>
       </div>
 
@@ -951,12 +600,12 @@
           مسح الأسبوع
         </button>
 
-        <button class="btn btn-outline" id="btnExportExcel" title="تصدير شيت إكسيل أسبوعي بنفس مصفوفة الجدول">
+        <!-- زر تصدير Excel المطور مع الفلاتر وتصميم Rental Gate الفاخر -->
+        <button class="btn btn-excel" id="btnExportExcel" title="تصدير ملف Excel رسمي وفاخر مع فلاتر التصفية والتصميم المعتمد">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-          Excel
+          تصدير Excel تفاعلي
         </button>
 
-        <!-- زر تخصيص الـ PDF وتخصيص عدد ضغط الموظفين -->
         <button class="btn btn-outline" id="btnOpenPdfSettings" style="border-color:#2563eb; color:#2563eb;" title="تخصيص شكل وعناصر وضغط الـ PDF قبل الاستخراج">
           ⚙️ تخصيص الـ PDF
         </button>
@@ -1024,7 +673,6 @@
           <input type="text" id="pdfTitleInput" class="form-control" value="Rental Gate — جدول الشفتات الأسبوعي الرسمي">
         </div>
 
-        <!-- ميزة تخصيص عدد وضغط الموظفين المطلوبة -->
         <div class="form-group" style="background:#f0f9ff; padding:0.85rem; border-radius:var(--radius-sm); border:1.5px solid #bae6fd;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
             <label class="form-label" style="margin:0; color:#0369a1; font-weight:800;">🔍 تخصيص نسبة ضغط الجدول بالموظفين:</label>
@@ -1084,7 +732,7 @@
     </div>
   </div>
 
-  <!-- مودال: الشفتات الثابتة المستقلة (فارغة ونظيفة بالكامل) -->
+  <!-- مودال: الشفتات الثابتة المستقلة -->
   <div class="modal-backdrop" id="presetsModalBackdrop">
     <div class="modal" style="max-width: 540px;">
       <div class="modal-header" style="border-bottom-color:#f59e0b;">
@@ -1170,7 +818,6 @@
             <div class="day-checkboxes" id="shiftDaysCheckboxes"></div>
           </div>
 
-          <!-- وقت البداية 12 ساعة -->
           <div class="form-group">
             <label class="form-label">وقت بداية الشفت (توقيت مصر):</label>
             <div class="time-picker-grid">
@@ -1188,7 +835,6 @@
             </div>
           </div>
 
-          <!-- وقت النهاية 12 ساعة -->
           <div class="form-group">
             <label class="form-label">وقت نهاية الشفت (توقيت مصر):</label>
             <div class="time-picker-grid">
@@ -1387,13 +1033,13 @@
       currentWeekStart: getStartOfWeek(new Date()),
       searchQuery: "",
       visibleDays: [0, 1, 2, 3, 4, 5, 6],
-      shiftPresets: [], // تبدأ فارغة تماماً
+      shiftPresets: [],
       copiedEmployeeSchedule: null,
       singleCopiedShift: null,
       companyLogo: null,
       pdfSettings: {
         title: "Rental Gate — جدول الشفتات الأسبوعي الرسمي",
-        scale: 100, // نسبة الضغط المخصصة بالموظفين (100% عادي)
+        scale: 100,
         showSaudiTime: true,
         showWorkHours: true,
         showTotalHours: true,
@@ -1642,7 +1288,6 @@
       document.getElementById("pdfShowNotice").checked = s.showNotice;
       document.getElementById("pdfNoticeTextInput").value = s.noticeText;
 
-      // تطبيق مقياس الضغط على متغير CSS
       const decimalScale = (s.scale || 100) / 100;
       document.documentElement.style.setProperty("--pdf-scale", decimalScale);
 
@@ -1833,7 +1478,7 @@
     }
 
     /* ==========================================================================
-       إدارة الشفتات الثابتة المستقلة (فارغة ونظيفة)
+       إدارة الشفتات الثابتة المستقلة
        ========================================================================== */
 
     function populatePresetHoursSelectors() {
@@ -2598,63 +2243,163 @@
     }
 
     /* ==========================================================================
-       التصدير للـ Excel والـ PDF
+       محرك تصدير Excel الاحترافي المماثل للهوية مع فلاتر التصفية الحقيقية
        ========================================================================== */
 
-    function exportWeeklyMatrixExcel() {
-      const dates = getWeekDates(state.currentWeekStart);
-      const activeDates = dates.filter((_, idx) => state.visibleDays.includes(idx));
+    async function exportExecutiveExcelSchedule() {
+      try {
+        showToast("جارٍ إنشاء وتنسيق ملف الإكسيل التفاعلي...");
 
-      const headers = [
-        "اسم الموظف",
-        "الوظيفة",
-        ...activeDates.map(d => `${DAYS_ARABIC[d.getDay()]} (${d.getDate()}/${d.getMonth()+1})`),
-        "إجمالي ساعات العمل"
-      ];
-
-      const rows = [];
-
-      state.employees.forEach(emp => {
-        let totalHours = 0;
-        const rowCells = [`"${emp.name}"`, `"${emp.role}"`];
-
-        activeDates.forEach(d => {
-          const dateStr = formatDateISO(d);
-          const shift = state.shifts.find(s => s.employeeId === emp.id && s.date === dateStr);
-
-          if (shift && shift.isOff) {
-            rowCells.push(`"أوف / راحة"`);
-          } else if (shift && shift.startTime) {
-            const eg = `${formatTime12h(shift.startTime)} - ${formatTime12h(shift.endTime)}`;
-            const sa = `${convertToSaudiTime(dateStr, shift.startTime)} - ${convertToSaudiTime(dateStr, shift.endTime)}`;
-            const dur = getWorkDuration(shift.startTime, shift.endTime);
-            totalHours += dur.hours;
-            rowCells.push(`"مصر: ${eg} | السعودية: ${sa} (${dur.hours} س)"`);
-          } else {
-            rowCells.push(`"-"`);
-          }
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('جدول الشفتات الأسبوعي', {
+          views: [{ rtl: true, state: 'frozen', xSplit: 3, ySplit: 6 }] // اتجاه RTL وتثبيت الأعمدة والترويسة
         });
 
-        rowCells.push(`"${totalHours} ساعة عمل"`);
-        rows.push(rowCells.join(","));
-      });
+        const dates = getWeekDates(state.currentWeekStart);
+        const activeDates = dates.filter((_, idx) => state.visibleDays.includes(idx));
 
-      const csvData = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
-      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `RentalGate_Schedule_Week_${formatDateISO(dates[0])}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+        const startStr = formatDateISO(activeDates[0]);
+        const endStr = formatDateISO(activeDates[activeDates.length - 1]);
 
-      openThankYouModal();
+        // عناوين الأعمدة
+        const headers = [
+          "م", "اسم الموظف", "الوظيفة",
+          ...activeDates.map(d => `${DAYS_ARABIC[d.getDay()]} (${d.getDate()}/${d.getMonth() + 1})`),
+          "إجمالي ساعات العمل", "ملاحظات"
+        ];
+        const totalCols = headers.length;
+
+        // --- الصف 1: الترويسة السوداء الفاخرة المدمجة ---
+        worksheet.mergeCells(1, 1, 1, totalCols);
+        const row1 = worksheet.getCell('A1');
+        row1.value = "Rental Gate — جدول الشفتات الأسبوعي الرسمي";
+        row1.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121212' } };
+        row1.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FFFFFFFF' } };
+        row1.alignment = { horizontal: 'center', vertical: 'middle' };
+        worksheet.getRow(1).height = 32;
+
+        // --- الصف 2: الشريط العنابي الداكن المدمج ---
+        worksheet.mergeCells(2, 1, 2, totalCols);
+        const row2 = worksheet.getCell('A2');
+        row2.value = `جدول شفتات العمل للأسبوع من (${startStr}) إلى (${endStr}) — نظام 12 ساعة (مصر / السعودية)`;
+        row2.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF7F0914' } };
+        row2.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+        row2.alignment = { horizontal: 'center', vertical: 'middle' };
+        worksheet.getRow(2).height = 24;
+
+        // --- الصفوف من 3 إلى 5: صفوف فاصلة بلون وردي خافت جداً ---
+        for (let r = 3; r <= 5; r++) {
+          worksheet.getRow(r).height = 13;
+          for (let c = 1; c <= totalCols; c++) {
+            worksheet.getCell(r, c).fill = {
+              type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF5F5' }
+            };
+          }
+        }
+
+        // --- الصف 6: شريط رؤوس الأعمدة الأسود ذو الإطار الأحمر وفلاتر التصفية ---
+        const headerRow = worksheet.getRow(6);
+        headerRow.values = headers;
+        headerRow.height = 28;
+
+        headerRow.eachCell((cell, colNumber) => {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1F1F1F' } };
+          cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+          cell.border = {
+            top: { style: 'medium', color: { argb: 'FFD7192D' } }, // خط أحمر علوي مميز
+            bottom: { style: 'thin', color: { argb: 'FF444444' } },
+            left: { style: 'thin', color: { argb: 'FF333333' } },
+            right: { style: 'thin', color: { argb: 'FF333333' } }
+          };
+        });
+
+        // تفعيل الفلاتر التلقائية (AutoFilter) في Excel على صف الأعمدة السادس
+        worksheet.autoFilter = {
+          from: { row: 6, column: 1 },
+          to: { row: 6, column: totalCols }
+        };
+
+        // --- الصفوف من 7 فصاعداً: تعبئة الموظفين والشفتات بنمط الزيبرا ---
+        state.employees.forEach((emp, empIdx) => {
+          let totalHours = 0;
+          const rowData = [empIdx + 1, emp.name, emp.role];
+
+          activeDates.forEach(d => {
+            const dateStr = formatDateISO(d);
+            const shift = state.shifts.find(s => s.employeeId === emp.id && s.date === dateStr);
+
+            if (shift && (shift.isOff === true || shift.isOff === "true")) {
+              rowData.push("🏖️ أوف / راحة");
+            } else if (shift && shift.startTime) {
+              const eg = `${formatTime12h(shift.startTime)} - ${formatTime12h(shift.endTime)}`;
+              const sa = `${convertToSaudiTime(dateStr, shift.startTime)} - ${convertToSaudiTime(dateStr, shift.endTime)}`;
+              const dur = getWorkDuration(shift.startTime, shift.endTime);
+              totalHours += dur.hours;
+              rowData.push(`مصر: ${eg}\nسعودية: ${sa}\n(${dur.hours} س)`);
+            } else {
+              rowData.push("-");
+            }
+          });
+
+          rowData.push(`${totalHours} ساعة عمل`);
+          rowData.push(""); // ملاحظات
+
+          const excelRow = worksheet.addRow(rowData);
+          const currentRowNum = 7 + empIdx;
+          excelRow.height = 46; // مساحة كافية لأسطر الشفت
+          const isEven = empIdx % 2 === 0;
+
+          excelRow.eachCell((cell, colNumber) => {
+            cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+            cell.font = { name: 'Arial', size: 9 };
+            
+            // تلوين شرطي تلقائي لخلايا الأوف
+            const val = String(cell.value || "");
+            if (val.includes("أوف")) {
+              cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF3F4F6' } };
+              cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF991B1B' } };
+            } else {
+              cell.fill = {
+                type: 'pattern', pattern: 'solid',
+                fgColor: { argb: isEven ? 'FFFFFFFF' : 'FFF9FAFB' }
+              };
+            }
+
+            cell.border = {
+              top: { style: 'thin', color: { argb: 'FFE5E7EB' } },
+              bottom: { style: 'thin', color: { argb: 'FFE5E7EB' } },
+              left: { style: 'thin', color: { argb: 'FFE5E7EB' } },
+              right: { style: 'thin', color: { argb: 'FFE5E7EB' } }
+            };
+          });
+        });
+
+        // ضبط عرض الأعمدة
+        worksheet.getColumn(1).width = 6;  // م
+        worksheet.getColumn(2).width = 22; // اسم الموظف
+        worksheet.getColumn(3).width = 16; // الوظيفة
+        for (let c = 4; c < totalCols - 1; c++) {
+          worksheet.getColumn(c).width = 24; // أيام الأسبوع
+        }
+        worksheet.getColumn(totalCols - 1).width = 18; // إجمالي الساعات
+        worksheet.getColumn(totalCols).width = 16;     // ملاحظات
+
+        // تنزيل الملف بصيغة XLSX حقيقية
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, `RentalGate_Schedule_Week_${startStr}.xlsx`);
+
+        openThankYouModal();
+      } catch (err) {
+        console.error("Export Excel error:", err);
+        showToast("حدث خطأ أثناء تصدير ملف الإكسيل", "error");
+      }
     }
 
     function exportSinglePagePDF() {
       applyPdfCustomizationUI();
 
-      // تطبيق ضغط إضافي على الخط إذا زاد عدد الموظفين بشكل كبير
       const count = state.employees.length;
       const table = document.getElementById("scheduleTable");
 
@@ -2705,19 +2450,17 @@
       // الوضع الليلي
       document.getElementById("btnThemeToggle").addEventListener("click", toggleTheme);
 
-      // زر الشفتات الثابتة المستقل
+      // أزرار النوافذ
       document.getElementById("btnOpenPresetsModal").addEventListener("click", () => {
         renderPresetsModalList();
         openModal("presetsModalBackdrop");
       });
 
-      // زر تخصيص الـ PDF
       document.getElementById("btnOpenPdfSettings").addEventListener("click", () => {
         applyPdfCustomizationUI();
         openModal("pdfCustomizerModalBackdrop");
       });
 
-      // زر الترس العائم للإعدادات
       document.getElementById("btnOpenSettings").addEventListener("click", () => openModal("settingsModalBackdrop"));
 
       // رفع الشعار
@@ -2740,7 +2483,7 @@
       document.getElementById("primaryColorInput").addEventListener("input", (e) => applyPrimaryColor(e.target.value));
       document.getElementById("darkColorInput").addEventListener("input", (e) => applyDarkColor(e.target.value));
 
-      // أزرار التنقل بالأسبوع
+      // التنقل بالأسبوع
       document.getElementById("btnPrevWeek").addEventListener("click", () => {
         state.currentWeekStart.setDate(state.currentWeekStart.getDate() - 7);
         renderSchedule();
@@ -2754,7 +2497,7 @@
         renderSchedule();
       });
 
-      // فتح النوافذ
+      // فتح باقي النوافذ
       document.getElementById("btnOpenShiftModal").addEventListener("click", () => openShiftModalFor(null));
       document.getElementById("btnOpenEmployeeManager").addEventListener("click", () => {
         renderEmpMgmtTable();
@@ -2763,8 +2506,8 @@
       document.getElementById("btnOpenSwapModal").addEventListener("click", openSwapModal);
       document.getElementById("btnClearWeekSchedule").addEventListener("click", clearCurrentWeekSchedule);
 
-      // التصدير والطباعة
-      document.getElementById("btnExportExcel").addEventListener("click", exportWeeklyMatrixExcel);
+      // ربط تصدير الإكسيل والـ PDF
+      document.getElementById("btnExportExcel").addEventListener("click", exportExecutiveExcelSchedule);
       document.getElementById("btnPrintSchedule").addEventListener("click", exportSinglePagePDF);
 
       // البحث السريع
